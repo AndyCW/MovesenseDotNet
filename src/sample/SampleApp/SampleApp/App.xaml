@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:SampleApp.Converters"
+             x:Class="SampleApp.App">
+	<Application.Resources>
+        <ResourceDictionary>
+            <converters:DeviceStatusColorBindingValueConverter x:Key="devicestatusconverter"></converters:DeviceStatusColorBindingValueConverter>
+            <converters:NullToBooleanConverter x:Key="nulltobooleanconverter"></converters:NullToBooleanConverter>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mds", "Mds", "{01CF2ACC-831C-4C52-BAB9-8804F800F0E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdsLibrary", "MdsLibrary\MdsLibrary.csproj", "{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesenseBinding", "MovesenseBinding\MovesenseBinding.csproj", "{53C4467D-AA6D-4F5C-AD38-E37BDAB7EC39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{C5FAC67F-1AC5-46D3-9BFA-F09A5C30D7D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp.Android", "sample\SampleApp\SampleApp.Android\SampleApp.Android.csproj", "{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleApp", "sample\SampleApp\SampleApp\SampleApp.shproj", "{D2C56DBC-90D4-43B3-ADAE-051DA8EB3691}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SensorKit", "SensorKit", "{7C0015C2-DC27-4AEF-88B3-35E36E7A0DB8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{F7292A30-1EBF-42A9-B5C7-5785F0FB2A57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SensorKit", "SensorKit\SensorKit.csproj", "{145B9018-5D58-497C-A928-C0B3BEC1A892}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		sample\SampleApp\SampleApp\SampleApp.projitems*{d2c56dbc-90d4-43b3-adae-051da8eb3691}*SharedItemsImports = 13
+		sample\SampleApp\SampleApp\SampleApp.projitems*{e1ca5910-b6ca-4b11-977b-c2dd973a3e62}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C4467D-AA6D-4F5C-AD38-E37BDAB7EC39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C4467D-AA6D-4F5C-AD38-E37BDAB7EC39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C4467D-AA6D-4F5C-AD38-E37BDAB7EC39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C4467D-AA6D-4F5C-AD38-E37BDAB7EC39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{145B9018-5D58-497C-A928-C0B3BEC1A892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{145B9018-5D58-497C-A928-C0B3BEC1A892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{145B9018-5D58-497C-A928-C0B3BEC1A892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{145B9018-5D58-497C-A928-C0B3BEC1A892}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{01CF2ACC-831C-4C52-BAB9-8804F800F0E1} = {F7292A30-1EBF-42A9-B5C7-5785F0FB2A57}
+		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8} = {01CF2ACC-831C-4C52-BAB9-8804F800F0E1}
+		{53C4467D-AA6D-4F5C-AD38-E37BDAB7EC39} = {01CF2ACC-831C-4C52-BAB9-8804F800F0E1}
+		{E1CA5910-B6CA-4B11-977B-C2DD973A3E62} = {C5FAC67F-1AC5-46D3-9BFA-F09A5C30D7D2}
+		{7C0015C2-DC27-4AEF-88B3-35E36E7A0DB8} = {F7292A30-1EBF-42A9-B5C7-5785F0FB2A57}
+		{145B9018-5D58-497C-A928-C0B3BEC1A892} = {7C0015C2-DC27-4AEF-88B3-35E36E7A0DB8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F27CE037-24B7-4B76-8327-F0FAF65C68EA}
+	EndGlobalSection
+EndGlobal

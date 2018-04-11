@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SensorKit", "SensorKit.csproj", "{9F4B4DB9-9C7C-4A73-995C-A256C3B2D958}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SensorKit.Azure", "..\SensorKit.Azure\SensorKit.Azure.csproj", "{81344E9E-B002-41D0-BBCE-D167FD50FCDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorKit.Azure.Model", "..\SensorKit.Azure.Model\SensorKit.Azure.Model.csproj", "{E2184781-B5AC-45CE-B925-D7D8F8E6FFE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F4B4DB9-9C7C-4A73-995C-A256C3B2D958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4B4DB9-9C7C-4A73-995C-A256C3B2D958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4B4DB9-9C7C-4A73-995C-A256C3B2D958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4B4DB9-9C7C-4A73-995C-A256C3B2D958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81344E9E-B002-41D0-BBCE-D167FD50FCDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81344E9E-B002-41D0-BBCE-D167FD50FCDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81344E9E-B002-41D0-BBCE-D167FD50FCDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81344E9E-B002-41D0-BBCE-D167FD50FCDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2184781-B5AC-45CE-B925-D7D8F8E6FFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2184781-B5AC-45CE-B925-D7D8F8E6FFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2184781-B5AC-45CE-B925-D7D8F8E6FFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2184781-B5AC-45CE-B925-D7D8F8E6FFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D99BB935-13AA-4709-B435-574DC5FCC65B}
+	EndGlobalSection
+EndGlobal

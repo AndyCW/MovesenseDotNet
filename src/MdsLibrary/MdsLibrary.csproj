@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MdsLibrary</RootNamespace>
+    <AssemblyName>MdsLibrary</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\ApiCallAsync.cs" />
+    <Compile Include="Api\ApiCallAsyncOfT.cs" />
+    <Compile Include="Api\ApiCallResult.cs" />
+    <Compile Include="Api\ApiSubscription.cs" />
+    <Compile Include="Api\CreateLogEntry.cs" />
+    <Compile Include="Api\DeleteLogEntries.cs" />
+    <Compile Include="Api\GetBatteryLevel.cs" />
+    <Compile Include="Api\GetData.cs" />
+    <Compile Include="Api\GetDescriptors.cs" />
+    <Compile Include="Api\GetDeviceInfo.cs" />
+    <Compile Include="Api\GetLed.cs" />
+    <Compile Include="Api\GetLeds.cs" />
+    <Compile Include="Api\GetLog.cs" />
+    <Compile Include="Api\GetLogEntries.cs" />
+    <Compile Include="Api\GetLogStatus.cs" />
+    <Compile Include="Api\GetTime.cs" />
+    <Compile Include="Api\LinearAccelerationSubscription.cs" />
+    <Compile Include="Api\SetLed.cs" />
+    <Compile Include="Api\SetLogStatus.cs" />
+    <Compile Include="Api\SetTime.cs" />
+    <Compile Include="Api\SetupLog.cs" />
+    <Compile Include="Helpers\Util.cs" />
+    <Compile Include="MdsConnectionListener.cs" />
+    <Compile Include="MdsConnectionService.cs" />
+    <Compile Include="MdsException.cs" />
+    <Compile Include="Mdx.cs" />
+    <Compile Include="Model\AngularVelocity.cs" />
+    <Compile Include="Model\BaseResult.cs" />
+    <Compile Include="Model\BatteryResult.cs" />
+    <Compile Include="Model\CreateLogResult.cs" />
+    <Compile Include="Model\DataLoggerConfig.cs" />
+    <Compile Include="Model\DeviceInfoResult.cs" />
+    <Compile Include="Model\LedsResult.cs" />
+    <Compile Include="Model\LinearAcceleration.cs" />
+    <Compile Include="Model\LogEntriesResult.cs" />
+    <Compile Include="Model\LogStatusResult.cs" />
+    <Compile Include="Model\MagneticField.cs" />
+    <Compile Include="Model\TimeResult.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MovesenseBinding\MovesenseBinding.csproj">
+      <Project>{53c4467d-aa6d-4f5c-ad38-e37bdab7ec39}</Project>
+      <Name>MovesenseBinding</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
