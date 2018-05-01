@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace MdsLibrary.Model
 {
-    public class LinearAcceleration
+    public class MagnData
     {
         [JsonProperty("Body")]
         public Body body;
 
-        public LinearAcceleration(Body body)
+        public MagnData(Body body)
         {
             this.body = body;
         }
@@ -20,18 +17,12 @@ namespace MdsLibrary.Model
             [JsonProperty("Timestamp")]
             public long timestamp;
 
-            [JsonProperty("ArrayAcc")]
+            [JsonProperty("ArrayMagn")]
             public Array[] array;
 
             [JsonProperty("Headers")]
             public Headers header;
 
-            public Body(long timestamp, Array[] array, Headers header)
-            {
-                this.timestamp = timestamp;
-                this.array = array;
-                this.header = header;
-            }
         }
 
         public class Array

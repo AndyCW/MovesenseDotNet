@@ -34,7 +34,7 @@ namespace MdsLibrary
                     {
                         if (Activity == null)
                         {
-                            throw new InvalidOperationException("Set Activity property to current Androd.App.Activity before calling MdsInstance");
+                            throw new InvalidOperationException("Set Activity property to current Android.App.Activity before calling MdsInstance");
                         }
 
                         instance = new Mds.Builder().Build(Activity);

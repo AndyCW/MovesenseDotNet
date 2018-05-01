@@ -9,7 +9,7 @@ namespace SampleApp.Models
     {
         private AngularVelocity mAngularVelocity;
         private MagneticField mMagneticField;
-        private LinearAcceleration mLinearAcceleration;
+        private AccData mLinearAcceleration;
 
         public Data(AngularVelocity angularVelocity)
         {
@@ -21,7 +21,7 @@ namespace SampleApp.Models
             mMagneticField = magneticField;
         }
 
-        public Data(LinearAcceleration linearAcceleration)
+        public Data(AccData linearAcceleration)
         {
             mLinearAcceleration = linearAcceleration;
         }

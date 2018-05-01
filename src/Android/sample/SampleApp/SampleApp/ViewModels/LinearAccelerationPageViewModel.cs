@@ -16,7 +16,7 @@ namespace SampleApp.ViewModels
     public class LinearAccelerationPageViewModel : ViewModelBase
     {
         private IDeviceScanService _deviceScanService;
-        private LinearAccelerationSubscription subscription;
+        private AccelerometerSubscription subscription;
 
         public ICommand ToggleSubscribeSwitchCommand { get; set; }
 
@@ -40,7 +40,7 @@ namespace SampleApp.ViewModels
                         ConnectionStatusText = "Connecting...";
                         await Sensor.Connect();
                         ConnectionStatusText = "Subscribed";
-                        subscription = new LinearAccelerationSubscription(false, Sensor.Name);
+                        subscription = new AccelerometerSubscription(false, Sensor.Name);
                         await subscription.SubscribeAsync((d) =>
                         {
                             PlotData(d.body.timestamp, d.body.array[0].x, d.body.array[0].y, d.body.array[0].z);

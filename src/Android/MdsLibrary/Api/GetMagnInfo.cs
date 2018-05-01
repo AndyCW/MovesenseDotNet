@@ -1,0 +1,20 @@
+using Com.Movesense.Mds;
+using MdsLibrary.Model;
+
+namespace MdsLibrary.Api
+{
+    public class GetMagnInfo : ApiCallAsync<MagnInfo>
+    {
+        private static string ACC_INFO_PATH = "/Meas/Magn/Info";
+
+        public GetMagnInfo(bool? cancelled, string deviceName) :
+            base(cancelled, deviceName)
+        {
+        }
+
+        protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
+        {
+            mds.Get(Mdx.SCHEME_PREFIX + serial + ACC_INFO_PATH, null, responseListener);
+        }
+    }
+}
