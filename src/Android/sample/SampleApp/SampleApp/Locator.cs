@@ -13,7 +13,6 @@
 */
 
 using GalaSoft.MvvmLight.Ioc;
-using SampleApp.Services;
 using SampleApp.ViewModels;
 using CommonServiceLocator;
 
@@ -33,9 +32,6 @@ namespace SampleApp
             // ViewModels
             SimpleIoc.Default.Register<LinearAccelerationPageViewModel>();
             SimpleIoc.Default.Register<SelectDevicePageViewModel>();
-
-            // Services
-            SimpleIoc.Default.Register<IDeviceScanService, DeviceScanService>();
         }
 
 

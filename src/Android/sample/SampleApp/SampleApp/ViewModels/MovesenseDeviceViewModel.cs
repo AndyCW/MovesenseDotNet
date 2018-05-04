@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using SensorKitSDK;
 using MdsLibrary;
 using System;
 using System.Collections.Generic;
@@ -7,50 +6,39 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Plugin.BluetoothLE;
 
 namespace SampleApp.ViewModels
 {
     public class MovesenseDeviceViewModel : ViewModelBase
     {
-        public SensorModel SensorModel { get; set; }
+        public IDevice Device { get; private set; }
 
-        public MovesenseDeviceViewModel(Guid ID, string Name)
+        public MovesenseDeviceViewModel()
         {
-            SensorModel = new SensorModel();
-            SensorModel.Id = ID;
-            SensorModel.Name = Name;
             IsSelected = false;
             DeviceStatus = DeviceStatus.Undefined;
         }
 
-        public MovesenseDeviceViewModel(SensorModel sensorModel)
+        Guid uuid;
+        public Guid Uuid
         {
-            SensorModel = sensorModel;
-            IsSelected = false;
-            DeviceStatus = DeviceStatus.Discovered;
+            get => this.uuid;
+            private set => Set<Guid>(ref this.uuid, value);
         }
 
-        public Guid ID
-        {
-            get
-            {
-                return SensorModel.Id;
-            }
-        }
-
+        string name;
         public string Name
         {
-            get
-            {
-                return SensorModel.Name;
-            }
+            get => this.name;
+            private set => Set<string>(ref this.name, value);
         }
 
         public string MACAddress
         {
             get
             {
-                string[] idParts = SensorModel.Id.ToString().Split(new char[] { '-' });
+                string[] idParts = Uuid.ToString().Split(new char[] { '-' });
                 string macAddress = idParts.Last().ToUpper();
                 StringBuilder formattedMAC = new StringBuilder();
                 for (int i = 0; i < macAddress.Length; i += 2)
@@ -61,6 +49,92 @@ namespace SampleApp.ViewModels
 
                 return formattedMAC.ToString();
             }
+        }
+
+        int rssi;
+        public int Rssi
+        {
+            get => this.rssi;
+            private set => this.Set<int>(ref this.rssi, value);
+        }
+
+
+        bool connectable;
+        public bool IsConnectable
+        {
+            get => this.connectable;
+            private set => this.Set<bool>(ref this.connectable, value);
+        }
+
+
+        int serviceCount;
+        public int ServiceCount
+        {
+            get => this.serviceCount;
+            private set => this.Set<int>(ref this.serviceCount, value);
+        }
+
+
+        string manufacturerData;
+        public string ManufacturerData
+        {
+            get => this.manufacturerData;
+            private set => this.Set<string>(ref this.manufacturerData, value);
+        }
+
+
+        string localName;
+        public string LocalName
+        {
+            get => this.localName;
+            private set => this.Set<string>(ref this.localName, value);
+        }
+
+
+        int txPower;
+        public int TxPower
+        {
+            get => this.txPower;
+            private set => this.Set<int>(ref this.txPower, value);
+        }
+
+
+        public bool TrySet(IScanResult result)
+        {
+            var response = false;
+
+            if (this.Uuid == Guid.Empty)
+            {
+                this.Device = result.Device;
+                this.Uuid = this.Device.Uuid;
+
+                response = true;
+            }
+
+            try
+            {
+                if (this.Uuid == result.Device.Uuid)
+                {
+                    response = true;
+
+                    this.Name = result.Device.Name;
+                    this.Rssi = result.Rssi;
+
+                    var ad = result.AdvertisementData;
+                    this.ServiceCount = ad.ServiceUuids?.Length ?? 0;
+                    this.IsConnectable = ad.IsConnectable;
+                    this.LocalName = ad.LocalName;
+                    this.TxPower = ad.TxPower;
+                    this.ManufacturerData = ad.ManufacturerData == null
+                        ? null
+                        : BitConverter.ToString(ad.ManufacturerData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+            return response;
         }
 
         private bool _isSelected;
@@ -84,10 +158,6 @@ namespace SampleApp.ViewModels
             }
         }
 
-        public string GroupName { get; set; }
-
-        public long EndLoggingTime { get; set; }
-
         private int _batteryLevel;
         public int BatteryLevel { get { return _batteryLevel; } set { Set(() => BatteryLevel, ref _batteryLevel, value); } }
 
@@ -99,23 +169,13 @@ namespace SampleApp.ViewModels
         public DeviceStatus DeviceStatus
         {
             get { return _deviceStatus; }
-            set { Set(() => DeviceStatus, ref _deviceStatus, value); }
+            set { Set<DeviceStatus>(ref _deviceStatus, value); }
         }
 
         public async Task Connect()
         {
             DeviceStatus = DeviceStatus.Connecting;
-
-            if (SensorModel.Connector == null)
-            {
-                SensorModel.Connector = new SensorKitMovesenseConnector(SensorModel);
-            }
-
-            if (!SensorModel.IsSubscribed)
-            {
-                await SensorModel.Subscribe();
-            }
-
+            this.Device.Connect();
             Debug.WriteLine("Ble Connected!");
 
             // Now do the Mds connection
@@ -132,15 +192,7 @@ namespace SampleApp.ViewModels
             await new MdsConnectionService().DisconnectMds(MACAddress);
 
             // Disconnect SensorKit
-            if (SensorModel.Connector == null)
-            {
-                SensorModel.Connector = new SensorKitMovesenseConnector(SensorModel);
-            }
-
-            if (SensorModel.IsSubscribed)
-            {
-                await SensorModel.Unsubscribe();
-            }
+            this.Device.CancelConnection();
 
             Debug.WriteLine("Ble DisConnected!");
 

@@ -17,7 +17,7 @@
                 <Label Text="Selected Device: "
                        VerticalOptions="Start" 
                        FontSize="Medium"/>
-                <Label Text="{Binding Sensor.Name}" FontSize="Medium"/>
+                <Label Text="{Binding MovesenseDevice.Name}" FontSize="Medium"/>
             </StackLayout>
 
             <StackLayout Orientation="Vertical" HorizontalOptions="Start" Margin="10,20,0,0">

@@ -22,8 +22,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Util.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Data.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DeviceScanService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\IDeviceScanService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LinearAccelerationPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MovesenseDeviceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SelectDevicePageViewModel.cs" />

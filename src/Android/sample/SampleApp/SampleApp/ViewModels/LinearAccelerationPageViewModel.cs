@@ -2,12 +2,8 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using SampleApp.Services;
 using MdsLibrary.Api;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,7 +11,6 @@ namespace SampleApp.ViewModels
 {
     public class LinearAccelerationPageViewModel : ViewModelBase
     {
-        private IDeviceScanService _deviceScanService;
         private AccelerometerSubscription subscription;
 
         public ICommand ToggleSubscribeSwitchCommand { get; set; }
@@ -27,10 +22,8 @@ namespace SampleApp.ViewModels
         private string connectionStatusText = string.Empty;
         public string ConnectionStatusText { get { return connectionStatusText; } set { Set(() => ConnectionStatusText, ref connectionStatusText, value); } }
 
-        public LinearAccelerationPageViewModel(IDeviceScanService deviceScanService)
+        public LinearAccelerationPageViewModel()
         {
-            _deviceScanService = deviceScanService;
-
             // Command to start the subscription
             ToggleSubscribeSwitchCommand = new Xamarin.Forms.Command(
                 async () =>
@@ -38,9 +31,9 @@ namespace SampleApp.ViewModels
                     if (IsSubscribeSwitchOn)
                     {
                         ConnectionStatusText = "Connecting...";
-                        await Sensor.Connect();
+                        await MovesenseDevice.Connect();
                         ConnectionStatusText = "Subscribed";
-                        subscription = new AccelerometerSubscription(false, Sensor.Name);
+                        subscription = new AccelerometerSubscription(false, MovesenseDevice.Name);
                         await subscription.SubscribeAsync((d) =>
                         {
                             PlotData(d.body.timestamp, d.body.array[0].x, d.body.array[0].y, d.body.array[0].z);
@@ -51,11 +44,11 @@ namespace SampleApp.ViewModels
                         // Unsubscribe
                         subscription.UnSubscribe();
                         ConnectionStatusText = "Unsubscribed";
-                        await Sensor.Disconnect();
+                        await MovesenseDevice.Disconnect();
                         ConnectionStatusText = "Disconnected";
                     }
                 }
-                , () => (Sensor != null) // Enable command only if we've got a device
+                , () => (MovesenseDevice != null) // Enable command only if we've got a device
             );
 
             InitPlotModel();
@@ -63,13 +56,13 @@ namespace SampleApp.ViewModels
 
 
         private MovesenseDeviceViewModel _movesenseDeviceViewModel;
-        public MovesenseDeviceViewModel Sensor
+        public MovesenseDeviceViewModel MovesenseDevice
         {
             get { return _movesenseDeviceViewModel;
             }
             set
             {
-                Set(() => Sensor, ref _movesenseDeviceViewModel, value);
+                Set(() => MovesenseDevice, ref _movesenseDeviceViewModel, value);
                 ((Xamarin.Forms.Command)ToggleSubscribeSwitchCommand).ChangeCanExecute();
             }
         }
@@ -78,45 +71,12 @@ namespace SampleApp.ViewModels
         {
             ConnectionStatusText = string.Empty;
             IsSubscribeSwitchOn = false;
-
-            Sensor = null;
-            if (Application.Current.Properties.ContainsKey("SelectedSensorId"))
-            {
-                // Discover the device the user has selected so that we can start subscription
-                // TODO - connect directly to the device without scanning again??
-                StartScanning();
-            }
-
             gotInitialReading = false;
         }
 
         public void OnExit()
         {
-            StopScanning();
             subscription?.UnSubscribe();
-        }
-
-        public void StartScanning()
-        {
-            _deviceScanService.MovesenseDeviceFound += _deviceScanService_MovesenseDeviceFound;
-            _deviceScanService.StartScanning();
-        }
-
-        public void StopScanning()
-        {
-            _deviceScanService.MovesenseDeviceFound -= _deviceScanService_MovesenseDeviceFound;
-            _deviceScanService.StopScanning();
-        }
-
-        private void _deviceScanService_MovesenseDeviceFound(object sender, MovesenseDeviceFoundArgs e)
-        {
-            // Is this the one?
-            string Id = Application.Current.Properties["SelectedSensorId"] as string;
-            if (e.Device.Id.ToString() == Id)
-            {
-                Sensor = new MovesenseDeviceViewModel(e.Device);
-                StopScanning();
-            }
         }
 
         public PlotModel Model { get; private set; }
