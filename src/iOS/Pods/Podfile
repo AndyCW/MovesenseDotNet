@@ -1,0 +1,17 @@
+platform :ios, '11.3'
+install! 'cocoapods', :integrate_targets => false
+
+target 'ObjectiveSharpieIntegration' do
+   use_frameworks!
+end
+
+# force the sub specs in the array below to use swift version 3.2
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '3.0'
+        end
+    end
+end
+
+pod 'Movesense', :git => 'ssh://git@altssh.bitbucket.org:443/suunto/movesense-mobile-lib.git'
