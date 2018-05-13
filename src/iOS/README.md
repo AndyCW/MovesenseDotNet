@@ -33,28 +33,49 @@ end
 pod 'Movesense', :git => 'location of the private repository'
 ```
 
-From this point we ended up manually running `pod install`. After that completed, and installed all the references, we could finally run `sharpie pod bind` which took the state of the CocoaPods and created the _framework_ files we needed to reference.
+From this point we ended up manually running `pod install`. After that completed, and installed all the references, we could finally run `sharpie pod bind` which took the state of the CocoaPods and created the _framework_ files we needed to reference. The first time we ran bind, it failed miserably, as we did not have the target framework limiting to `SWIFT_VERSION`. We found [this post](https://github.com/mxcl/PromiseKit/issues/722) which seemed to do the trick.
 
 From there on, we continued to follow the [documentation](https://docs.microsoft.com/en-us/xamarin/ios/platform/binding-objective-c/walkthrough?tabs=vsmac#Create_a_Xamarin.iOS_Binding_Project).
 
 ## Creating the Binding Project
 
-The next step was to start creating the binding project in Xamarin, that we'll later be packaging up as a NuGet project. This is the _library_ that will be consumed by applications developed in C#. 
+The next step was to start creating the binding project in Xamarin, that we'll later be packaging up as a NuGet project. This is the _library_ that will be consumed by applications developed in C#.
 
-https://github.com/mxcl/PromiseKit/issues/722 — how we got it working
+Following the documentation to create the binding project as nornmal was easy but we needed to also include a native reference to the `.framework`  folder we've created earlier. Additionally, we added a reference to the aforementioend `libmds.a` file. Because the library is _special_ we need to perform some exstra steps. Specifically, through trial and error we've found all the required frameworks that it references.
 
-Library is a C++ (set a flag), add -lz (include Z library)
+[img: SWIFT]
 
-make sure apple account is signed in and provisioning profiles are downloaded
+To help with this, we opened the example project in XCode. Looking at the requirements in XCode we figure out we need the following libraries:
 
-disable Incremental builds in Build options and Device specific builsa
+[img: frameworks]
 
-Make sure Bluetooth LE is set in plist
+`Security`, `CoreBluetooth` and `CoreFoundation`. But also, importantly we notice a few other things. It turns out it also references `libz.tbd` and a `libc++.tbd` which for us means setting a few extra flags. Specifically, we set the `Is C++` flag on the properties of the `libmds.a` file. This tells the linker to also include the `libc++.tbd` which is a special case. The `libz.tbd` library, though, we need to manually add a linker flag `-lz` which, as suggested by the name tells it to include the `libz` part as well.
 
+## Creating our app using the binding
 
-Add all required NuGet packages for Swift
+Now, we finally get to the fun part. We create a new project and reference the bindings project we've created above. We ran into multiple problems from the start, after referencing the library. Most of the initial compilation problems we've encountered went away when we disabled `incremental builds`. We also need to match the Entitlements - specifically, we will require the use of Bluetooth LE in the background.
 
+[img: entitlement]
 
-——
+As we wrote the first part of the library, the application ran in the emulator, but it did not run on the iPhone and kept crashing. **make sure to add more info here**.
 
-xcrun 
+We found an undocumented workaround through speaking with the team. Essentially, the problem is that the Swift libraries are missing. Usually, the way to fix that was to add them through NuGet, however as we soon discovered, making sure the correct versions were there, and linked correctly was not easy. In fact, it was not feasible for a library we did not write ourselves. It turns out, there are some tools within XCode that can help us with this.
+
+To make the changes, we had to edit the project file separately/manually. Specifically, we appended the following code:
+
+```xml
+<Target Name="_ProjectSwiftMaster"
+    Condition="'_SwiftDependencies'!=''"
+    AfterTargets="_CodesignNativeLibraries"
+    DependsOnTargets="_SwiftDependencies" />
+<PropertyGroup>
+<_TargetPlatform Condition=" '$(Platform)' == 'iPhoneSimulator' ">iphonesimulator</_TargetPlatform>
+    <_TargetPlatform Condition=" '$(Platform)' == 'iPhone' ">iphoneos</_TargetPlatform>
+</PropertyGroup>
+<Target Name="_SwiftDependencies" Condition="!Exists('$(_AppBundlePath)Frameworks/libswiftCore.dylib')">
+    <Message Text="Copying Swift Frameworks dependencies for %(_Frameworks.Identity) to $(_AppBundlePath)Frameworks folder" />
+    <Exec Command="xcrun swift-stdlib-tool --copy --verbose --verbose --sign $(_CodeSigningKey) --scan-executable %(_Frameworks.Identity) --scan-folder $(_AppBundlePath)Frameworks/ --scan-folder $(_AppBundlePath)PlugIns/ --platform $(_TargetPlatform) --toolchain $(_XcodeToolChain) --destination $(_AppBundlePath)Frameworks/ --strip-bitcode --resource-destination $(_AppBundlePath) --resource-library libswiftRemoteMirror.dylib"/>
+</Target>
+```
+
+Specifically, there's a tool call `swift-stdlib-tool` (apltly named, no?) that can be run with a different tool called `xcrun`. You can see that in the above code sample. The tool scans the given folder, given through all the `--scan-folder` flags, and picks the framework files that need to be referenced. Those are then copied over (due to the `--copy` flag) into the `/Frameworks` folder **within** the `_AppBundlePath`. So, it copies the files into the bundle that is then executed on the phone.
