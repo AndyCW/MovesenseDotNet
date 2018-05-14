@@ -43,11 +43,9 @@ The next step was to start creating the binding project in Xamarin, that we'll l
 
 Following the documentation to create the binding project as nornmal was easy but we needed to also include a native reference to the `.framework`  folder we've created earlier. Additionally, we added a reference to the aforementioend `libmds.a` file. Because the library is _special_ we need to perform some exstra steps. Specifically, through trial and error we've found all the required frameworks that it references.
 
-[img: SWIFT]
-
 To help with this, we opened the example project in XCode. Looking at the requirements in XCode we figure out we need the following libraries:
 
-[img: frameworks]
+!["References"](./docs/references.png)
 
 `Security`, `CoreBluetooth` and `CoreFoundation`. But also, importantly we notice a few other things. It turns out it also references `libz.tbd` and a `libc++.tbd` which for us means setting a few extra flags. Specifically, we set the `Is C++` flag on the properties of the `libmds.a` file. This tells the linker to also include the `libc++.tbd` which is a special case. The `libz.tbd` library, though, we need to manually add a linker flag `-lz` which, as suggested by the name tells it to include the `libz` part as well.
 
@@ -55,7 +53,7 @@ To help with this, we opened the example project in XCode. Looking at the requir
 
 Now, we finally get to the fun part. We create a new project and reference the bindings project we've created above. We ran into multiple problems from the start, after referencing the library. Most of the initial compilation problems we've encountered went away when we disabled `incremental builds`. We also need to match the Entitlements - specifically, we will require the use of Bluetooth LE in the background.
 
-[img: entitlement]
+!["Entitlements"](./docs/entitlements.png)
 
 As we wrote the first part of the library, the application ran in the emulator, but it did not run on the iPhone and kept crashing. **make sure to add more info here**.
 
