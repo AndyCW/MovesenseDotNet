@@ -45,11 +45,17 @@ namespace MovesenseDemo
                     sensor.Connect();
 
                     // Now do the Mds connection
-                    await new MdsConnectionService().ConnectMdsAsync(GetMACAddress(sensor.Uuid));
+                    var mdsconnSvc = new MdsConnectionService();
+                    await mdsconnSvc.ConnectMdsAsync(GetMACAddress(sensor.Uuid));
 
                     // Talk to the device
                     var info = await new MdsLibrary.Api.GetDeviceInfo(false, sensor.Name).PerformAsync();
                     System.Diagnostics.Debug.WriteLine(info.GetContent().Serial);
+
+                    // Disconnect Mds
+                    await mdsconnSvc.DisconnectMds(GetMACAddress(sensor.Uuid));
+                    //Disconnect Bluetooth
+                    sensor.CancelConnection();
                 }
             }
         }
