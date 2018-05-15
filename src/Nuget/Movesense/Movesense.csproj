@@ -9,8 +9,8 @@
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <Version>0.0.1-alpha</Version>
-    <PackageVersion>1.0.0.0</PackageVersion>
+    <Version>0.0.5</Version>
+    <PackageVersion>0.0.4-alpha</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -21,16 +21,16 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     
     <!--TODO: Fill these in-->
-    <PackageLicenseUrl>LINK TO LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>LINK TO PROJECT</PackageProjectUrl>
-    <RepositoryUrl>LINK TO PROJECT</RepositoryUrl>
-    <PackageReleaseNotes>RELEASE NOTES</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/AndyCW/MovesenseDotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
+    <PackageReleaseNotes>Preview</PackageReleaseNotes>
     <PackageIconUrl>ICON URL</PackageIconUrl>
     <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Movesense</PackageTags>
     
     <Title>Movesense Plugin for Xamarin</Title>
     <Summary>Summary of nuget</Summary>
-    <Description>Plugin Description</Description>
+    <Description>Movesense API for Xamarin</Description>
 
     <Owners>YOU</Owners>
     <Authors>Andy Wigley</Authors>

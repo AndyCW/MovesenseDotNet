@@ -33,7 +33,7 @@ namespace SampleApp.ViewModels
                         ConnectionStatusText = "Connecting...";
                         await MovesenseDevice.Connect();
                         ConnectionStatusText = "Subscribed";
-                        subscription = new AccelerometerSubscription(false, MovesenseDevice.Name);
+                        subscription = new AccelerometerSubscription(MovesenseDevice.Name);
                         await subscription.SubscribeAsync((d) =>
                         {
                             PlotData(d.body.timestamp, d.body.array[0].x, d.body.array[0].y, d.body.array[0].z);

@@ -67,7 +67,7 @@
       <Version>2.1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Movesense">
-      <Version>0.0.2-alpha</Version>
+      <Version>0.0.4-alpha</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>2.2.1</Version>

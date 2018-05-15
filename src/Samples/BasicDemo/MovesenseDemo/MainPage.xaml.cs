@@ -49,7 +49,7 @@ namespace MovesenseDemo
                     await mdsconnSvc.ConnectMdsAsync(GetMACAddress(sensor.Uuid));
 
                     // Talk to the device
-                    var info = await new MdsLibrary.Api.GetDeviceInfo(false, sensor.Name).PerformAsync();
+                    var info = await new MdsLibrary.Api.GetDeviceInfo(sensor.Name).CallAsync();
                     System.Diagnostics.Debug.WriteLine(info.GetContent().Serial);
 
                     // Disconnect Mds
