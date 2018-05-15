@@ -8,10 +8,14 @@ namespace MdsLibrary.Api
 {
     public class GetLogStatus : ApiCallAsync<LogStatusResult>
     {
-        private static string DATALOGGER_STATE_PATH = "/Mem/DataLogger/State/";
+        private static readonly string DATALOGGER_STATE_PATH = "/Mem/DataLogger/State/";
 
-        public GetLogStatus(bool? cancelled, string deviceName) : 
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get Logger status, CallAsync returns LogStatusResult object
+        /// </summary>
+        /// <param name="deviceName"></param>
+        public GetLogStatus(string deviceName) : 
+            base(deviceName)
         { }
 
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)

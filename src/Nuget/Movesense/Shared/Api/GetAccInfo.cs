@@ -5,10 +5,14 @@ namespace MdsLibrary.Api
 {
     public class GetAccInfo : ApiCallAsync<AccInfo>
     {
-        private static string ACC_INFO_PATH = "/Meas/Acc/Info";
+        private static readonly string ACC_INFO_PATH = "/Meas/Acc/Info";
 
-        public GetAccInfo(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get Accelerometer configuration, call returns an AccInfo object
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public GetAccInfo(string deviceName) :
+            base(deviceName)
         {
         }
 

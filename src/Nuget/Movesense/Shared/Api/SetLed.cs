@@ -5,13 +5,22 @@ namespace MdsLibrary.Api
 {
     public class SetLed : ApiCallAsync
     {
-        private bool mLedOn;
-        private int mLedIndex;
-        private LedColor mLedColor;
+        private readonly bool mLedOn;
+        private readonly int mLedIndex;
+        private readonly LedColor mLedColor;
         private static string LED_PATH = "/Component/Leds/{0}";
 
-        public SetLed(bool? cancelled, string deviceName, int ledIndex, bool ledOn, LedColor ledColor = LedColor.Red) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Sets state of an LED
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="ledIndex">Index of the Led - use 0 for standard Movesense sensor</param>
+        /// <param name="ledOn">Set on or off</param>
+        /// <param name="ledColor">[optional]value from LedColor enumeration - default is LedColor.Red</param>
+
+
+        public SetLed(string deviceName, int ledIndex, bool ledOn, LedColor ledColor = LedColor.Red) :
+            base(deviceName)
         {
             mLedIndex = ledIndex;
             mLedOn = ledOn;

@@ -16,12 +16,17 @@ namespace MdsLibrary.Api
 {
     public class GyrorometerSubscription : ApiSubscription<GyroData>
     {
-        private static string GYROMETER_PATH = "Meas/Gyro/";
+        private static readonly string GYROMETER_PATH = "Meas/Gyro/";
         private const string DEFAULT_SAMPLE_RATE = "26";
-        private string mSampleRate;
+        private readonly string mSampleRate;
 
-        public GyrorometerSubscription(bool? cancelled, string deviceName, string sampleRate = DEFAULT_SAMPLE_RATE) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Subscribe to Gyrometer data
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="sampleRate">Sampling rate, e.g. "26" for 26Hz</param>
+        public GyrorometerSubscription(string deviceName, string sampleRate = DEFAULT_SAMPLE_RATE) :
+            base(deviceName)
         {
             mSampleRate = sampleRate;
         }

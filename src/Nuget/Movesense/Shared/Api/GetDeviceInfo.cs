@@ -5,10 +5,15 @@ namespace MdsLibrary.Api
 {
     public class GetDeviceInfo : ApiCallAsync<DeviceInfoResult>
     {
-        private static string INFO_PATH = "/Info";
+        private static readonly string INFO_PATH = "/Info";
 
-        public GetDeviceInfo(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get device info, CallAsync returns DeviceInfoResult
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
+        public GetDeviceInfo(string deviceName) :
+            base(deviceName)
         {
         }
 

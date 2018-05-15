@@ -8,11 +8,16 @@ namespace MdsLibrary.Api
 {
     public class GetLed : ApiCallAsync<LedState>
     {
-        private int mLedIndex;
-        private static string LED_PATH = "/Component/Leds/{0}";
+        private readonly int mLedIndex;
+        private static readonly string LED_PATH = "/Component/Leds/{0}";
 
-        public GetLed(bool? cancelled, string deviceName, int ledIndex) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get LedState for an LED
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="ledIndex">Number of the Led</param>
+        public GetLed(string deviceName, int ledIndex) :
+            base(deviceName)
         {
             mLedIndex = ledIndex;
         }

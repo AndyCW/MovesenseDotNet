@@ -7,10 +7,14 @@ namespace MdsLibrary.Api
 {
     public class DeleteLogEntries : ApiCallAsync
     {
-        private static string LOGGET_ENTRIES_PATH = "/Mem/Logbook/Entries";
+        private static readonly string LOGGET_ENTRIES_PATH = "/Mem/Logbook/Entries";
 
-        public DeleteLogEntries(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Delete all the Logbook entries
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public DeleteLogEntries(string deviceName) :
+            base(deviceName)
         {
         }
 

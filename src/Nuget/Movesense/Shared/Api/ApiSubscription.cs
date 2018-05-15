@@ -10,20 +10,25 @@ namespace MdsLibrary.Api
 {
     public abstract class ApiSubscription<T>
     {
-        private static int RETRY_DELAY = 5000; //5 sec
+        private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
         private int retries = 0;
-        private bool? mCancelled;
-        private string mDeviceName;
+        private readonly string mDeviceName;
         private IMdsSubscription mMdsSubscription;
         public static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
 
-        public ApiSubscription(bool? cancelled, string deviceName)
+        /// <summary>
+        /// Base class for API subscriptions
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public ApiSubscription(string deviceName)
         {
-            mCancelled = cancelled;
             mDeviceName = deviceName;
 
-            mRetry = new Func<bool?>(() =>
+            // Define the built-in implementation of the retry function
+            // This just retries 2 times, regardless of the exception thrown
+            // The user may provide their own implementation of the Retry function to override this behavior
+            RetryFunction = new Func<Exception, bool?>((Exception ex) =>
             {
                 bool? cancel = false;
                 if (++retries > MAX_RETRY_COUNT)
@@ -35,7 +40,12 @@ namespace MdsLibrary.Api
         );
         }
 
-        public Func<bool?> mRetry;
+        /// <summary>
+        /// Retry function, called after the function call fails.
+        /// The built-in implementation retries 2 times, regardless of the exception thrown.
+        /// Override the built-in implementation by setting this to your own implementation of the Retry function
+        /// </summary>
+        public Func<Exception, bool?> RetryFunction;
 
         public async Task<bool> SubscribeWithRetryAsync(Action<T> notificationCallback)
         {
@@ -52,7 +62,7 @@ namespace MdsLibrary.Api
                 }
                 catch (Exception ex)
                 {
-                    mCancelled = mRetry?.Invoke();
+                    bool? mCancelled = RetryFunction?.Invoke(ex);
                     if (mCancelled.HasValue && mCancelled.Value)
                     {
                         // User has cancelled - break out of loop
@@ -90,7 +100,7 @@ namespace MdsLibrary.Api
             mMdsSubscription = subscribe(
                                     Mdx.MdsInstance,
                                     Util.GetVisibleSerial(mDeviceName),
-                                    new MdsNotificationListener(mCancelled, tcs, notificationCallback)
+                                    new MdsNotificationListener(tcs, notificationCallback)
                                     );
 
             return tcs.Task;
@@ -111,13 +121,11 @@ namespace MdsLibrary.Api
 
         protected class MdsNotificationListener : Java.Lang.Object, IMdsNotificationListener
         {
-            private bool? mCancelled;
             private TaskCompletionSource<bool> mTcs;
             private Action<T> mNotificationCallback;
 
-            public MdsNotificationListener(bool? cancelled, TaskCompletionSource<bool> tcs, Action<T> notificationCallback)
+            public MdsNotificationListener(TaskCompletionSource<bool> tcs, Action<T> notificationCallback)
             {
-                mCancelled = cancelled;
                 mTcs = tcs;
                 mNotificationCallback = notificationCallback;
             }
@@ -131,24 +139,20 @@ namespace MdsLibrary.Api
             public void OnNotification(string s)
             {
                 Debug.WriteLine($"NOTIFICATION data = {s}");
-                if (mCancelled.HasValue && !mCancelled.Value)
+                if (typeof(T) != typeof(String))
                 {
-                    if (typeof(T) != typeof(String))
-                    {
-                        T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
-                        mTcs.TrySetResult(true);
-                        mNotificationCallback?.Invoke(result);
-                    }
-                    else
-                    {
-                        // Crazy code to convert a string to a 'T' where 'T' happens to be a string
-                        T result = (T)((object)s);
-                        mTcs.TrySetResult(true);
-                        mNotificationCallback?.Invoke(result);
-                    }
+                    T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
+                    mTcs.TrySetResult(true);
+                    mNotificationCallback?.Invoke(result);
+                }
+                else
+                {
+                    // Crazy code to convert a string to a 'T' where 'T' happens to be a string
+                    T result = (T)((object)s);
+                    mTcs.TrySetResult(true);
+                    mNotificationCallback?.Invoke(result);
                 }
             }
         }
     }
-
 }

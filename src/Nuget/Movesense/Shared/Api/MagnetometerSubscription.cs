@@ -1,14 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Com.Movesense.Mds;
 using MdsLibrary.Model;
 
@@ -16,12 +5,17 @@ namespace MdsLibrary.Api
 {
     public class MagnetometerSubscription : ApiSubscription<MagnData>
     {
-        private static string MAGNETOMETER_PATH = "Meas/Magn/";
+        private static readonly string MAGNETOMETER_PATH = "Meas/Magn/";
         private const string DEFAULT_SAMPLE_RATE = "26";
-        private string mSampleRate;
+        private readonly string mSampleRate;
 
-        public MagnetometerSubscription(bool? cancelled, string deviceName, string sampleRate = DEFAULT_SAMPLE_RATE) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Subscribe to Magnetometer data
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="sampleRate">Sampling rate, e.g. "26" for 26Hz</param>
+        public MagnetometerSubscription(string deviceName, string sampleRate = DEFAULT_SAMPLE_RATE) :
+            base(deviceName)
         {
             mSampleRate = sampleRate;
         }

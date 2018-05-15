@@ -8,10 +8,14 @@ namespace MdsLibrary.Api
 {
     public class SetTime : ApiCallAsync
     {
-        private static string TIME_PATH = "/Time";
+        private static readonly string TIME_PATH = "/Time";
 
-        public SetTime(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Set clock time on the device to the time on the phone (in ms)
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public SetTime(string deviceName) :
+            base(deviceName)
         {
         }
 

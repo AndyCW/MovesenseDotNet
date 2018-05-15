@@ -8,10 +8,14 @@ namespace MdsLibrary.Api
 {
     public class GetLogEntries : ApiCallAsync<LogEntriesResult>
     {
-        private static string LOGGET_ENTRIES_PATH = "/Mem/Logbook/Entries";
+        private static readonly string LOGGET_ENTRIES_PATH = "/Mem/Logbook/Entries";
 
-        public GetLogEntries(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get details of Logbook entries for a device, CallAsync returns LogEntriesResult 
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public GetLogEntries(string deviceName) :
+            base(deviceName)
         {
         }
 

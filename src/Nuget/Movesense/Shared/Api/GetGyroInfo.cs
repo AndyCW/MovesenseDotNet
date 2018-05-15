@@ -5,10 +5,14 @@ namespace MdsLibrary.Api
 {
     public class GetGyroInfo : ApiCallAsync<GyroInfo>
     {
-        private static string GYRO_INFO_PATH = "/Meas/Gyro/Info";
+        private static readonly string GYRO_INFO_PATH = "/Meas/Gyro/Info";
 
-        public GetGyroInfo(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get Gyrometer configuration, CallAsync returns GyroInfo
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public GetGyroInfo(string deviceName) :
+            base(deviceName)
         {
         }
 

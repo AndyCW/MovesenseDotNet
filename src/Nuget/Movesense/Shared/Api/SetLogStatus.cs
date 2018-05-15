@@ -5,13 +5,18 @@ namespace MdsLibrary.Api
 {
     public class SetLogStatus : ApiCallAsync
     {
-        private bool mStart;
+        private readonly bool mStart;
         private static string DATALOGGER_STATE_PATH = "/Mem/DataLogger/State/";
-        private static string LOG_ON = "{\"newState\":3}";
-        private static string LOG_OFF = "{\"newState\":2}";
+        private static readonly string LOG_ON = "{\"newState\":3}";
+        private static readonly string LOG_OFF = "{\"newState\":2}";
 
-        public SetLogStatus(bool? cancelled, string deviceName, bool start) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Set state of the Datalogger
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="start">Set true to start the datalogger, false to stop</param>
+        public SetLogStatus(string deviceName, bool start) :
+            base(deviceName)
         {
             mStart = start;
         }

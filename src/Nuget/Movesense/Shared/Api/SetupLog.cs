@@ -8,11 +8,16 @@ namespace MdsLibrary.Api
     public class SetupLog : ApiCallAsync
     {
         private static int DEFAULT_FREQ = 52;
-        private int mFreq;
-        private static string DATALOGGER_CONFIG_PATH = "/Mem/DataLogger/Config/";
+        private readonly int mFreq;
+        private static readonly string DATALOGGER_CONFIG_PATH = "/Mem/DataLogger/Config/";
 
-        public SetupLog(bool? cancelled, string deviceName, int freq) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Set configuration for the Datalogger - ONLY sets IMU9
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="freq">Sampling rate, e.g. 26 for 26Hz</param>
+        public SetupLog(string deviceName, int freq) :
+            base(deviceName)
         {
             mFreq = freq;
             if (mFreq == 0)
@@ -24,10 +29,6 @@ namespace MdsLibrary.Api
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
             DataLoggerConfig.DataEntry[] entries = {
-/*                new DataLoggerConfig.DataEntry("/Meas/Acc/" + mFreq),
-                new DataLoggerConfig.DataEntry("/Meas/Magn/" + mFreq),
-                new DataLoggerConfig.DataEntry("/Meas/Gyro/" + mFreq),*/
-                // Andy 27/11/17 Replace with IMU9 i/f
                 new DataLoggerConfig.DataEntry("/Meas/IMU9/" + mFreq)
             };
 

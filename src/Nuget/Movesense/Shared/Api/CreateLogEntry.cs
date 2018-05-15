@@ -8,10 +8,14 @@ namespace MdsLibrary.Api
 {
     public class CreateLogEntry : ApiCallAsync<CreateLogResult>
     {
-        private static string LOGGER_ENTRIES_PATH = "/Mem/Logbook/Entries";
+        private static readonly string LOGGER_ENTRIES_PATH = "/Mem/Logbook/Entries";
 
-        public CreateLogEntry(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Create a new Logbook entry
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        public CreateLogEntry(string deviceName) :
+            base(deviceName)
         { }
 
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)

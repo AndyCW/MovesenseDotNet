@@ -6,10 +6,14 @@ namespace MdsLibrary.Api
 {
     public class GetTime : ApiCallAsync<TimeResult>
     {
-        private static string TIME_PATH = "/Time";
+        private static readonly string TIME_PATH = "/Time";
 
-        public GetTime(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get the Time set on the device, CallAsync retruns TimeResult
+        /// </summary>
+        /// <param name="deviceName"></param>
+        public GetTime(string deviceName) :
+            base(deviceName)
         {
         }
 

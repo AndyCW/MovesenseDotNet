@@ -14,8 +14,13 @@ namespace MdsLibrary.Api
         private const string DEFAULT_SAMPLE_RATE = "26";
         private string mSampleRate;
 
-        public AccelerometerSubscription(bool? cancelled, string deviceName, string sampleRate = DEFAULT_SAMPLE_RATE) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Subscribe to Accelerometer data
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="sampleRate">Sampling rate, e.g. "26" for 26Hz</param>
+        public AccelerometerSubscription(string deviceName, string sampleRate = DEFAULT_SAMPLE_RATE) :
+            base(deviceName)
         {
             mSampleRate = sampleRate;
         }

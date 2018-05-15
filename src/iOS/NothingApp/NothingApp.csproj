@@ -27,13 +27,15 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
-    <MtouchVerbosity></MtouchVerbosity>
+    <MtouchVerbosity>
+    </MtouchVerbosity>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer: anze.vodovnik@microsoft.com (87TF3MF47L)</CodesignKey>
@@ -42,14 +44,16 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchVerbosity></MtouchVerbosity>
+    <MtouchVerbosity>
+    </MtouchVerbosity>
     <CodesignProvision>iOS Team Provisioning Profile: com.vodovnik.NothingApp</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer: Anze Vodovnik (2CGVF93G9W)</CodesignKey>
@@ -57,7 +61,8 @@
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchVerbosity></MtouchVerbosity>
+    <MtouchVerbosity>
+    </MtouchVerbosity>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,7 +81,8 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchVerbosity></MtouchVerbosity>
+    <MtouchVerbosity>
+    </MtouchVerbosity>
     <CodesignProvision>iOS Team Provisioning Profile: com.vodovnik.NothingApp</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
@@ -86,8 +92,12 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -119,16 +129,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Target Name="_ProjectSwiftMaster"
-		Condition="'_SwiftDependencies'!=''"
-		AfterTargets="_CodesignNativeLibraries"
-		DependsOnTargets="_SwiftDependencies" />
+  <Target Name="_ProjectSwiftMaster" Condition="'_SwiftDependencies'!=''" AfterTargets="_CodesignNativeLibraries" DependsOnTargets="_SwiftDependencies" />
   <PropertyGroup>
     <_TargetPlatform Condition=" '$(Platform)' == 'iPhoneSimulator' ">iphonesimulator</_TargetPlatform>
-		<_TargetPlatform Condition=" '$(Platform)' == 'iPhone' ">iphoneos</_TargetPlatform>
+    <_TargetPlatform Condition=" '$(Platform)' == 'iPhone' ">iphoneos</_TargetPlatform>
   </PropertyGroup>
   <Target Name="_SwiftDependencies" Condition="!Exists('$(_AppBundlePath)Frameworks/libswiftCore.dylib')">
-		<Message Text="Copying Swift Frameworks dependencies for %(_Frameworks.Identity) to $(_AppBundlePath)Frameworks folder" />
-		<Exec Command="xcrun swift-stdlib-tool --copy --verbose --verbose --sign $(_CodeSigningKey) --scan-executable %(_Frameworks.Identity) --scan-folder $(_AppBundlePath)Frameworks/ --scan-folder $(_AppBundlePath)PlugIns/ --platform $(_TargetPlatform) --toolchain $(_XcodeToolChain) --destination $(_AppBundlePath)Frameworks/ --strip-bitcode --resource-destination $(_AppBundlePath) --resource-library libswiftRemoteMirror.dylib"/>
-	</Target>
+    <Message Text="Copying Swift Frameworks dependencies for %(_Frameworks.Identity) to $(_AppBundlePath)Frameworks folder" />
+    <Exec Command="xcrun swift-stdlib-tool --copy --verbose --verbose --sign $(_CodeSigningKey) --scan-executable %(_Frameworks.Identity) --scan-folder $(_AppBundlePath)Frameworks/ --scan-folder $(_AppBundlePath)PlugIns/ --platform $(_TargetPlatform) --toolchain $(_XcodeToolChain) --destination $(_AppBundlePath)Frameworks/ --strip-bitcode --resource-destination $(_AppBundlePath) --resource-library libswiftRemoteMirror.dylib" />
+  </Target>
 </Project>

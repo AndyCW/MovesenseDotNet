@@ -5,10 +5,15 @@ namespace MdsLibrary.Api
 {
     public class GetMagnInfo : ApiCallAsync<MagnInfo>
     {
-        private static string ACC_INFO_PATH = "/Meas/Magn/Info";
+        private static readonly string ACC_INFO_PATH = "/Meas/Magn/Info";
 
-        public GetMagnInfo(bool? cancelled, string deviceName) :
-            base(cancelled, deviceName)
+        /// <summary>
+        /// Get Magnetomoter configuration data, CallAsync returns MagnInfo object
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
+        public GetMagnInfo(string deviceName) :
+            base(deviceName)
         {
         }
 
