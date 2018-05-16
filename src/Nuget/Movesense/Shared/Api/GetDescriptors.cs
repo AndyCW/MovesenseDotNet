@@ -25,7 +25,7 @@ namespace MdsLibrary.Api
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
             string datapath = String.Format(URI_MDS_LOGBOOK_DATA, mLogId);
-            mds.Get(Mdx.SCHEME_PREFIX + serial + datapath, null, responseListener);
+            mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + datapath, null, responseListener);
         }
     }
 }

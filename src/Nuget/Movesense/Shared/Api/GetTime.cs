@@ -19,7 +19,7 @@ namespace MdsLibrary.Api
 
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
-            mds.Get(Mdx.SCHEME_PREFIX + serial + TIME_PATH, null, responseListener);
+            mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + TIME_PATH, null, responseListener);
         }
     }
 }

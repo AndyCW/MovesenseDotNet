@@ -11,7 +11,6 @@ namespace MdsLibrary.Api
         /// Get device info, CallAsync returns DeviceInfoResult
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
-        /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         public GetDeviceInfo(string deviceName) :
             base(deviceName)
         {
@@ -19,7 +18,7 @@ namespace MdsLibrary.Api
 
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
-            mds.Get(Mdx.SCHEME_PREFIX + serial + INFO_PATH, null, responseListener);
+            mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + INFO_PATH, null, responseListener);
         }
     }
 }

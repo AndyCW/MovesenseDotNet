@@ -21,7 +21,7 @@ namespace MdsLibrary.Api
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
             // In contract, override the default timeout - can take over 30 seconds
-            mds.Delete(Mdx.SCHEME_PREFIX + serial + LOGGET_ENTRIES_PATH, null, responseListener);
+            mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + LOGGET_ENTRIES_PATH, null, responseListener);
         }
     }
 }

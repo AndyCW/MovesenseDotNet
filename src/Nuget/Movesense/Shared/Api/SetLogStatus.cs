@@ -23,7 +23,7 @@ namespace MdsLibrary.Api
 
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
-            mds.Put(Mdx.SCHEME_PREFIX + serial + DATALOGGER_STATE_PATH, mStart ? LOG_ON : LOG_OFF, responseListener);
+            mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + DATALOGGER_STATE_PATH, mStart ? LOG_ON : LOG_OFF, responseListener);
         }
     }
 }

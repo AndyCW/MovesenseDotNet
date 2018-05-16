@@ -1,8 +1,5 @@
 ﻿using Com.Movesense.Mds;
 using MdsLibrary.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MdsLibrary.Api
 {
@@ -20,7 +17,7 @@ namespace MdsLibrary.Api
 
         protected override void performCall(Mds mds, string serial, IMdsResponseListener responseListener)
         {
-            mds.Post(Mdx.SCHEME_PREFIX + serial + LOGGER_ENTRIES_PATH, null, responseListener);
+            mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + LOGGER_ENTRIES_PATH, null, responseListener);
         }
     }
 }

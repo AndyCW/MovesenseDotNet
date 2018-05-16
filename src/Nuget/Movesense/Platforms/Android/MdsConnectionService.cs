@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Plugin.Movesense;
+using System.Threading.Tasks;
 
 namespace MdsLibrary
 {
@@ -14,11 +15,11 @@ namespace MdsLibrary
             mMACAddress = MACAddress;
             connectiontcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
-            mListener = Mdx.MdsConnectionListener;
+            mListener = MdsConnectionListener.Current;
             mListener.ConnectionComplete += MListener_ConnectionComplete;
 
             // Start the connection
-            Mdx.MdsInstance.Connect(MACAddress, mListener);
+            ((Com.Movesense.Mds.Mds)(CrossMovesense.Current.MdsInstance)).Connect(MACAddress, mListener);
 
             return connectiontcs.Task;
         }
@@ -28,10 +29,10 @@ namespace MdsLibrary
             mMACAddress = MACAddress;
             disconnectTcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
-            mListener = Mdx.MdsConnectionListener;
+            mListener = MdsConnectionListener.Current;
             mListener.Disconnect += MListener_Disconnect;
 
-            Mdx.MdsInstance.Disconnect(MACAddress);
+            ((Com.Movesense.Mds.Mds)(CrossMovesense.Current.MdsInstance)).Disconnect(MACAddress);
 
             return disconnectTcs.Task;
         }

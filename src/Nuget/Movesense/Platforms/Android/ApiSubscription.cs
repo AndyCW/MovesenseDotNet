@@ -1,5 +1,6 @@
 ﻿using Com.Movesense.Mds;
 using MdsLibrary.Helpers;
+using Plugin.Movesense;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -98,7 +99,7 @@ namespace MdsLibrary.Api
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
             mMdsSubscription = subscribe(
-                                    Mdx.MdsInstance,
+                                    (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
                                     Util.GetVisibleSerial(mDeviceName),
                                     new MdsNotificationListener(tcs, notificationCallback)
                                     );

@@ -5,14 +5,33 @@ using System.Text;
 
 namespace MdsLibrary
 {
-    public class MdsConnectionListener : Java.Lang.Object, Com.Movesense.Mds.IMdsConnectionListener
+    public sealed class MdsConnectionListener : Java.Lang.Object, Com.Movesense.Mds.IMdsConnectionListener
     {
         public event EventHandler<MdsConnectionListenerEventArgs> Connect;
         public event EventHandler<MdsConnectionListenerEventArgs> ConnectionComplete;
         public event EventHandler<MdsConnectionListenerEventArgs> Disconnect;
 
-        public MdsConnectionListener()
+        private static MdsConnectionListener instance = null;
+
+        private static readonly object padlock = new object();
+
+        private MdsConnectionListener()
         {
+        }
+
+        public static MdsConnectionListener Current
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new MdsConnectionListener();
+                    }
+                    return instance;
+                }
+            }
         }
 
         public void OnConnect(string MACaddress)

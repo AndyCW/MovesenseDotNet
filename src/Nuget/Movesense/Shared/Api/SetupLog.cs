@@ -35,7 +35,7 @@ namespace MdsLibrary.Api
             DataLoggerConfig config = new DataLoggerConfig(new DataLoggerConfig.Config(new DataLoggerConfig.DataEntries(entries)));
             string jsonConfig = JsonConvert.SerializeObject(config);
 
-            mds.Put(Mdx.SCHEME_PREFIX + serial + DATALOGGER_CONFIG_PATH, jsonConfig, responseListener);
+            mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + DATALOGGER_CONFIG_PATH, jsonConfig, responseListener);
         }
     }
 }

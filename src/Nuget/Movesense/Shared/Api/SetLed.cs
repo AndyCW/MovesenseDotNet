@@ -32,7 +32,7 @@ namespace MdsLibrary.Api
             string datapath = String.Format(LED_PATH, mLedIndex);
             string led_On_Body = $"{{ \"LedState\": {{ \"IsOn\": true, \"LedColor\": {(int)mLedColor}}} }}";
             string led_Off_Body = @"{ ""LedState"": { ""IsOn"": false, ""LedColor"": 0} }";
-            mds.Put(Mdx.SCHEME_PREFIX + serial + datapath, mLedOn ? led_On_Body : led_Off_Body, responseListener);
+            mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + datapath, mLedOn ? led_On_Body : led_Off_Body, responseListener);
         }
     }
 

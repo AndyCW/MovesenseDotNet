@@ -1,5 +1,8 @@
-﻿using Com.Movesense.Mds;
+﻿#if __ANDROID__
+using Com.Movesense.Mds;
+#endif
 using MdsLibrary.Helpers;
+using Plugin.Movesense;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MdsLibrary.Api
 {
-    public abstract class ApiCallAsync<T>
+    public abstract class ApiCallAsync
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
@@ -46,20 +49,19 @@ namespace MdsLibrary.Api
         public Func<Exception, bool?> RetryFunction;
 
         /// <summary>
-        /// Make the API call (async) with up to two retries if the call throws an exception.
-        /// Set RetryFunction property to override the builtin retry logic.
+        /// Make the API call (async)
         /// </summary>
         /// <returns>Response object of type T</returns>
-        public async Task<T> CallWithRetryAsync()
+        public async Task CallWithRetryAsync()
         {
-            TaskCompletionSource<T> retryTcs = new TaskCompletionSource<T>();
-            T result = default(T);
+            TaskCompletionSource<bool> retryTcs = new TaskCompletionSource<bool>();
+            bool result = true;
             bool doRetry = true;
             while (doRetry)
             {
                 try
                 {
-                    result = await perform();
+                    await perform();
                     retryTcs.SetResult(result);
                     doRetry = false;
                 }
@@ -81,24 +83,24 @@ namespace MdsLibrary.Api
                 }
             }
 
-            return result;
+            return;
         }
 
         /// <summary>
         /// Make the API call (async)
         /// </summary>
         /// <returns>Response object of type T</returns>
-        public Task<T> CallAsync()
+        public Task CallAsync()
         {
             return perform();
         }
 
-        private Task<T> perform()
+        private Task perform()
         {
-            TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
             performCall(
-                Mdx.MdsInstance,
+                (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
                 Util.GetVisibleSerial(mDeviceName),
                 new MdsResponseListener(tcs)
                 );
@@ -110,27 +112,18 @@ namespace MdsLibrary.Api
 
         protected class MdsResponseListener : Java.Lang.Object, IMdsResponseListener
         {
-            private TaskCompletionSource<T> mTcs;
+            private TaskCompletionSource<bool> mTcs;
 
-            public MdsResponseListener(TaskCompletionSource<T> tcs)
+            public MdsResponseListener(TaskCompletionSource<bool> tcs)
             {
                 mTcs = tcs;
             }
 
+
             public void OnSuccess(string s)
             {
                 Debug.WriteLine($"SUCCESS result = {s}");
-                if (typeof(T) != typeof(String))
-                {
-                    T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
-                    mTcs.SetResult(result);
-                }
-                else
-                {
-                    // Crazy code to convert a string to a 'T' where 'T' happens to be a string
-                    T result = (T)((object)s);
-                    mTcs.SetResult(result);
-                }
+                mTcs.SetResult(true);
             }
 
             public void OnError(Com.Movesense.Mds.MdsException e)
@@ -140,5 +133,4 @@ namespace MdsLibrary.Api
             }
         }
     }
-
 }

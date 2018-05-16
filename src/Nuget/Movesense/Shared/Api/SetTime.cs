@@ -24,7 +24,7 @@ namespace MdsLibrary.Api
             long timems = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             string time = $"{{\"value\":{timems * 1000}}}";
             Debug.WriteLine($"INFO SetTime TIME {time}");
-            mds.Put(Mdx.SCHEME_PREFIX + serial + TIME_PATH, time, responseListener);
+            mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + TIME_PATH, time, responseListener);
         }
     }
 }
