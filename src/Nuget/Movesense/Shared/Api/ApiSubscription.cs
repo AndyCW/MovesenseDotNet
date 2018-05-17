@@ -1,30 +1,37 @@
-﻿using Com.Movesense.Mds;
-using MdsLibrary.Helpers;
+﻿using MdsLibrary.Helpers;
 using Plugin.Movesense;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+#if __ANDROID__
+using Com.Movesense.Mds;
+#endif
 
 namespace MdsLibrary.Api
 {
-    public abstract class ApiSubscription<T>
+    public class ApiSubscription<T>
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
         private int retries = 0;
         private readonly string mDeviceName;
+        private readonly string mPath;
+        private readonly int mFrequency;
+#if __ANDROID__
         private IMdsSubscription mMdsSubscription;
+#endif
         public static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
 
         /// <summary>
         /// Base class for API subscriptions
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
-        public ApiSubscription(string deviceName)
+        public ApiSubscription(string deviceName, string path, int frequency)
         {
             mDeviceName = deviceName;
+            mPath = path;
+            mFrequency = frequency;
 
             // Define the built-in implementation of the retry function
             // This just retries 2 times, regardless of the exception thrown
@@ -90,24 +97,35 @@ namespace MdsLibrary.Api
         public void UnSubscribe()
         {
             Debug.WriteLine("Unsubscribing Mds api subscription");
+#if __ANDROID__
             mMdsSubscription?.Unsubscribe();
             mMdsSubscription = null;
+#elif __IOS__
+            throw new NotImplementedException();
+#endif
         }
 
         private Task<bool> doSubscribe(Action<T> notificationCallback)
         {
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-            mMdsSubscription = subscribe(
-                                    (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
-                                    Util.GetVisibleSerial(mDeviceName),
-                                    new MdsNotificationListener(tcs, notificationCallback)
-                                    );
-
+            //mMdsSubscription = subscribe(
+            //                        (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
+            //                        Util.GetVisibleSerial(mDeviceName),
+            //                        new MdsNotificationListener(tcs, notificationCallback)
+            //                        );
+#if __ANDROID__
+            var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
+            mMdsSubscription = mds.Subscribe(
+                URI_EVENTLISTENER, 
+                FormatContractToJson(Util.GetVisibleSerial(mDeviceName), mPath + mFrequency), new MdsNotificationListener(tcs, notificationCallback));
+#elif __IOS__
+            throw new NotImplementedException();
+#endif
             return tcs.Task;
         }
 
-        protected abstract IMdsSubscription subscribe(Com.Movesense.Mds.Mds mds, string serial, IMdsNotificationListener notificationListener);
+        //protected abstract IMdsSubscription subscribe(Com.Movesense.Mds.Mds mds, string serial, IMdsNotificationListener notificationListener);
 
         protected string FormatContractToJson(string serial, string uri)
         {
@@ -120,7 +138,10 @@ namespace MdsLibrary.Api
             return sb.ToString();
         }
 
-        protected class MdsNotificationListener : Java.Lang.Object, IMdsNotificationListener
+        protected class MdsNotificationListener
+#if __ANDROID__
+            : Java.Lang.Object, IMdsNotificationListener
+#endif
         {
             private TaskCompletionSource<bool> mTcs;
             private Action<T> mNotificationCallback;
@@ -131,7 +152,11 @@ namespace MdsLibrary.Api
                 mNotificationCallback = notificationCallback;
             }
 
+#if __ANDROID__
             public void OnError(Com.Movesense.Mds.MdsException e)
+#elif __IOS__
+            public void OnError(Exception e)
+#endif
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");
                 mTcs.SetException(new MdsException(e.ToString(), e));

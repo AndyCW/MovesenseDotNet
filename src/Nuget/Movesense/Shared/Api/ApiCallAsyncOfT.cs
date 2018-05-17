@@ -1,28 +1,35 @@
-﻿using Com.Movesense.Mds;
-using MdsLibrary.Helpers;
+﻿using MdsLibrary.Helpers;
 using Plugin.Movesense;
+using Plugin.Movesense.Api;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
+#if __ANDROID__
+using Com.Movesense.Mds;
+#endif
 
 namespace MdsLibrary.Api
 {
-    public abstract class ApiCallAsync<T>
+    public class ApiCallAsync<T>
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
         private int retries = 0;
         private readonly string mDeviceName;
+        private readonly string mPath;
+        private readonly string mBody;
+        private readonly MdsOp mRestOp;
 
         /// <summary>
         /// Base class for all Mds API calls
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
-        public ApiCallAsync(string deviceName)
+        public ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null)
         {
             mDeviceName = deviceName;
+            mPath = path;
+            mRestOp = restOp;
+            mBody = body;
 
             // Define the built-in implementation of the retry function
             // This just retries 2 times, regardless of the exception thrown
@@ -98,18 +105,42 @@ namespace MdsLibrary.Api
         {
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
 
-            performCall(
-                (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
-                Util.GetVisibleSerial(mDeviceName),
-                new MdsResponseListener(tcs)
-                );
-
+            //performCall(
+            //    (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
+            //    Util.GetVisibleSerial(mDeviceName),
+            //    new MdsResponseListener(tcs)
+            //    );
+#if __ANDROID__
+            var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
+            var serial = Util.GetVisibleSerial(mDeviceName);
+            if (mRestOp == MdsOp.POST)
+            {
+                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(tcs));
+            }
+            else if (mRestOp == MdsOp.GET)
+            {
+                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(tcs));
+            }
+            else if (mRestOp == MdsOp.DELETE)
+            {
+                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(tcs));
+            }
+            else if (mRestOp == MdsOp.PUT)
+            {
+                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(tcs));
+            }
+#elif __IOS__
+            throw new NotImplementedException();
+#endif
             return tcs.Task;
         }
 
-        protected abstract void performCall(Com.Movesense.Mds.Mds mds, string serial, IMdsResponseListener responseListener);
+        //protected abstract void performCall(Com.Movesense.Mds.Mds mds, string serial, IMdsResponseListener responseListener);
 
-        protected class MdsResponseListener : Java.Lang.Object, IMdsResponseListener
+        protected class MdsResponseListener
+#if __ANDROID__
+            : Java.Lang.Object, IMdsResponseListener
+#endif
         {
             private TaskCompletionSource<T> mTcs;
 
@@ -134,7 +165,11 @@ namespace MdsLibrary.Api
                 }
             }
 
+#if __ANDROID__
             public void OnError(Com.Movesense.Mds.MdsException e)
+#elif __IOS__
+            public void OnError(Exception e)
+#endif
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");
                 mTcs.SetException(new MdsException(e.ToString(), e));

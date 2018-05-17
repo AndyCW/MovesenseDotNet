@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>MonoAndroid71;</TargetFrameworks>
+    <TargetFrameworks>MonoAndroid71;Xamarin.iOS10</TargetFrameworks>
     <AssemblyName>Plugin.Movesense</AssemblyName>
     <RootNamespace>Plugin.Movesense</RootNamespace>
     <PackageId>Plugin.Movesense</PackageId>
@@ -10,7 +10,7 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>0.0.5</Version>
-    <PackageVersion>0.1.1-alpha</PackageVersion>
+    <PackageVersion>0.2.0-alpha</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -25,7 +25,7 @@
     <PackageProjectUrl>https://github.com/AndyCW/MovesenseDotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
     <PackageReleaseNotes>Preview</PackageReleaseNotes>
-    <PackageIconUrl>icon.png</PackageIconUrl>
+    <PackageIconUrl>https://github.com/AndyCW/MovesenseDotNet/raw/Nuget/src/Nuget/Movesense/icon.png</PackageIconUrl>
     <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Movesense</PackageTags>
     
     <Title>Movesense Plugin for Xamarin</Title>
@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="All" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <Compile Include="Shared\**\*.cs" />
   </ItemGroup>
@@ -49,10 +49,17 @@
     <PackageReference Include="MovesenseBindingAndroid" Version="0.0.2-alpha" />
   </ItemGroup>
 
-  <!--
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-  </ItemGroup>-->
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <None Remove="Shared\Api\HttpEnum.cs" />
+    <None Remove="Shared\Api\LedColorEnum.cs" />
+    <None Remove="Shared\Api\MovesenseAPI.cs" />
+  </ItemGroup>
 
 
   <!--
