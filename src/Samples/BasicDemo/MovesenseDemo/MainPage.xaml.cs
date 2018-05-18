@@ -49,8 +49,14 @@ namespace MovesenseDemo
                     await mdsconnSvc.ConnectMdsAsync(GetMACAddress(sensor.Uuid));
 
                     // Talk to the device
-                    var info = await new MdsLibrary.Api.GetDeviceInfo(sensor.Name).CallAsync();
-                    System.Diagnostics.Debug.WriteLine(info.GetContent().Serial);
+                    var movesense = Plugin.Movesense.CrossMovesense.Current;
+                    var info = await movesense.GetDeviceInfoAsync(sensor.Name);
+                    var batt = await movesense.GetBatteryLevelAsync(sensor.Name);
+
+                    await DisplayAlert(
+                        "Success", 
+                        $"Communicated with device {sensor.Name}, firmware version is: {info.DeviceInfo.Sw}, battery: {batt.ChargePercent}", 
+                        "OK");
 
                     // Disconnect Mds
                     await mdsconnSvc.DisconnectMds(GetMACAddress(sensor.Uuid));

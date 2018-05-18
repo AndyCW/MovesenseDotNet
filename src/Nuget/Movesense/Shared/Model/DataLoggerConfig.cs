@@ -5,47 +5,81 @@ using System.Text;
 
 namespace MdsLibrary.Model
 {
+    /// <summary>
+    /// DataLogger configuration
+    /// </summary>
     public class DataLoggerConfig
     {
+        /// <summary>
+        /// Contains the configuration of the Datalogger
+        /// </summary>
         [JsonProperty(PropertyName ="config")]
-        public  DataLoggerConfig.Config config;
+        public  DataLoggerConfig.Config Configuration;
 
+        /// <summary>
+        /// Creates a DataLoggerConfig
+        /// </summary>
+        /// <param name="config">Configuration data</param>
         public DataLoggerConfig(DataLoggerConfig.Config config)
         {
-            this.config = config;
+            this.Configuration = config;
         }
 
+        /// <summary>
+        /// Configuration of the Datalogger
+        /// </summary>
         public class Config
         {
+            /// <summary>
+            /// DataEntries object contining an array of structs containing wb-paths to the subscription of data to log.
+            /// </summary>
             [JsonProperty(PropertyName = "dataEntries")]
-            public DataEntries dataEntries;
+            public DataEntries DataEntries;
 
+            /// <summary>
+            /// Creates the DataLogger Config object
+            /// </summary>
+            /// <param name="dataEntries">DataEntries object containing an array of structs containing wb-paths to the subscription of data to log.</param>
             public Config(DataEntries dataEntries)
             {
-                this.dataEntries = dataEntries;
+                this.DataEntries = dataEntries;
             }
         }
 
         public class DataEntries
         {
+            /// <summary>
+            /// Class container for an array of DataEntry objects.
+            /// </summary>
             [JsonProperty(PropertyName = "dataEntry")]
-            public DataEntry[] dataEntry;
+            public DataEntry[] DataEntry;
 
+            /// <summary>
+            /// Creates a DataEntries object
+            /// </summary>
+            /// <param name="dataEntry">Array of DataEntry objects</param>
             public DataEntries(DataEntry[] dataEntry)
             {
-                this.dataEntry = dataEntry;
+                this.DataEntry = dataEntry;
             }
         }
 
 
         public class DataEntry
         {
+            /// <summary>
+            /// WB-path to the subscription of data to log.
+            /// </summary>
             [JsonProperty(PropertyName ="path")]
-            public string path;
+            public string Path;
 
+            /// <summary>
+            /// Creates a DataEntry
+            /// </summary>
+            /// <param name="path">Wb-path to the subscription of data to log.</param>
             public DataEntry(String path)
             {
-                this.path = path;
+                this.Path = path;
             }
         }
 
@@ -53,12 +87,12 @@ namespace MdsLibrary.Model
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (DataEntry de in config.dataEntries.dataEntry)
+            foreach (DataEntry de in Configuration.DataEntries.DataEntry)
             {
                 if (sb.Length > 0)
                     sb.AppendLine();
 
-                sb.Append(de.path);
+                sb.Append(de.Path);
             }
 
             return sb.ToString();

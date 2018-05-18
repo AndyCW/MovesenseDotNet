@@ -10,6 +10,9 @@ using Com.Movesense.Mds;
 
 namespace MdsLibrary.Api
 {
+    /// <summary>
+    /// Makes an APICall to MdsLib for those MdsLib methods that do not return data
+    /// </summary>
     public class ApiCallAsync
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
@@ -21,9 +24,12 @@ namespace MdsLibrary.Api
         private readonly MdsOp mRestOp;
 
         /// <summary>
-        /// Base class for all Mds API calls
+        /// Create an ApiCall instance
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">The name of the device e.g. Movesense 908637721113</param>
+        /// <param name="restOp">The type of REST call to make to MdsLib</param>
+        /// <param name="path">The path of the MdsLib resource</param>
+        /// <param name="body">JSON body if any</param>
         public ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null)
         {
             mDeviceName = deviceName;
@@ -104,11 +110,6 @@ namespace MdsLibrary.Api
         {
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-            //performCall(
-            //    (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
-            //    Util.GetVisibleSerial(mDeviceName),
-            //    new MdsResponseListener(tcs)
-            //    );
 #if __ANDROID__
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
             var serial = Util.GetVisibleSerial(mDeviceName);
@@ -132,8 +133,9 @@ namespace MdsLibrary.Api
             return tcs.Task;
         }
 
-        //protected abstract void performCall(Com.Movesense.Mds.Mds mds, string serial, IMdsResponseListener responseListener);
-
+        /// <summary>
+        /// MdsResponseListener called by MdsLib with result of the call (Internal)
+        /// </summary>
         protected class MdsResponseListener
 #if __ANDROID__
             : Java.Lang.Object, IMdsResponseListener
@@ -155,13 +157,17 @@ namespace MdsLibrary.Api
 
 #if __ANDROID__
             public void OnError(Com.Movesense.Mds.MdsException e)
-#elif __IOS__
-            public void OnError(Exception e)
-#endif
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");
                 mTcs.SetException(new MdsException(e.ToString(), e));
             }
+#elif __IOS__
+            public void OnError(Exception e)
+            {
+                Debug.WriteLine($"ERROR error = {e.ToString()}");
+                mTcs.SetException(new MdsException(e.ToString(), e));
+            }
+#endif
         }
     }
 }

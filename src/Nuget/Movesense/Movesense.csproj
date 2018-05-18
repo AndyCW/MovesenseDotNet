@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>MonoAndroid71;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid71;Xamarin.iOS10</TargetFrameworks>
     <AssemblyName>Plugin.Movesense</AssemblyName>
     <RootNamespace>Plugin.Movesense</RootNamespace>
     <PackageId>Plugin.Movesense</PackageId>
@@ -9,8 +9,8 @@
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <Version>0.0.5</Version>
-    <PackageVersion>0.2.0-alpha</PackageVersion>
+    <Version>1.0.0</Version>
+    <PackageVersion>0.2.5-alpha</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -44,6 +44,12 @@
     <Compile Include="Shared\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  </ItemGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
     <Compile Include="Platforms\Android\**\*.cs" />
     <PackageReference Include="MovesenseBindingAndroid" Version="0.0.2-alpha" />
@@ -57,7 +63,10 @@
   
   <ItemGroup>
     <None Remove="Shared\Api\HttpEnum.cs" />
+    <None Remove="Shared\Api\IApiSubscription.cs" />
+    <None Remove="Shared\Api\IMdsSubscription.cs" />
     <None Remove="Shared\Api\LedColorEnum.cs" />
+    <None Remove="Shared\Api\MdsSubscription.cs" />
     <None Remove="Shared\Api\MovesenseAPI.cs" />
   </ItemGroup>
 

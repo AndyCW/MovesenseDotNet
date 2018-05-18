@@ -7,6 +7,11 @@ namespace MdsLibrary.Helpers
 {
     public class Util
     {
+        /// <summary>
+        /// Utility method to extract the device serial number from the full device name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static string GetVisibleSerial(string name)
         {
             string result = "";                                  //NON-NLS

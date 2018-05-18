@@ -36,7 +36,6 @@ namespace MovesenseDemo.Droid
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
         {
-            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = activity;
             Plugin.Movesense.CrossMovesense.Current.Activity = activity;
         }
 

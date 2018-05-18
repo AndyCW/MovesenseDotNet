@@ -21,8 +21,14 @@ namespace Plugin.Movesense
 
         private static Android.App.Activity AndroidActivity = null;
 
+        /// <summary>
+        /// Root of all paths to Movesense resources.
+        /// </summary>
         public string SCHEME_PREFIX => "suunto://";
 
+        /// <summary>
+        /// Gets the native MdsLib object
+        /// </summary>
         public object MdsInstance
         {
             get
@@ -43,6 +49,9 @@ namespace Plugin.Movesense
             }
         }
 
+        /// <summary>
+        /// On Android, Activity must be set to the current Android Activity before first access of the library.
+        /// </summary>
         public object Activity { set => MovesenseImplementation.AndroidActivity = value as Android.App.Activity; }
 
     }

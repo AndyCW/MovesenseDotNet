@@ -1,5 +1,4 @@
 using System;
-
 using Android.App;
 using Android.OS;
 using Android.Runtime;
@@ -31,8 +30,8 @@ namespace SampleApp.Droid
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
         {
-            CrossCurrentActivity.Current.Activity = activity;
-            MdsLibrary.Mdx.Activity = activity;
+            // Initialize the MdsLib
+            Plugin.Movesense.CrossMovesense.Current.Activity = activity;
         }
 
         public void OnActivityDestroyed(Activity activity)
@@ -45,7 +44,6 @@ namespace SampleApp.Droid
 
         public void OnActivityResumed(Activity activity)
         {
-            CrossCurrentActivity.Current.Activity = activity;
         }
 
         public void OnActivitySaveInstanceState(Activity activity, Bundle outState)

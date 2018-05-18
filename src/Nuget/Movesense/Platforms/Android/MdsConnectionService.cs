@@ -10,6 +10,11 @@ namespace MdsLibrary
         private TaskCompletionSource<object> connectiontcs;
         private TaskCompletionSource<object> disconnectTcs;
 
+        /// <summary>
+        /// Connect a device to MdsLib
+        /// </summary>
+        /// <param name="MACAddress">MAC address of the device</param>
+        /// <returns></returns>
         public Task<object> ConnectMdsAsync(string MACAddress)
         {
             mMACAddress = MACAddress;
@@ -24,6 +29,11 @@ namespace MdsLibrary
             return connectiontcs.Task;
         }
 
+        /// <summary>
+        /// Disconnect a device from MdsLib
+        /// </summary>
+        /// <param name="MACAddress">MAC address of the device</param>
+        /// <returns></returns>
         public Task<object> DisconnectMds(string MACAddress)
         {
             mMACAddress = MACAddress;

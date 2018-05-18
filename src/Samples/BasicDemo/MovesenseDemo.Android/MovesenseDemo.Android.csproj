@@ -52,11 +52,8 @@
     <PackageReference Include="Plugin.BluetoothLE">
       <Version>6.0.3</Version>
     </PackageReference>
-    <PackageReference Include="Plugin.CurrentActivity">
-      <Version>2.1.0.1</Version>
-    </PackageReference>
     <PackageReference Include="Plugin.Movesense">
-      <Version>0.1.1-alpha</Version>
+      <Version>0.2.5-alpha</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.9-beta</Version>

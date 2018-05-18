@@ -6,12 +6,13 @@ using MdsLibrary.Api;
 using System.Diagnostics;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Plugin.Movesense;
 
 namespace SampleApp.ViewModels
 {
     public class LinearAccelerationPageViewModel : ViewModelBase
     {
-        private AccelerometerSubscription subscription;
+        private IMdsSubscription subscription;
 
         public ICommand ToggleSubscribeSwitchCommand { get; set; }
 
@@ -32,17 +33,22 @@ namespace SampleApp.ViewModels
                     {
                         ConnectionStatusText = "Connecting...";
                         await MovesenseDevice.Connect();
+                        ConnectionStatusText = "Subscribing...";
+
+                        subscription = await CrossMovesense.Current.SubscribeAccelerometerAsync(
+                            MovesenseDevice.Name, 
+                            (d) =>
+                            {
+                                PlotData(d.Data.Timestamp, d.Data.AccData[0].X, d.Data.AccData[0].Y, d.Data.AccData[0].Z);
+                            },
+                            26);
                         ConnectionStatusText = "Subscribed";
-                        subscription = new AccelerometerSubscription(MovesenseDevice.Name);
-                        await subscription.SubscribeAsync((d) =>
-                        {
-                            PlotData(d.body.timestamp, d.body.array[0].x, d.body.array[0].y, d.body.array[0].z);
-                        });
+
                     }
                     else
                     {
                         // Unsubscribe
-                        subscription.UnSubscribe();
+                        subscription.Unsubscribe();
                         ConnectionStatusText = "Unsubscribed";
                         await MovesenseDevice.Disconnect();
                         ConnectionStatusText = "Disconnected";
@@ -76,7 +82,7 @@ namespace SampleApp.ViewModels
 
         public void OnExit()
         {
-            subscription?.UnSubscribe();
+            subscription?.Unsubscribe();
         }
 
         public PlotModel Model { get; private set; }
@@ -95,7 +101,7 @@ namespace SampleApp.ViewModels
             {
                 Position = AxisPosition.Left,
                 Minimum = -10,
-                Maximum = 10,
+                Maximum = 15,
                 MajorStep = 5,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineThickness = 1,
@@ -105,6 +111,7 @@ namespace SampleApp.ViewModels
                 Position = AxisPosition.Bottom,
                 Minimum = 0,
                 MinimumRange = 25000,
+                MaximumRange = 25000,
                 MajorStep = 5000,
                 MinorStep = 5000,
                 MajorGridlineStyle = LineStyle.Solid,

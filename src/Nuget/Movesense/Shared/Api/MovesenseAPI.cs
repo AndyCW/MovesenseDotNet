@@ -32,9 +32,9 @@ namespace Plugin.Movesense
         private const int DEFAULT_SAMPLE_RATE = 26;
 
         /// <summary>
-        /// Create a new Logbook entry
+        /// Create a new logbook entry resource (increment log Id). Returns the new log Id.
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<CreateLogResult> CreateLogEntryAsync(string deviceName)
         {
             var op = new ApiCallAsync<CreateLogResult>(deviceName, MdsOp.POST, LOGGER_ENTRIES_PATH);
@@ -44,7 +44,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get details of Logbook entries
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<LogEntriesResult> GetLogEntriesAsync(string deviceName)
         {
             var op = new ApiCallAsync<LogEntriesResult>(deviceName, MdsOp.GET, LOGGER_ENTRIES_PATH);
@@ -54,7 +54,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Delete all the Logbook entries
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task DeleteLogEntriesAsync(string deviceName)
         {
             var op = new ApiCallAsync(deviceName, MdsOp.DELETE, LOGGER_ENTRIES_PATH);
@@ -65,7 +65,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get Accelerometer configuration
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<AccInfo> GetAccInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<AccInfo>(deviceName, MdsOp.GET, ACC_INFO_PATH);
@@ -75,7 +75,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get Magnetometer configuration
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<MagnInfo> GetMagInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<MagnInfo>(deviceName, MdsOp.GET, MAG_INFO_PATH);
@@ -86,7 +86,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get Battery level, CallAsync returns BatteryResult
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<BatteryResult> GetBatteryLevelAsync(string deviceName)
         {
             var op = new ApiCallAsync<BatteryResult>(deviceName, MdsOp.GET, BATTERY_PATH);
@@ -96,7 +96,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get data from a Logbook entry
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="logId">Number of the entry to get</param>
         public async Task<BaseResult> GetLogbookDataAsync(string deviceName, int logId)
         {
@@ -106,9 +106,9 @@ namespace Plugin.Movesense
         }
 
         /// <summary>
-        /// Get Deascriptors for a Logbook entry
+        /// Get Descriptors for a Logbook entry
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="logId">Logbook entry to get</param>
         public async Task<BaseResult> GetLogbookDescriptorsAsync(string deviceName, int logId)
         {
@@ -120,7 +120,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get device info
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<DeviceInfoResult> GetDeviceInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<DeviceInfoResult>(deviceName, MdsOp.GET, INFO_PATH);
@@ -130,7 +130,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get Gyrometer configuration
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<GyroInfo> GetGyroInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<GyroInfo>(deviceName, MdsOp.GET, GYRO_INFO_PATH);
@@ -140,7 +140,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get IMU configuration
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<IMUInfo> GetIMUInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<IMUInfo>(deviceName, MdsOp.GET, IMU_INFO_PATH);
@@ -150,7 +150,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get LedState for an LED
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="ledIndex">Number of the Led</param>
         public async Task<LedState> GetLedStateAsync(string deviceName, int ledIndex = 0)
         {
@@ -162,7 +162,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Sets state of an LED
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="ledIndex">Index of the Led - use 0 for standard Movesense sensor</param>
         /// <param name="ledOn">Set on or off</param>
         /// <param name="ledColor">[optional]value from LedColor enumeration - default is LedColor.Red</param>
@@ -176,9 +176,9 @@ namespace Plugin.Movesense
         }
 
         /// <summary>
-        /// Get LedsResult object giving state of all Leds
+        /// Get state of all Leds in the system
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<LedsResult> GetLedsStateAsync(string deviceName)
         {
             var op = new ApiCallAsync<LedsResult>(deviceName, MdsOp.GET, LEDS_PATH);
@@ -188,7 +188,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get Logger status, CallAsync returns LogStatusResult object
         /// </summary>
-        /// <param name="deviceName"></param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<LogStatusResult> GetLoggerStatusAsync(string deviceName)
         {
             var op = new ApiCallAsync<LogStatusResult>(deviceName, MdsOp.GET, DATALOGGER_STATE_PATH);
@@ -198,7 +198,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Set state of the Datalogger
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="start">Set true to start the datalogger, false to stop</param>
         public async Task SetLoggerStatusAsync(string deviceName, bool start)
         {
@@ -211,7 +211,7 @@ namespace Plugin.Movesense
         /// <summary>
         /// Set configuration for the Datalogger - ONLY sets IMU9
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="freq">Sampling rate, e.g. 26 for 26Hz</param>
         public async Task SetupLoggerAsync(string deviceName, int freq = 26)
         {
@@ -227,9 +227,10 @@ namespace Plugin.Movesense
         }
 
         /// <summary>
-        /// Get the Time set on the device
+        /// Gets current time in number of microseconds since epoch 1.1.1970 (UTC).
+        /// If not explicitly set, contains number of seconds since reset.
         /// </summary>
-        /// <param name="deviceName"></param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<TimeResult> GetTimeAsync(string deviceName)
         {
             var op = new ApiCallAsync<TimeResult>(deviceName, MdsOp.GET, TIME_PATH);
@@ -237,9 +238,9 @@ namespace Plugin.Movesense
         }
 
         /// <summary>
-        /// Set clock time on the device to the time on the phone (in ms)
+        /// Set clock time on the device to sync with the time on the phone, as number of microseconds since epoch 1.1.1970 (UTC).
         /// </summary>
-        /// <param name="deviceName"></param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task SetTimeAsync(string deviceName)
         {
             long timems = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
@@ -250,63 +251,63 @@ namespace Plugin.Movesense
         }
 
         /// <summary>
-        /// Subscribe to Accelerometer data
+        /// Subscribe to periodic linear acceleration measurements.
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the AccData</param>
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
-        public async Task SubscribeAccelerometerAsync(string deviceName, Action<AccData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
+        public async Task<IMdsSubscription> SubscribeAccelerometerAsync(string deviceName, Action<AccData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
             var op = new ApiSubscription<AccData>(deviceName, ACCELEROMETER_PATH, sampleRate);
-            await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback);
         }
 
         /// <summary>
-        /// Subscribe to Gyrometer data
+        /// Subscribe to periodic Gyrometer data
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the GyroData</param>
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
-        public async Task SubscribeGyrometerAsync(string deviceName, Action<GyroData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
+        public async Task<IMdsSubscription> SubscribeGyrometerAsync(string deviceName, Action<GyroData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
             var op = new ApiSubscription<GyroData>(deviceName, GYROMETER_PATH, sampleRate);
-            await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback);
         }
 
         /// <summary>
-        /// Subscribe to Magnetometer data
+        /// Subscribe to periodic Magnetometer data measurements
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the MagnData</param>
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
-        public async Task SubscribeMagnetometerAsync(string deviceName, Action<MagnData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
+        public async Task<IMdsSubscription> SubscribeMagnetometerAsync(string deviceName, Action<MagnData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
             var op = new ApiSubscription<MagnData>(deviceName, MAGNETOMETER_PATH, sampleRate);
-            await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback);
         }
 
         /// <summary>
-        /// Subscribe to IMU6 data
+        /// Subscribe to periodic 6-axis IMU measurements (Acc + Gyro).
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the IMU6Data</param>
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
-        public async Task SubscribeIMU6Async(string deviceName, Action<IMU6Data> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
+        public async Task<IMdsSubscription> SubscribeIMU6Async(string deviceName, Action<IMU6Data> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
             var op = new ApiSubscription<IMU6Data>(deviceName, IMU6_PATH, sampleRate);
-            await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback);
         }
 
         /// <summary>
-        /// Subscribe to IMU9 data
+        /// Subscribe to periodic 9-axis IMU measurements.
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the IMU9Data</param>
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
-        public async Task SubscribeIMU9Async(string deviceName, Action<IMU9Data> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
+        public async Task<IMdsSubscription> SubscribeIMU9Async(string deviceName, Action<IMU9Data> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
             var op = new ApiSubscription<IMU9Data>(deviceName, IMU9_PATH, sampleRate);
-            await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback);
         }
     }
 }

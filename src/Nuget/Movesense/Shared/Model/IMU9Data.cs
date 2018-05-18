@@ -2,63 +2,108 @@ using Newtonsoft.Json;
 
 namespace MdsLibrary.Model
 {
+    /// <summary>
+    /// Response object for subscription to periodic 9-axis IMU measurements.
+    /// </summary>
     public class IMU9Data
     {
+        /// <summary>
+        /// Response object for subscription to periodic 9-axis IMU measurements.
+        /// </summary>
         [JsonProperty("Body")]
-        public Body body;
+        public Data body;
 
-        public IMU9Data(Body body)
+        /// <summary>
+        /// Creates an IMU9Data object
+        /// </summary>
+        /// <param name="body"></param>
+        public IMU9Data(Data body)
         {
             this.body = body;
         }
 
-        public class Body
+        /// <summary>
+        /// Container for IMU9 data readings
+        /// </summary>
+        public class Data
         {
+            /// <summary>
+            /// Local timestamp of first measurement.
+            /// </summary>
             [JsonProperty("Timestamp")]
-            public long timestamp;
+            public long Timestamp;
 
+            /// <summary>
+            /// Measured acceleration values (3D) in array.
+            /// </summary>
             [JsonProperty("ArrayAcc")]
-            public Array[] arrayAcc;
+            public Values3D[] ArrayAcc;
 
+            /// <summary>
+            /// Measured angular velocity values (3D) in array.
+            /// </summary>
             [JsonProperty("ArrayGyro")]
-            public Array[] arrayGyro;
+            public Values3D[] ArrayGyro;
 
+            /// <summary>
+            /// Measured magnetic field values (3D) in array.
+            /// </summary>
             [JsonProperty("ArrayMagn")]
-            public Array[] arrayMagn;
+            public Values3D[] ArrayMagn;
 
+            /// <summary>
+            /// Headers
+            /// </summary>
             [JsonProperty("Headers")]
-            public Headers header;
+            public Headers Header;
         }
 
-        public class Array
+        /// <summary>
+        /// 3D values
+        /// </summary>
+        public class Values3D
         {
+            /// <summary>
+            /// X reading
+            /// </summary>
             [JsonProperty("x")]
-            public double x;
+            public double X;
 
+            /// <summary>
+            /// Y reading
+            /// </summary>
             [JsonProperty("y")]
-            public double y;
+            public double Y;
 
+            /// <summary>
+            /// Z reading
+            /// </summary>
             [JsonProperty("z")]
-            public double z;
+            public double Z;
 
-            public Array(double x, double y, double z)
+            /// <summary>
+            /// Constructs Values3D
+            /// </summary>
+            /// <param name="x">X value</param>
+            /// <param name="y">Y value</param>
+            /// <param name="z">Z value</param>
+            public Values3D(double x, double y, double z)
             {
-                this.x = x;
-                this.y = y;
-                this.z = z;
+                this.X = x;
+                this.Y = y;
+                this.Z = z;
             }
         }
 
         public class Headers
         {
             [JsonProperty("Param0")]
-            public int param0;
+            public int Param0;
 
             public Headers(int param0)
             {
-                this.param0 = param0;
+                this.Param0 = param0;
             }
         }
     }
-
 }

@@ -23,7 +23,10 @@ namespace MdsLibrary.Api
         /// <summary>
         /// Base class for all Mds API calls
         /// </summary>
-        /// <param name="deviceName">Name of the device, e.g. "Movesense 174430000051"</param>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="restOp">The type of REST call to make to MdsLib</param>
+        /// <param name="path">The path of the MdsLib resource</param>
+        /// <param name="body">JSON body if any</param>
         public ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null)
         {
             mDeviceName = deviceName;
@@ -167,13 +170,18 @@ namespace MdsLibrary.Api
 
 #if __ANDROID__
             public void OnError(Com.Movesense.Mds.MdsException e)
-#elif __IOS__
-            public void OnError(Exception e)
-#endif
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");
                 mTcs.SetException(new MdsException(e.ToString(), e));
             }
+#elif __IOS__
+            public void OnError(Exception e)
+             {
+                Debug.WriteLine($"ERROR error = {e.ToString()}");
+                mTcs.SetException(new MdsException(e.ToString(), e));
+            }
+#endif
+
         }
     }
 

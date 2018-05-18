@@ -2,62 +2,111 @@ using Newtonsoft.Json;
 
 namespace MdsLibrary.Model
 {
+    /// <summary>
+    /// Response object containing gyrometer data readings
+    /// </summary>
     public class GyroData
     {
+        /// <summary>
+        /// Response object containing gyrometer data readings
+        /// </summary>
         [JsonProperty("Body")]
-        public Body body;
+        public Body Data;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="body">Body object containing gryometer data readings</param>
         public GyroData(Body body)
         {
-            this.body = body;
+            this.Data = body;
         }
 
+        /// <summary>
+        /// Gyrometer data readings
+        /// </summary>
         public class Body
         {
+            /// <summary>
+            /// Local timestamp of first measurement.
+            /// </summary>
             [JsonProperty("Timestamp")]
-            public long timestamp;
+            public long Timestamp;
 
-            [JsonProperty("ArrayAcc")]
-            public Array[] array;
+            /// <summary>
+            /// Measured angular velocity values (3D) in array.
+            /// </summary>
+            [JsonProperty("ArrayGyro")]
+            public Values3D[] ArrayGyro;
 
+            /// <summary>
+            /// Headers
+            /// </summary>
             [JsonProperty("Headers")]
-            public Headers header;
+            public Headers Header;
 
-            public Body(long timestamp, Array[] array, Headers header)
+            /// <summary>
+            /// Creates a Body that contains Gyrometer readings
+            /// </summary>
+            /// <param name="timestamp">Local timestamp of first measurement</param>
+            /// <param name="array">Measured angular velocity values (3D) in array</param>
+            /// <param name="header">Header</param>
+            public Body(long timestamp, Values3D[] array, Headers header)
             {
-                this.timestamp = timestamp;
-                this.array = array;
-                this.header = header;
+                this.Timestamp = timestamp;
+                this.ArrayGyro = array;
+                this.Header = header;
             }
         }
 
-        public class Array
+        /// <summary>
+        /// Measured angular velocity values (3D).
+        /// </summary>
+        public class Values3D
         {
+            /// <summary>
+            /// X value
+            /// </summary>
             [JsonProperty("x")]
-            public double x;
+            public double X;
 
+            /// <summary>
+            /// Y value
+            /// </summary>
             [JsonProperty("y")]
-            public double y;
+            public double Y;
 
+            /// <summary>
+            /// Z value
+            /// </summary>
             [JsonProperty("z")]
-            public double z;
+            public double Z;
 
-            public Array(double x, double y, double z)
+            /// <summary>
+            /// Creates a GyroArray
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <param name="z"></param>
+            public Values3D(double x, double y, double z)
             {
-                this.x = x;
-                this.y = y;
-                this.z = z;
+                this.X = x;
+                this.Y = y;
+                this.Z = z;
             }
         }
 
+        /// <summary>
+        /// Headers
+        /// </summary>
         public class Headers
         {
             [JsonProperty("Param0")]
-            public int param0;
+            public int Param0;
 
             public Headers(int param0)
             {
-                this.param0 = param0;
+                this.Param0 = param0;
             }
         }
     }

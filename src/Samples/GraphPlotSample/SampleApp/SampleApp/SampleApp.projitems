@@ -21,7 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\NullToBooleanConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Util.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Data.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LinearAccelerationPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MovesenseDeviceViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SelectDevicePageViewModel.cs" />
