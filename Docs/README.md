@@ -1,5 +1,315 @@
 # Plugin.Movesense #
 
+## Type CrossMovesense
+
+ Cross Movesense 
+
+
+
+---
+#### Property CrossMovesense.IsSupported
+
+ Gets if the plugin is supported on the current platform. 
+
+
+
+---
+#### Property CrossMovesense.Current
+
+ Current plugin implementation to use 
+
+
+
+---
+## Type IMovesense
+
+ Movesense Plugin API 
+
+
+
+---
+#### Property IMovesense.MdsInstance
+
+ Gets the native MdsLib object 
+
+
+
+---
+#### Property IMovesense.Activity
+
+ On Android, this must be set to the current Activity before first access of the library. 
+
+
+
+---
+#### Property IMovesense.SCHEME_PREFIX
+
+ Root of all paths to Movesense resources. 
+
+
+
+---
+#### Method IMovesense.CreateLogEntryAsync(System.String)
+
+ Create a new logbook entry resource (increment log Id). Returns the new log Id. 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+**Returns**: new Log Id
+
+
+
+---
+#### Method IMovesense.DeleteLogEntriesAsync(System.String)
+
+ Delete all the Logbook entries 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetAccInfoAsync(System.String)
+
+ Get Accelerometer configuration 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetBatteryLevelAsync(System.String)
+
+ Get Battery level, CallAsync returns BatteryResult 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetDeviceInfoAsync(System.String)
+
+ Get device info 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetGyroInfoAsync(System.String)
+
+ Get Gyrometer configuration 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetIMUInfoAsync(System.String)
+
+ Get IMU configuration 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetLedsStateAsync(System.String)
+
+ Get state of all Leds in the system 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetLedStateAsync(System.String,System.Int32)
+
+ Get LedState for an LED 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|ledIndex: |Number of the Led|
+
+
+---
+#### Method IMovesense.GetLogbookDataAsync(System.String,System.Int32)
+
+ Get data from a Logbook entry 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|logId: |Number of the entry to get|
+
+
+---
+#### Method IMovesense.GetLogbookDescriptorsAsync(System.String,System.Int32)
+
+ Get Descriptors for a Logbook entry 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|logId: |Logbook entry to get|
+
+
+---
+#### Method IMovesense.GetLogEntriesAsync(System.String)
+
+ Get details of Logbook entries 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetLoggerStatusAsync(System.String)
+
+ Get Logger status, CallAsync returns LogStatusResult object 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetMagInfoAsync(System.String)
+
+ Get Magnetometer configuration 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.GetTimeAsync(System.String)
+
+ Gets current time in number of microseconds since epoch 1.1.1970 (UTC). If not explicitly set, contains number of seconds since reset. 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.SetLedStateAsync(System.String,System.Int32,System.Boolean,Plugin.Movesense.Api.LedColor)
+
+ Sets state of an LED 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|ledIndex: |Index of the Led - use 0 for standard Movesense sensor|
+|ledOn: |Set on or off|
+|ledColor: |[optional]value from LedColor enumeration - default is LedColor.Red|
+
+
+---
+#### Method IMovesense.SetLoggerStatusAsync(System.String,System.Boolean)
+
+ Set state of the Datalogger 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|start: |Set true to start the datalogger, false to stop|
+
+
+---
+#### Method IMovesense.SetTimeAsync(System.String)
+
+ Set clock time on the device to sync with the time on the phone, as number of microseconds since epoch 1.1.1970 (UTC). 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+
+
+---
+#### Method IMovesense.SetupLoggerAsync(System.String,System.Int32)
+
+ Set configuration for the Datalogger - ONLY sets IMU9 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|freq: |Sampling rate, e.g. 26 for 26Hz|
+
+
+---
+#### Method IMovesense.SubscribeAccelerometerAsync(System.String,System.Action{MdsLibrary.Model.AccData},System.Int32)
+
+ Subscribe to periodic linear acceleration measurements. 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|notificationCallback: |Callback function to receive the AccData|
+|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
+
+
+---
+#### Method IMovesense.SubscribeGyrometerAsync(System.String,System.Action{MdsLibrary.Model.GyroData},System.Int32)
+
+ Subscribe to periodic Gyrometer data 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|notificationCallback: |Callback function to receive the GyroData|
+|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
+
+
+---
+#### Method IMovesense.SubscribeIMU6Async(System.String,System.Action{MdsLibrary.Model.IMU6Data},System.Int32)
+
+ Subscribe to periodic 6-axis IMU measurements (Acc + Gyro). 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|notificationCallback: |Callback function to receive the IMU6Data|
+|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
+
+
+---
+#### Method IMovesense.SubscribeIMU9Async(System.String,System.Action{MdsLibrary.Model.IMU9Data},System.Int32)
+
+ Subscribe to periodic 9-axis IMU measurements. 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|notificationCallback: |Callback function to receive the IMU9Data|
+|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
+
+
+---
+#### Method IMovesense.SubscribeMagnetometerAsync(System.String,System.Action{MdsLibrary.Model.MagnData},System.Int32)
+
+ Subscribe to periodic Magnetometer data measurements 
+
+|Name | Description |
+|-----|------|
+|deviceName: |Name of the device, e.g. Movesense 174430000051|
+|notificationCallback: |Callback function to receive the MagnData|
+|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
+
+
+---
+
 ## Type MdsLibrary.Api.ApiCallAsync
 
  Makes an APICall to MdsLib for those MdsLib methods that do not return data 
@@ -1296,7 +1606,7 @@
 ---
 ## Type MovesenseImplementation
 
- Interface for $safeprojectgroupname$ 
+ Interface for Plugin.Movesense 
 
 
 
@@ -1555,315 +1865,6 @@
 |-----|------|
 |deviceName: |Name of the device, e.g. Movesense 174430000051|
 |notificationCallback: |Callback function to receive the IMU9Data|
-|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
-
-
----
-## Type CrossMovesense
-
- Cross Movesense 
-
-
-
----
-#### Property CrossMovesense.IsSupported
-
- Gets if the plugin is supported on the current platform. 
-
-
-
----
-#### Property CrossMovesense.Current
-
- Current plugin implementation to use 
-
-
-
----
-## Type IMovesense
-
- Movesense Plugin API 
-
-
-
----
-#### Property IMovesense.MdsInstance
-
- Gets the native MdsLib object 
-
-
-
----
-#### Property IMovesense.Activity
-
- On Android, this must be set to the current Activity before first access of the library. 
-
-
-
----
-#### Property IMovesense.SCHEME_PREFIX
-
- Root of all paths to Movesense resources. 
-
-
-
----
-#### Method IMovesense.CreateLogEntryAsync(System.String)
-
- Create a new logbook entry resource (increment log Id). Returns the new log Id. 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-**Returns**: new Log Id
-
-
-
----
-#### Method IMovesense.DeleteLogEntriesAsync(System.String)
-
- Delete all the Logbook entries 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetAccInfoAsync(System.String)
-
- Get Accelerometer configuration 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetBatteryLevelAsync(System.String)
-
- Get Battery level, CallAsync returns BatteryResult 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetDeviceInfoAsync(System.String)
-
- Get device info 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetGyroInfoAsync(System.String)
-
- Get Gyrometer configuration 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetIMUInfoAsync(System.String)
-
- Get IMU configuration 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetLedsStateAsync(System.String)
-
- Get state of all Leds in the system 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetLedStateAsync(System.String,System.Int32)
-
- Get LedState for an LED 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|ledIndex: |Number of the Led|
-
-
----
-#### Method IMovesense.GetLogbookDataAsync(System.String,System.Int32)
-
- Get data from a Logbook entry 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|logId: |Number of the entry to get|
-
-
----
-#### Method IMovesense.GetLogbookDescriptorsAsync(System.String,System.Int32)
-
- Get Descriptors for a Logbook entry 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|logId: |Logbook entry to get|
-
-
----
-#### Method IMovesense.GetLogEntriesAsync(System.String)
-
- Get details of Logbook entries 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetLoggerStatusAsync(System.String)
-
- Get Logger status, CallAsync returns LogStatusResult object 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetMagInfoAsync(System.String)
-
- Get Magnetometer configuration 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.GetTimeAsync(System.String)
-
- Gets current time in number of microseconds since epoch 1.1.1970 (UTC). If not explicitly set, contains number of seconds since reset. 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.SetLedStateAsync(System.String,System.Int32,System.Boolean,Plugin.Movesense.Api.LedColor)
-
- Sets state of an LED 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|ledIndex: |Index of the Led - use 0 for standard Movesense sensor|
-|ledOn: |Set on or off|
-|ledColor: |[optional]value from LedColor enumeration - default is LedColor.Red|
-
-
----
-#### Method IMovesense.SetLoggerStatusAsync(System.String,System.Boolean)
-
- Set state of the Datalogger 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|start: |Set true to start the datalogger, false to stop|
-
-
----
-#### Method IMovesense.SetTimeAsync(System.String)
-
- Set clock time on the device to sync with the time on the phone, as number of microseconds since epoch 1.1.1970 (UTC). 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-
-
----
-#### Method IMovesense.SetupLoggerAsync(System.String,System.Int32)
-
- Set configuration for the Datalogger - ONLY sets IMU9 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|freq: |Sampling rate, e.g. 26 for 26Hz|
-
-
----
-#### Method IMovesense.SubscribeAccelerometerAsync(System.String,System.Action{MdsLibrary.Model.AccData},System.Int32)
-
- Subscribe to periodic linear acceleration measurements. 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|notificationCallback: |Callback function to receive the AccData|
-|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
-
-
----
-#### Method IMovesense.SubscribeGyrometerAsync(System.String,System.Action{MdsLibrary.Model.GyroData},System.Int32)
-
- Subscribe to periodic Gyrometer data 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|notificationCallback: |Callback function to receive the GyroData|
-|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
-
-
----
-#### Method IMovesense.SubscribeIMU6Async(System.String,System.Action{MdsLibrary.Model.IMU6Data},System.Int32)
-
- Subscribe to periodic 6-axis IMU measurements (Acc + Gyro). 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|notificationCallback: |Callback function to receive the IMU6Data|
-|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
-
-
----
-#### Method IMovesense.SubscribeIMU9Async(System.String,System.Action{MdsLibrary.Model.IMU9Data},System.Int32)
-
- Subscribe to periodic 9-axis IMU measurements. 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|notificationCallback: |Callback function to receive the IMU9Data|
-|sampleRate: |Sampling rate, e.g. 26 for 26Hz|
-
-
----
-#### Method IMovesense.SubscribeMagnetometerAsync(System.String,System.Action{MdsLibrary.Model.MagnData},System.Int32)
-
- Subscribe to periodic Magnetometer data measurements 
-
-|Name | Description |
-|-----|------|
-|deviceName: |Name of the device, e.g. Movesense 174430000051|
-|notificationCallback: |Callback function to receive the MagnData|
 |sampleRate: |Sampling rate, e.g. 26 for 26Hz|
 
 

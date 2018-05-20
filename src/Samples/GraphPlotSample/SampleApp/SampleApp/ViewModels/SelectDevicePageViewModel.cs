@@ -65,22 +65,22 @@ namespace SampleApp.ViewModels
         {
             // Only interested in Movesense devices
             if (result.Device.Name != null)
+            {
                 if (result.Device.Name.StartsWith("Movesense"))
                 {
+                    var dev = this.Devices.FirstOrDefault(x => x.Uuid.Equals(result.Device.Uuid));
+                    if (dev != null)
                     {
-                        var dev = this.Devices.FirstOrDefault(x => x.Uuid.Equals(result.Device.Uuid));
-                        if (dev != null)
-                        {
-                            dev.TrySet(result);
-                        }
-                        else
-                        {
-                            dev = new MovesenseDeviceViewModel();
-                            dev.TrySet(result);
-                            this.Devices.Add(dev);
-                        }
+                        dev.TrySet(result);
+                    }
+                    else
+                    {
+                        dev = new MovesenseDeviceViewModel();
+                        dev.TrySet(result);
+                        this.Devices.Add(dev);
                     }
                 }
+            }
         }
     }
 }
