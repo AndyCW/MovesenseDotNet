@@ -2,7 +2,7 @@
 Preview of Movesense .NET SDK for Xamarin Android. 
 **iOS not supported yet - under development.**
 
-## Movesense Plugin Developer Guide##
+## Movesense Plugin Developer Guide
 The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. It is currently in preview so in NuGet Package manager, make sure you check the **Include prerelease** checkbox, then browse for *Movesense*. You should see two packages available:
   * **Plugin.Movesense** - this is the package you should reference in your project. It has the full .NET API for programming for connectivity to Movesense devices, and also includes the *MovesenseBindingAndroid* package which is the C# binding around the native Android Mdslib.aar library
   * **MovesenseBindingAndroid** - this package is the C# binding around the native Android Mdslib.aar library. You do not need to reference this package separately as it is configured as a dependency of the Plugin.Movesense package.
@@ -94,6 +94,26 @@ To drop the subscription, simply call the Unsubscribe method of the subscription
 ```C#
 subscription.Unsubscribe();
 ```
+### Documentation
+See [Movesense.NET Documentation](https://github.com/AndyCW/MovesenseDotNet/Docs/README.md) for details of the Movesense.NET API.
+
+### Samples
+See [Samples](https://github.com/AndyCW/MovesenseDotNet/src/Samples) for sample applications using Movesense.NET.
+
+### Calling custom app resources
+If you need to call a custom resource that is exposed by your own app running on a Movesense device, such as the **Hello World** sample included in the [Movesense mobile-device-lib samples](https://bitbucket.org/suunto/movesense-device-lib/src/master/samples/hello_world_app/) this is easily achieved. Simply call the **ApiCallAsync<T>** method in the Plugin.Movesense API, where T is the return type of the resource (use *string* to just return the JSON response, or define the return type in your app and pass that whereupon ApiCallAsync<T> will deserialize the JSON for you). The parameters you pass in the call to ApiCallAsync are the device name, the type of operation (GET, POST, PUT, DELETE) and the path to the resource.
+
+For eaxample for a GET of the Hello World resource:
+
+```C#
+var helloWorldResponse = await Plugin.Movesense.CrossMovesense.Current.ApiCallAsync<string>(mSelectedDevice.Name, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
+```
+
+You can also use the **ApiCallAsync** method for operations that do not return a response, and you can use **ApiSubscriptionAsync<T>** for subscriptions.
+
+See the sample [CustomServiceSample](https://github.com/AndyCW/MovesenseDotNet/src/Samples/CustomServiceSample) for an example.
+
+
 
 ## Bluetooth Connectivity
 The **Movesense Plugin** does not manage Bluetooth connectivity with Movesense devices. You must implement device discovery and connection yourself. There are a number of different open source packages available to help with this. The samples in this repo use the [Plugin.BluetoothLe](https://www.nuget.org/packages/Plugin.BluetoothLE) NuGet package.
