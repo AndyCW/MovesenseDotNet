@@ -7,7 +7,7 @@ The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. It is 
   * **Plugin.Movesense** - this is the package you should reference in your project. It has the full .NET API for programming for connectivity to Movesense devices, and also includes the *MovesenseBindingAndroid* package which is the C# binding around the native Android Mdslib.aar library
   * **MovesenseBindingAndroid** - this package is the C# binding around the native Android Mdslib.aar library. You do not need to reference this package separately as it is configured as a dependency of the Plugin.Movesense package.
 
-  ![Image of NuGet Package Manager](images/nuget.png)
+  ![Image of NuGet Package Manager](Images/NuGet.PNG)
 
   Add the Plugin.Movesense package to all your projects: to the Xamarin Android project and also, if you are using it, to the .NET Standard project containing your shared code.
 
@@ -18,7 +18,7 @@ To use the Movesense Plugin in your own app:
   * **IMPORTANT:** the native MdsLib.aar library that is included in the Movesense Plugin does not support 64 bit targets. Therefore, you *must* change the supported architectutes of your Xamarin Android project. To set this, go to Project Properties - Android Options, scroll down to the bottom and then click Advanced. In the Advanced Android Options window, click Supported Architectures and deselect **x86_64** and **arm64-v8a**
   * Also on the Advanced Android Options page, you may need to increase the **Java Max Heap Size** value. Suggest you set this to **1G**. If you do not set this, your compilation may fail with Memory Exceeded error.
 
-   ![Image of Advanced Android Options](images/androidoptions.png)
+   ![Image of Advanced Android Options](Images/AndroidOptions.PNG)
 
   * For bluetooth connectivity, you will need to request the ACCESS_COARSE_LOCATION, BLUETOOTH and BLUETOOTH_ADMIN permissions. Check these on the Project Properties - Android manifest settings page. You will also need to request permissions from the user - see topic *Bluetooth Connections* below for information on programming connectivity to devices.
   * Access the Movesense API anywhere in your code by getting the *Plugin.Movesense.CrossMovesense.Current* property:
