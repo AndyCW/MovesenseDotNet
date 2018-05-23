@@ -11,6 +11,7 @@ namespace Plugin.Movesense
     {
         private static readonly string LOGGER_ENTRIES_PATH = "/Mem/Logbook/Entries";
         private static readonly string ACC_INFO_PATH = "/Meas/Acc/Info";
+        private static readonly string APP_INFO_PATH = "/Info/App";
         private static readonly string BATTERY_PATH = "/System/Energy/Level";
         private static readonly string LOGBOOK_DATA_PATH = "/Mem/Logbook/byId/{0}/Data";
         private static readonly string URI_MDS_LOGBOOK_DATA = "/Mem/Logbook/byId/{0}/Descriptors";
@@ -117,6 +118,15 @@ namespace Plugin.Movesense
             return await op.CallAsync();
         }
 
+        /// <summary>
+        /// Get info on the app running on the device
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        public async Task<AppInfo> GetAppInfoAsync(string deviceName)
+        {
+            var op = new ApiCallAsync<AppInfo>(deviceName, MdsOp.GET, APP_INFO_PATH);
+            return await op.CallAsync();
+        }
         /// <summary>
         /// Get device info
         /// </summary>

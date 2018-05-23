@@ -22,6 +22,7 @@ namespace MdsLibrary.Api
         private readonly string mPath;
         private readonly string mBody;
         private readonly MdsOp mRestOp;
+        private TaskCompletionSource<bool> mTcs = null;
 
         /// <summary>
         /// Create an ApiCall instance
@@ -108,29 +109,29 @@ namespace MdsLibrary.Api
 
         private Task perform()
         {
-            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            mTcs = new TaskCompletionSource<bool>();
 
 #if __ANDROID__
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
             var serial = Util.GetVisibleSerial(mDeviceName);
             if (mRestOp == MdsOp.POST)
             {
-                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(tcs));
+                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(mTcs));
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(tcs));
+                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(mTcs));
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(tcs));
+                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(mTcs));
             }
             else if (mRestOp == MdsOp.PUT)
             {
-                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(tcs));
+                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(mTcs));
             }
 #endif
-            return tcs.Task;
+            return mTcs.Task;
         }
 
         /// <summary>

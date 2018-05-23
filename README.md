@@ -2,7 +2,7 @@
 Preview of Movesense .NET SDK for Xamarin Android. 
 **iOS not supported yet - under development.**
 
-## Referencing the Movesense Plugin##
+## Movesense Plugin Developer Guide##
 The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. It is currently in preview so in NuGet Package manager, make sure you check the **Include prerelease** checkbox, then browse for *Movesense*. You should see two packages available:
   * **Plugin.Movesense** - this is the package you should reference in your project. It has the full .NET API for programming for connectivity to Movesense devices, and also includes the *MovesenseBindingAndroid* package which is the C# binding around the native Android Mdslib.aar library
   * **MovesenseBindingAndroid** - this package is the C# binding around the native Android Mdslib.aar library. You do not need to reference this package separately as it is configured as a dependency of the Plugin.Movesense package.
@@ -56,22 +56,22 @@ To use the Movesense Plugin in your own app:
 
     ```C#
     // Make the Mds connection
-    await new MdsConnectionService().ConnectMdsAsync(MACAddress);
+    await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(MACAddress);
     ```
 
     and disconnect like this:
 
     ```C#
     // Disconnect from Mds
-    await new MdsConnectionService().DisconnectMds(MACAddress);
+    await Plugin.Movesense.CrossMovesense.Current.DisconnectMds(MACAddress);
     ```
 
-* Now you can make calls to the device. **Important:** All Movesense APIs require that you pass the device name, for example *Movesense 174430000051*. This is different from the connection and disconnection to Mds described above, which uses the MAC address.
+* Now you can make calls to the device. **Important:** All Movesense APIs require that you pass the device name as the first argument, for example *Movesense 174430000051*. This is different from the connection and disconnection to Mds described above, which uses the MAC address.
     
 For example, to get device info:
 
 ```C#
-var info = await movesense.GetDeviceInfoAsync(sensor.Name);
+var info = await Plugin.Movesense.CrossMovesense.Current.GetDeviceInfoAsync(sensor.Name);
 await DisplayAlert("Success", $"Communicated with device {sensor.Name}, firmware version is: {info.DeviceInfo.Sw}", "OK");
 ```
 
@@ -80,7 +80,7 @@ await DisplayAlert("Success", $"Communicated with device {sensor.Name}, firmware
 For example, to subscribe to Accelerometer readings:
 
 ```C#
-var subscription = await CrossMovesense.Current.SubscribeAccelerometerAsync(
+var subscription = await Plugin.Movesense.CrossMovesense.Current.SubscribeAccelerometerAsync(
                             MovesenseDevice.Name, 
                             (d) =>
                             {

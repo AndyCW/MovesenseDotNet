@@ -11,7 +11,6 @@ namespace MdsLibrary.Api
     /// <summary>
     /// Makes a subscription to an MdsLib resource
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class ApiSubscription<T> : IApiSubscription<T>
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
@@ -32,7 +31,7 @@ namespace MdsLibrary.Api
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="path">The path of the MdsLib resource</param>
-        /// <param name="body">JSON body if any</param>
+        /// <param name="frequency">Sample rate, e.g. 52 for 52Hz</param>
         public ApiSubscription(string deviceName, string path, int frequency)
         {
             mDeviceName = deviceName;

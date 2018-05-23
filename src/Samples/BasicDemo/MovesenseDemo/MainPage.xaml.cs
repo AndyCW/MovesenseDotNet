@@ -45,11 +45,10 @@ namespace MovesenseDemo
                     sensor.Connect();
 
                     // Now do the Mds connection
-                    var mdsconnSvc = new MdsConnectionService();
-                    await mdsconnSvc.ConnectMdsAsync(GetMACAddress(sensor.Uuid));
+                    var movesense = Plugin.Movesense.CrossMovesense.Current;
+                    await movesense.ConnectMdsAsync(GetMACAddress(sensor.Uuid));
 
                     // Talk to the device
-                    var movesense = Plugin.Movesense.CrossMovesense.Current;
                     var info = await movesense.GetDeviceInfoAsync(sensor.Name);
                     var batt = await movesense.GetBatteryLevelAsync(sensor.Name);
 
@@ -59,7 +58,7 @@ namespace MovesenseDemo
                         "OK");
 
                     // Disconnect Mds
-                    await mdsconnSvc.DisconnectMds(GetMACAddress(sensor.Uuid));
+                    await movesense.DisconnectMds(GetMACAddress(sensor.Uuid));
                     //Disconnect Bluetooth
                     sensor.CancelConnection();
                 }

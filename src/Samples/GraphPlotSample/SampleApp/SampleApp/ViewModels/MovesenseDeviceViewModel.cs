@@ -179,7 +179,7 @@ namespace SampleApp.ViewModels
             Debug.WriteLine("Ble Connected!");
 
             // Now do the Mds connection
-            await new MdsConnectionService().ConnectMdsAsync(MACAddress);
+            await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(MACAddress);
 
             DeviceStatus = DeviceStatus.Connected;
         }
@@ -189,7 +189,7 @@ namespace SampleApp.ViewModels
             DeviceStatus = DeviceStatus.Connecting;
 
             // Disconnect Mds
-            await new MdsConnectionService().DisconnectMds(MACAddress);
+            await Plugin.Movesense.CrossMovesense.Current.DisconnectMds(MACAddress);
 
             // Disconnect SensorKit
             this.Device.CancelConnection();
