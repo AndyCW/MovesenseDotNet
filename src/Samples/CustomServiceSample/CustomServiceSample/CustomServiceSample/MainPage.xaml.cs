@@ -47,7 +47,7 @@ namespace CustomServiceSample
 
                 // Now do the Mds connection
                 var movesense = Plugin.Movesense.CrossMovesense.Current;
-                await movesense.ConnectMdsAsync(GetMACAddress(mSelectedDevice.Uuid));
+                await movesense.ConnectMdsAsync(mSelectedDevice.Uuid);
 
                 // Talk to the device
                 // First get details of the app running on the device
@@ -74,7 +74,7 @@ namespace CustomServiceSample
                 }
 
                 // Disconnect Mds
-                await movesense.DisconnectMds(GetMACAddress(mSelectedDevice.Uuid));
+                await movesense.DisconnectMds(mSelectedDevice.Uuid);
                 //Disconnect Bluetooth
                 mSelectedDevice.CancelConnection();
             }
@@ -100,20 +100,6 @@ namespace CustomServiceSample
                     }
                 }
             }
-        }
-
-        public string GetMACAddress(Guid Uuid)
-        {
-            string[] idParts = Uuid.ToString().Split(new char[] { '-' });
-            string macAddress = idParts.Last().ToUpper();
-            StringBuilder formattedMAC = new StringBuilder();
-            for (int i = 0; i < macAddress.Length; i += 2)
-            {
-                if (i > 0) formattedMAC.Append(":");
-                formattedMAC.Append(macAddress.Substring(i, 2));
-            }
-
-            return formattedMAC.ToString();
         }
 
         private void deviceListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
