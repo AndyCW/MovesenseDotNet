@@ -6,6 +6,7 @@ using Plugin.Movesense.Api;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,21 +58,21 @@ namespace Plugin.Movesense
         /// <summary>
         /// Connect a device to MdsLib
         /// </summary>
-        /// <param name="MACAddress">MAC address of the device</param>
+        /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public async Task<object> ConnectMdsAsync(string MACAddress)
+        public async Task<object> ConnectMdsAsync(Guid Uuid)
         {
-            return await new MdsConnectionService().ConnectMdsAsync(MACAddress);
+            return await new MdsConnectionService().ConnectMdsAsync(GetMACAddressFromUuid(Uuid));
         }
 
         /// <summary>
         /// Disconnect a device from MdsLib
         /// </summary>
-        /// <param name="MACAddress">MAC address of the device</param>
+        /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public Task<object> DisconnectMds(string MACAddress)
+        public Task<object> DisconnectMds(Guid Uuid)
         {
-            return new MdsConnectionService().DisconnectMds(MACAddress);
+            return new MdsConnectionService().DisconnectMds(GetMACAddressFromUuid(Uuid));
         }
 
         /// <summary>
@@ -107,6 +108,20 @@ namespace Plugin.Movesense
         public async Task<IMdsSubscription> ApiSubscriptionAsync<T>(string deviceName, string path, int frequency, Action<T> notificationCallback)
         {
             return await new ApiSubscription<T>(deviceName, path, frequency).SubscribeAsync(notificationCallback);
+        }
+
+        private string GetMACAddressFromUuid(Guid Uuid)
+        {
+            string[] idParts = Uuid.ToString().Split(new char[] { '-' });
+            string macAddress = idParts.Last().ToUpper();
+            StringBuilder formattedMAC = new StringBuilder();
+            for (int i = 0; i < macAddress.Length; i += 2)
+            {
+                if (i > 0) formattedMAC.Append(":");
+                formattedMAC.Append(macAddress.Substring(i, 2));
+            }
+
+            return formattedMAC.ToString();
         }
     }
 }

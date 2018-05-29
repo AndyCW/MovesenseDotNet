@@ -30,16 +30,16 @@ namespace Plugin.Movesense
         /// <summary>
         /// Connect a device to MdsLib
         /// </summary>
-        /// <param name="MACAddress">MAC address of the device</param>
+        /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        Task<object> ConnectMdsAsync(string MACAddress);
+        Task<object> ConnectMdsAsync(Guid Uuid);
 
         /// <summary>
         /// Disconnect a device from MdsLib
         /// </summary>
-        /// <param name="MACAddress">MAC address of the device</param>
+        /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        Task<object> DisconnectMds(string MACAddress);
+        Task<object> DisconnectMds(Guid Uuid);
 
         /// <summary>
         /// Function to make Mds API call that does not return a value

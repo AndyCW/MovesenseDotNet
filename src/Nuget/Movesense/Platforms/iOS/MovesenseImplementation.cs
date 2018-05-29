@@ -36,9 +36,9 @@ namespace Plugin.Movesense
         /// <summary>
         /// Connect a device to MdsLib
         /// </summary>
-        /// <param name="MACAddress">MAC address of the device</param>
+        /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public Task<object> ConnectMdsAsync(string MACAddress)
+        public Task<object> ConnectMdsAsync(Guid Uuid)
         {
             throw new NotImplementedException();
         }
@@ -46,9 +46,9 @@ namespace Plugin.Movesense
         /// <summary>
         /// Disconnect a device from MdsLib
         /// </summary>
-        /// <param name="MACAddress">MAC address of the device</param>
+        /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public Task<object> DisconnectMds(string MACAddress)
+        public Task<object> DisconnectMds(Guid Uuid)
         {
             throw new NotImplementedException();
         }
