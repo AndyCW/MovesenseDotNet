@@ -189,7 +189,7 @@ namespace SampleApp.ViewModels
             DeviceStatus = DeviceStatus.Connecting;
 
             // Disconnect Mds
-            await Plugin.Movesense.CrossMovesense.Current.DisconnectMds(Uuid);
+            await Plugin.Movesense.CrossMovesense.Current.DisconnectMdsAsync(Uuid);
 
             // Disconnect SensorKit
             this.Device.CancelConnection();

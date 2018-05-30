@@ -50,23 +50,23 @@ To use the Movesense Plugin in your own app:
   ```
 
   * To make calls to a Movesense device, you must first make a Bluetooth connection to the device. You must add this code youself as Bluetooth Connectivity is **not supported by the Movesense Plugin**. See topic *Bluetooth Connectivity* below for hints on how to do this.
-  * After you have a Bluetooth connection setup, you must connect to the device using the MdsLib, passing the MAC address of the device. 
+  * After you have a Bluetooth connection setup, you must connect to the device using the MdsLib, passing the Uuid (unique identifier) of the device. 
     
     Connect like this:
 
     ```C#
     // Make the Mds connection
-    await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(MACAddress);
+    await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(sensor.Uuid);
     ```
 
     and disconnect like this:
 
     ```C#
     // Disconnect from Mds
-    await Plugin.Movesense.CrossMovesense.Current.DisconnectMds(MACAddress);
+    await Plugin.Movesense.CrossMovesense.Current.DisconnectMdsAsync(sensor.Uuid);
     ```
 
-* Now you can make calls to the device. **Important:** All Movesense APIs require that you pass the device name as the first argument, for example *Movesense 174430000051*. This is different from the connection and disconnection to Mds described above, which uses the MAC address.
+* Now you can make calls to the device. **Important:** All Movesense APIs require that you pass the device name as the first argument, for example *Movesense 174430000051*. This is different from the connection and disconnection to Mds described above, which uses the Uuid.
     
 For example, to get device info:
 
@@ -115,8 +115,8 @@ See the sample [CustomServiceSample](https://github.com/AndyCW/MovesenseDotNet/s
 
 
 
-## Bluetooth Connectivity
-The **Movesense Plugin** does not manage Bluetooth connectivity with Movesense devices. You must implement device discovery and connection yourself. There are a number of different open source packages available to help with this. The samples in this repo use the [Plugin.BluetoothLe](https://www.nuget.org/packages/Plugin.BluetoothLE) NuGet package.
+## Bluetooth device discovery
+The **Movesense Plugin** does not manage Bluetooth discovery of Movesense devices. You must implement device discovery yourself. There are a number of different open source packages available to help with this. The samples in this repo use the [Plugin.BluetoothLe](https://www.nuget.org/packages/Plugin.BluetoothLE) NuGet package.
 
 To scan for Movesense devices using *BluetoothLe*, use:
 
@@ -137,25 +137,13 @@ Handle discovered devices in your Subscribe callback:
                 if (result.Device.Name.StartsWith("Movesense"))
                 {
                     // Do something with this device...
-                    myDevice = result.Device;
+                    var sensor = result.Device;
                 }
             }
         }
 ```
 
-Once you have discovered a device, connect to it like this:
-
-```C#
-    myDevice.Connect();
-```
-
-After you have made the Bluetooth connection, you can make the MdsLib connection and then communicate with the device, as described in the previous section.
-
-Disconnect Bluetooth with **CancelConnection**:
-
-```C#
-    myDevice.CancelConnection();
-```
+Once you have discovered a device, you can make the MdsLib connection and then communicate with the device, as described in the previous section.
 
 ## Troubleshooting
 If your app fails to start and does not report an exception, check that you have set the target architectures for your Android app to exclude 64 bit targets, as described at the beginning of section *Using the Movesense Plugin in your Xamarin Android or Xamarin Forms App* above.

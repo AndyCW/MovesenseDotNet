@@ -74,7 +74,7 @@ namespace CustomServiceSample
                 }
 
                 // Disconnect Mds
-                await movesense.DisconnectMds(mSelectedDevice.Uuid);
+                await movesense.DisconnectMdsAsync(mSelectedDevice.Uuid);
                 //Disconnect Bluetooth
                 mSelectedDevice.CancelConnection();
             }

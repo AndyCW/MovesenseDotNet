@@ -1,5 +1,4 @@
-﻿using MdsLibrary;
-using Plugin.BluetoothLE;
+﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,8 +57,8 @@ namespace MovesenseDemo
                         "OK");
 
                     // Disconnect Mds
-                    await movesense.DisconnectMds(sensor.Uuid);
-                    //Disconnect Bluetooth
+                    await movesense.DisconnectMdsAsync(sensor.Uuid);
+                    // Disconnect Bluetooth
                     sensor.CancelConnection();
                 }
             }

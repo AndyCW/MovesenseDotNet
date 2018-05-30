@@ -48,7 +48,7 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public Task<object> DisconnectMds(Guid Uuid)
+        public Task<object> DisconnectMdsAsync(Guid Uuid)
         {
             throw new NotImplementedException();
         }

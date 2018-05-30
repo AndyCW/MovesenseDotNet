@@ -39,7 +39,7 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        Task<object> DisconnectMds(Guid Uuid);
+        Task<object> DisconnectMdsAsync(Guid Uuid);
 
         /// <summary>
         /// Function to make Mds API call that does not return a value
