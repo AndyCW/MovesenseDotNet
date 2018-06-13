@@ -7,10 +7,10 @@
   <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
   -->
   
-  <!--
+
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsRegisterOperation']" />
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsUnregisterOperation']" />
-  -->
+
 
   
   <!-- Correct clash in EventArgs caused by two Listeners having same named event-->
