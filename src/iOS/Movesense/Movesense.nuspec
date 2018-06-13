@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MovesenseBindingiOS</id>
+    <version>0.2-alpha</version>
+    <title>$title$</title>
+    <authors>Anze Vodovnik</authors>
+    <owners>Anze Vodovnik, Andy Wigley</owners>
+    <licenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/AndyCW/MovesenseDotNet</projectUrl>
+    <iconUrl>http://www.movesense.com</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET binding for Movesense iOS mdslib</description>
+    <releaseNotes>Initial release of the Movesense mdslib binding for Xamarin iOS.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>Xamarin Plugin Movesense</tags>
+  </metadata>
+  <files>
+    <file src="bin/Release/Movesense.dll" target="lib/Xamarin.IOS10"/>
+  </files>
+</package>
