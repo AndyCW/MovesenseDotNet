@@ -1,3 +1,7 @@
+UK-DX-MacBook-Pro:Attempt5 anze$ sharpie bind -o stuff -sdk iphoneos11.3 -namespace Movesense -scope /Users/anze/temp/movesense-mobile-lib/IOS/Movesense/include/  /Users/anze/temp/movesense-mobile-lib/IOS/Movesense/include/MDS.h
+
+
+
 # iOS Binding for Movesense
 
 > _This post will be published on www.vodovnik.com soon_.
