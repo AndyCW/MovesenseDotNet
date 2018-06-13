@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mds", "Mds", "{01CF2ACC-831C-4C52-BAB9-8804F800F0E1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdsLibrary", "MdsLibrary\MdsLibrary.csproj", "{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{F7292A30-1EBF-42A9-B5C7-5785F0FB2A57}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesenseBindingAndroid", "MovesenseBindingAndroid\MovesenseBindingAndroid.csproj", "{C35A69C9-32C6-44E0-9097-3F3ED7CDDCBD}"
 EndProject
 Global
@@ -17,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C35A69C9-32C6-44E0-9097-3F3ED7CDDCBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C35A69C9-32C6-44E0-9097-3F3ED7CDDCBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C35A69C9-32C6-44E0-9097-3F3ED7CDDCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -28,11 +18,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{01CF2ACC-831C-4C52-BAB9-8804F800F0E1} = {F7292A30-1EBF-42A9-B5C7-5785F0FB2A57}
-		{61FFB9B2-95CF-4C73-9A31-5FB7F265B2C8} = {01CF2ACC-831C-4C52-BAB9-8804F800F0E1}
-		{C35A69C9-32C6-44E0-9097-3F3ED7CDDCBD} = {01CF2ACC-831C-4C52-BAB9-8804F800F0E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F27CE037-24B7-4B76-8327-F0FAF65C68EA}
