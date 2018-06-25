@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace MdsLibrary
 {
+    /// <summary>
+    /// Connection logic for Android devices
+    /// </summary>
     public class MdsConnectionService
     {
         private MdsConnectionListener mListener;

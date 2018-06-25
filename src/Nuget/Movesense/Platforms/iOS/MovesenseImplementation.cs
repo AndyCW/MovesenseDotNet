@@ -1,4 +1,6 @@
-﻿using Plugin.Movesense.Api;
+﻿using MdsLibrary;
+using Movesense;
+using Plugin.Movesense.Api;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +13,17 @@ namespace Plugin.Movesense
     /// </summary>
     public partial class MovesenseImplementation : IMovesense
     {
-        private static MdsWrapper instance = null;
+        private static MDSWrapper instance = null;
         private static readonly object padlock = new object();
 
+        /// <summary>
+        /// root of all Uris on the Mds whiteboard
+        /// </summary>
         public string SCHEME_PREFIX => "suunto://";
 
+        /// <summary>
+        /// Get the singleton instance of the MdsWrapper
+        /// </summary>
         public object MdsInstance
         {
             get
@@ -24,13 +32,16 @@ namespace Plugin.Movesense
                 {
                     if (instance == null)
                     {
-                        instance = new MdsWrapper();
+                        instance = new MDSWrapper();
                     }
                     return instance;
                 }
             }
         }
 
+        /// <summary>
+        /// Property exists for compatibility with Android API, but is  a no-op here
+        /// </summary>
         public object Activity { set => new object(); }
 
         /// <summary>
@@ -38,9 +49,12 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public Task<object> ConnectMdsAsync(Guid Uuid)
+        public async Task<object> ConnectMdsAsync(Guid Uuid)
         {
-            throw new NotImplementedException();
+            // Ensure the listener is initialized
+            await MdsConnectionListener.Current.EnsureInitializedAsync();
+            // Connect the device
+            return await new MdsConnectionService().ConnectMdsAsync(Uuid.ToString());
         }
 
         /// <summary>
@@ -89,7 +103,4 @@ namespace Plugin.Movesense
             throw new NotImplementedException();
         }
     }
-
-    public class MdsWrapper
-    { }
 }
