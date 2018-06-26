@@ -66,9 +66,9 @@ namespace MdsLibrary
             if (!mIsListening)
             {
                 // Setup the connection listener
-                MDSResponseBlock block = new MDSResponseBlock(async (arg0) => MdsConnectionListener.Current.OnListenerSetupCompleted(arg0));
+                MDSResponseBlock responseBlock = new MDSResponseBlock(async (arg0) => MdsConnectionListener.Current.OnListenerSetupCompleted(arg0));
                 MDSEventBlock eventBlock = (MDSEvent arg0) => MdsConnectionListener.Current.OnDeviceConnectionEvent(arg0);
-                ((MDSWrapper)(CrossMovesense.Current.MdsInstance)).DoSubscribe("MDS/ConnectedDevices", new Foundation.NSDictionary(), block, eventBlock);
+                ((MDSWrapper)(CrossMovesense.Current.MdsInstance)).DoSubscribe("MDS/ConnectedDevices", new Foundation.NSDictionary(), responseBlock, eventBlock);
             }
             else
             {

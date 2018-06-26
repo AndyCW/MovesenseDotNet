@@ -5,13 +5,20 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+#if __IOS__
+using Foundation;
+#endif
 
 namespace MdsLibrary.Api
 {
     /// <summary>
     /// Makes a subscription to an MdsLib resource
     /// </summary>
-    public class ApiSubscription<T> : IApiSubscription<T>
+    public class ApiSubscription<T> : 
+#if __ANDROID__
+             Java.Lang.Object, Com.Movesense.Mds.IMdsNotificationListener,
+#endif
+        IApiSubscription<T>
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
@@ -19,7 +26,9 @@ namespace MdsLibrary.Api
         private readonly string mDeviceName;
         private readonly string mPath;
         private readonly int mFrequency;
-        public static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
+        private static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
+        TaskCompletionSource<IMdsSubscription> mTcs;
+        Action<T> mNotificationCallback;
 
         /// <summary>
         /// The context for the subscription
@@ -117,27 +126,34 @@ namespace MdsLibrary.Api
             Debug.WriteLine("Unsubscribing Mds api subscription");
             Subscription?.Unsubscribe();
             Subscription = null;
-#if __IOS__
-            throw new NotImplementedException();
-#endif
         }
 
         private Task<IMdsSubscription> doSubscribe(Action<T> notificationCallback)
         {
-            TaskCompletionSource<IMdsSubscription> tcs = new TaskCompletionSource<IMdsSubscription>();
+            mTcs = new TaskCompletionSource<IMdsSubscription>();
+            mNotificationCallback = notificationCallback;
 
 #if __ANDROID__
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
             var subscription = mds.Subscribe(
                 URI_EVENTLISTENER, 
                 FormatContractToJson(Util.GetVisibleSerial(mDeviceName), mPath + mFrequency), 
-                new MdsNotificationListener(tcs, this, notificationCallback));
+                this
+                //new MdsNotificationListener(tcs, this, notificationCallback)
+                );
             Subscription = new MdsSubscription(subscription);
 #elif __IOS__
-            throw new NotImplementedException();
+            var mds = (Movesense.MDSWrapper)CrossMovesense.Current.MdsInstance;
+            Movesense.MDSResponseBlock responseBlock = new Movesense.MDSResponseBlock(async (arg0) => OnSubscribeCompleted(arg0));
+            Movesense.MDSEventBlock eventBlock = (Movesense.MDSEvent arg0) => OnSubscriptionEvent(arg0);
+
+            string path = Util.GetVisibleSerial(mDeviceName) + mPath + mFrequency;
+            mds.DoSubscribe(path, new Foundation.NSDictionary(), responseBlock, eventBlock);
+            // Save the path to the subscription for the device in the MdsSubscription
+            Subscription = new MdsSubscription(path);
 #endif
 
-            return tcs.Task;
+            return mTcs.Task;
         }
 
         private string FormatContractToJson(string serial, string uri)
@@ -151,58 +167,88 @@ namespace MdsLibrary.Api
             return sb.ToString();
         }
 
-        protected class MdsNotificationListener
 #if __ANDROID__
-            : Java.Lang.Object, Com.Movesense.Mds.IMdsNotificationListener
-#endif
+
+        /// <summary>
+        /// Callback method that Mds calls with subscription data
+        /// </summary>
+        /// <param name="s"></param>
+        public void OnNotification(string s)
         {
-            private TaskCompletionSource<IMdsSubscription> mTcs;
-            private Action<T> mNotificationCallback;
-            IApiSubscription<T> mAPISubscription;
-
-            public MdsNotificationListener(TaskCompletionSource<IMdsSubscription> tcs, IApiSubscription<T> apisubscription, Action<T> notificationCallback)
+            Debug.WriteLine($"NOTIFICATION data = {s}");
+            if (typeof(T) != typeof(String))
             {
-                mTcs = tcs;
-                mNotificationCallback = notificationCallback;
-                mAPISubscription = apisubscription;
+                T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
+                // Return the subscription to the awaiting caller
+                mTcs.TrySetResult(Subscription);
+                // Invoke the callers callback function
+                mNotificationCallback?.Invoke(result);
             }
-
-#if __ANDROID__
-            public void OnError(Com.Movesense.Mds.MdsException e)
+            else
             {
-                Debug.WriteLine($"ERROR error = {e.ToString()}");
-                mTcs.SetException(new MdsException(e.ToString(), e));
-            }
-#elif __IOS__
-            public void OnError(Exception e)
-            {
-                Debug.WriteLine($"ERROR error = {e.ToString()}");
-                mTcs.SetException(new MdsException(e.ToString(), e));
-            }
-#endif
-
-
-            public void OnNotification(string s)
-            {
-                Debug.WriteLine($"NOTIFICATION data = {s}");
-                if (typeof(T) != typeof(String))
-                {
-                    T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
-                    // Return the subscription to the awaiting caller
-                    mTcs.TrySetResult(mAPISubscription.Subscription);
-                    // Invoke the callers callback function
-                    mNotificationCallback?.Invoke(result);
-                }
-                else
-                {
-                    // Crazy code to convert a string to a 'T' where 'T' happens to be a string
-                    T result = (T)((object)s);
-                    // Return the subscription to the awaiting caller
-                    mTcs.TrySetResult(mAPISubscription.Subscription);
-                    // Invoke the callers callback function
-                    mNotificationCallback?.Invoke(result);
-                }
+                // Crazy code to convert a string to a 'T' where 'T' happens to be a string
+                T result = (T)((object)s);
+                // Return the subscription to the awaiting caller
+                mTcs.TrySetResult(Subscription);
+                // Invoke the callers callback function
+                mNotificationCallback?.Invoke(result);
             }
         }
+
+        /// <summary>
+        /// Error callback called by Mds when an error is encoubntered reading subscription data
+        /// </summary>
+        /// <param name="e"></param>
+        public void OnError(Com.Movesense.Mds.MdsException e)
+        {
+            Debug.WriteLine($"ERROR error = {e.ToString()}");
+            mTcs.SetException(new MdsException(e.ToString(), e));
+        }
+
+#elif __IOS__
+
+        private void OnSubscribeCompleted(Movesense.MDSResponse response)
+        {
+            if (response.StatusCode == 200)
+            {
+                System.Diagnostics.Debug.WriteLine("Success subscription: " + response.Description);
+                // Return the subscription to the awaiting caller
+                mTcs.TrySetResult(Subscription);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to subscribe: " + response.Description);
+                mTcs.SetException(new MdsException(response.Description));
+            }
+        }
+
+        /// <summary>
+        /// Callback method that Mds calls with subscription data
+        /// </summary>
+        /// <param name="mdsevent">Data for the subscription notification</param>
+        public void OnSubscriptionEvent(Movesense.MDSEvent mdsevent)
+        {
+            string s = ((NSString)mdsevent.BodyDictionary.ValueForKey(new NSString("Content")));
+            Debug.WriteLine($"NOTIFICATION data = {s}");
+            if (typeof(T) != typeof(String))
+            {
+                T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
+                // Return the subscription to the awaiting caller
+                mTcs.TrySetResult(Subscription);
+                // Invoke the callers callback function
+                mNotificationCallback?.Invoke(result);
+            }
+            else
+            {
+                // Crazy code to convert a string to a 'T' where 'T' happens to be a string
+                T result = (T)((object)s);
+                // Return the subscription to the awaiting caller
+                mTcs.TrySetResult(Subscription);
+                // Invoke the callers callback function
+                mNotificationCallback?.Invoke(result);
+            }
+        }
+#endif
+
     }
 }
