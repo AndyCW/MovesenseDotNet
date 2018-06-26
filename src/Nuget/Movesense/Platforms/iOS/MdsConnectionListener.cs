@@ -15,11 +15,6 @@ namespace MdsLibrary
     public sealed class MdsConnectionListener
     {
         /// <summary>
-        /// Event fires when a device connects to MdsLib
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> Connect;
-
-        /// <summary>
         /// Event fires when connection has completed for a device to MdsLib
         /// </summary>
         public event EventHandler<MdsConnectionListenerEventArgs> ConnectionComplete;
@@ -84,7 +79,7 @@ namespace MdsLibrary
             return setuplistenertcs.Task;
         }
 
-        public void OnListenerSetupCompleted(MDSResponse response)
+        private void OnListenerSetupCompleted(MDSResponse response)
         {
             if (response.StatusCode == 200)
             {
@@ -111,6 +106,7 @@ namespace MdsLibrary
             {
                 // Device connected
                 var serial = ((NSString)mdsevent.BodyDictionary.ValueForKey(new NSString("Serial")));
+                // TODO extract Uuid from the BodyDictionary["DeviceInfo"] ??
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent CONNECTED: Serial {serial}");
                 ConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
             }
@@ -134,13 +130,33 @@ namespace MdsLibrary
     public class MdsConnectionListenerEventArgs : EventArgs
     {
         /// <summary>
-        /// MAC address of the device
+        /// Serial number of the device
         /// </summary>
         public string Serial { get; set; }
 
+        /// <summary>
+        /// Uuid of the device
+        /// </summary>
+        public Guid Uuid { get; set; }
+
+        /// <summary>
+        /// Creates MdsConnectionListenerEventArgs used for reporting connect events
+        /// </summary>
+        /// <param name="serial">Serial number of the device</param>
+        /// <param name="uuid">Uuid of the device</param>
+        public MdsConnectionListenerEventArgs(string serial, Guid uuid)
+        {
+            Serial = serial;
+            Uuid = uuid;
+        }
+         /// <summary>
+        /// Creates MdsConnectionListenerEventArgs used for reporting disconnect events
+        /// </summary>
+        /// <param name="serial">Serial number of the device</param>
         public MdsConnectionListenerEventArgs(string serial)
         {
             Serial = serial;
+            Uuid = Guid.Empty;
         }
     }
 }

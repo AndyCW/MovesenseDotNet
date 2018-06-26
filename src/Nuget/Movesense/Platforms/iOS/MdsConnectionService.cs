@@ -43,7 +43,7 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public async Task<object> DisconnectMds(string Uuid)
+        public async Task<object> DisconnectMdsAsync(string Uuid)
         {
             mUuid = Uuid;
             disconnectTcs = new TaskCompletionSource<object>();
@@ -61,7 +61,7 @@ namespace MdsLibrary
 
         private void MListener_ConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.MACAddress == mUuid)
+            if (e.Uuid == new System.Guid(mUuid))
             {
                 connectiontcs?.TrySetResult(null);
                 mListener.ConnectionComplete -= MListener_ConnectionComplete;
@@ -70,11 +70,14 @@ namespace MdsLibrary
 
         private void MListener_Disconnect(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.MACAddress == mUuid)
-            {
+            // TODO review this - Disconnection on iOS only returns Serial number in response block, 
+            // yet disconnection is done using Uuid -how do we know the intended device has disconnected?
+
+            //if (e.MACAddress == mUuid)
+            //{
                 disconnectTcs?.TrySetResult(null);
                 mListener.Disconnect -= MListener_Disconnect;
-            }
+            //}
         }
     }
 }

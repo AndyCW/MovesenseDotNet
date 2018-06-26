@@ -102,6 +102,10 @@ namespace MdsLibrary
         /// </summary>
         public string MACAddress { get; set; }
 
+        /// <summary>
+        /// Create event args for reporting connection events
+        /// </summary>
+        /// <param name="macAddress">MAC address of the device</param>
         public MdsConnectionListenerEventArgs(string macAddress)
         {
             MACAddress = macAddress;

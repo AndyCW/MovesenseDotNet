@@ -53,7 +53,7 @@
       <Version>6.0.3</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Movesense">
-      <Version>0.4.1-alpha</Version>
+      <Version>0.5.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.12</Version>

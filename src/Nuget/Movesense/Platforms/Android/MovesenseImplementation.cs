@@ -72,7 +72,7 @@ namespace Plugin.Movesense
         /// <returns>null</returns>
         public Task<object> DisconnectMdsAsync(Guid Uuid)
         {
-            return new MdsConnectionService().DisconnectMds(GetMACAddressFromUuid(Uuid));
+            return new MdsConnectionService().DisconnectMdsAsync(GetMACAddressFromUuid(Uuid));
         }
 
         /// <summary>

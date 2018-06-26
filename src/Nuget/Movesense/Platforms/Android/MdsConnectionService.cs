@@ -37,7 +37,7 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="MACAddress">MAC address of the device</param>
         /// <returns></returns>
-        public Task<object> DisconnectMds(string MACAddress)
+        public Task<object> DisconnectMdsAsync(string MACAddress)
         {
             mMACAddress = MACAddress;
             disconnectTcs = new TaskCompletionSource<object>();

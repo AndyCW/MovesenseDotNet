@@ -1,4 +1,5 @@
 ﻿using MdsLibrary;
+using MdsLibrary.Api;
 using Movesense;
 using Plugin.Movesense.Api;
 using System;
@@ -62,9 +63,9 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        public Task<object> DisconnectMdsAsync(Guid Uuid)
+        public async Task<object> DisconnectMdsAsync(Guid Uuid)
         {
-            throw new NotImplementedException();
+            return await new MdsConnectionService().DisconnectMdsAsync(Uuid.ToString());
         }
 
         /// <summary>
@@ -74,9 +75,9 @@ namespace Plugin.Movesense
         /// <param name="restOp">The type of REST call to make to MdsLib</param>
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
-        public Task ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null)
+        public async Task ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null)
         {
-            throw new NotImplementedException();
+            await new ApiCallAsync(deviceName, restOp, path, body).CallAsync();
         }
         /// <summary>
         /// Function to make Mds API call that returns a value of type T

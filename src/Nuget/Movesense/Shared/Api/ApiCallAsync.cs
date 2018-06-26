@@ -4,8 +4,12 @@ using Plugin.Movesense.Api;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 #if __ANDROID__
 using Com.Movesense.Mds;
+#endif
+#if __IOS__
+using Foundation;
 #endif
 
 namespace MdsLibrary.Api
@@ -14,6 +18,9 @@ namespace MdsLibrary.Api
     /// Makes an APICall to MdsLib for those MdsLib methods that do not return data
     /// </summary>
     public class ApiCallAsync
+#if __ANDROID__
+            : Java.Lang.Object, IMdsResponseListener
+#endif
     {
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
@@ -116,59 +123,99 @@ namespace MdsLibrary.Api
             var serial = Util.GetVisibleSerial(mDeviceName);
             if (mRestOp == MdsOp.POST)
             {
-                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(mTcs));
+                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(mTcs));
+                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, this);
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, new MdsResponseListener(mTcs));
+                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, this);
             }
             else if (mRestOp == MdsOp.PUT)
             {
-                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, new MdsResponseListener(mTcs));
+                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, this);
+            }
+#endif
+
+#if __IOS__
+            var mds = (Movesense.MDSWrapper)CrossMovesense.Current.MdsInstance;
+            var serial = Util.GetVisibleSerial(mDeviceName);
+            if (mRestOp == MdsOp.POST)
+            {
+                NSDictionary bodyDict = null;
+                if (!string.IsNullOrEmpty(mBody))
+                {
+                    bodyDict = JsonConvert.DeserializeObject<NSDictionary>(mBody);
+                }
+                mds.DoPost(serial + mPath, bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+            }
+            else if (mRestOp == MdsOp.GET)
+            {
+                mds.DoGet(serial + mPath, null, completion: (arg0) => CallCompletionCallback(arg0));
+            }
+            else if (mRestOp == MdsOp.DELETE)
+            {
+                mds.DoDelete(serial + mPath, null, completion: (arg0) => CallCompletionCallback(arg0));
+            }
+            else if (mRestOp == MdsOp.PUT)
+            {
+                NSDictionary bodyDict = null;
+                if (!string.IsNullOrEmpty(mBody))
+                {
+                    bodyDict = JsonConvert.DeserializeObject<NSDictionary>(mBody);
+                }
+                mds.DoPut(serial + mPath, bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
 #endif
             return mTcs.Task;
         }
 
-        /// <summary>
-        /// MdsResponseListener called by MdsLib with result of the call (Internal)
-        /// </summary>
-        protected class MdsResponseListener
+
 #if __ANDROID__
-            : Java.Lang.Object, IMdsResponseListener
-#endif
-        {
-            private TaskCompletionSource<bool> mTcs;
 
-            public MdsResponseListener(TaskCompletionSource<bool> tcs)
-            {
-                mTcs = tcs;
-            }
+#region IMdsResponseListener implementation
 
-
-            public void OnSuccess(string s)
+        /// <summary>
+        /// Success callback for API calls on Android
+        /// </summary>
+        /// <param name="s">return value as string</param>
+        public void OnSuccess(string s)
             {
                 Debug.WriteLine($"SUCCESS result = {s}");
                 mTcs.SetResult(true);
             }
 
-#if __ANDROID__
+        /// <summary>
+        /// Error callback for API calls on Android
+        /// </summary>
+        /// <param name="e">exception</param>
             public void OnError(Com.Movesense.Mds.MdsException e)
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");
                 mTcs.SetException(new MdsException(e.ToString(), e));
             }
+#endregion
+
 #elif __IOS__
-            public void OnError(Exception e)
+        /// <summary>
+        /// Callback for MDS API calls on iOS
+        /// </summary>
+        /// <param name="completion"></param>
+        public void CallCompletionCallback(Movesense.MDSResponse completion)
+        {
+            if (completion.StatusCode == 200)
             {
-                Debug.WriteLine($"ERROR error = {e.ToString()}");
-                mTcs.SetException(new MdsException(e.ToString(), e));
+                // Success
+                mTcs.SetResult(true);
             }
-#endif
+            else
+            {
+                Debug.WriteLine($"ERROR error = {completion.Description}");
+                mTcs.SetException(new MdsException(completion.Description));
+            }
         }
+#endif
     }
 }
