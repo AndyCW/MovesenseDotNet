@@ -19,17 +19,16 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public async Task<object> ConnectMdsAsync(string Uuid)
+        public Task<object> ConnectMdsAsync(string Uuid)
         {
             mUuid = Uuid;
             connectiontcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             // Ensure the connection listener is setup
-            await mListener.EnsureInitializedAsync();
+            mListener.EnsureInitializedAsync().Wait();
 
             // Listen for connect/disconnect events
-            // TODO how do we filter connect events to make sure they are for this device? Does DeviceInfo on connection have Uuid in it?
             mListener.ConnectionComplete += MListener_ConnectionComplete;
 
             // Start the device connection
@@ -43,14 +42,14 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public async Task<object> DisconnectMdsAsync(string Uuid)
+        public Task<object> DisconnectMdsAsync(string Uuid)
         {
             mUuid = Uuid;
             disconnectTcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             // Ensure the connection listener is setup
-            await mListener.EnsureInitializedAsync();
+            mListener.EnsureInitializedAsync().Wait();
 
             mListener.Disconnect += MListener_Disconnect;
 

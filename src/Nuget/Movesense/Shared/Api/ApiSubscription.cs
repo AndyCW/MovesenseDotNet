@@ -144,10 +144,10 @@ namespace MdsLibrary.Api
             Subscription = new MdsSubscription(subscription);
 #elif __IOS__
             var mds = (Movesense.MDSWrapper)CrossMovesense.Current.MdsInstance;
-            Movesense.MDSResponseBlock responseBlock = new Movesense.MDSResponseBlock(async (arg0) => OnSubscribeCompleted(arg0));
+            Movesense.MDSResponseBlock responseBlock = new Movesense.MDSResponseBlock((arg0) => OnSubscribeCompleted(arg0));
             Movesense.MDSEventBlock eventBlock = (Movesense.MDSEvent arg0) => OnSubscriptionEvent(arg0);
 
-            string path = Util.GetVisibleSerial(mDeviceName) + mPath + mFrequency;
+            string path = Util.GetVisibleSerial(mDeviceName) + "/" + mPath + mFrequency;
             mds.DoSubscribe(path, new Foundation.NSDictionary(), responseBlock, eventBlock);
             // Save the path to the subscription for the device in the MdsSubscription
             Subscription = new MdsSubscription(path);
@@ -228,7 +228,8 @@ namespace MdsLibrary.Api
         /// <param name="mdsevent">Data for the subscription notification</param>
         public void OnSubscriptionEvent(Movesense.MDSEvent mdsevent)
         {
-            string s = ((NSString)mdsevent.BodyDictionary.ValueForKey(new NSString("Content")));
+            var data = mdsevent.BodyData;
+            NSString s = new NSString(data, NSStringEncoding.UTF8);
             Debug.WriteLine($"NOTIFICATION data = {s}");
             if (typeof(T) != typeof(String))
             {

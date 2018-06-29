@@ -79,6 +79,7 @@ namespace Plugin.Movesense
         {
             await new ApiCallAsync(deviceName, restOp, path, body).CallAsync();
         }
+
         /// <summary>
         /// Function to make Mds API call that returns a value of type T
         /// </summary>
@@ -86,9 +87,9 @@ namespace Plugin.Movesense
         /// <param name="restOp">The type of REST call to make to MdsLib</param>
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
-        public Task<T> ApiCallAsync<T>(string deviceName, MdsOp restOp, string path, string body = null)
+        public async Task<T> ApiCallAsync<T>(string deviceName, MdsOp restOp, string path, string body = null)
         {
-            throw new NotImplementedException();
+            return await new ApiCallAsync<T>(deviceName, restOp, path, body).CallAsync();
         }
 
         /// <summary>
@@ -99,9 +100,8 @@ namespace Plugin.Movesense
         /// <param name="frequency">Sample rate, e.g. 52 for 52Hz</param>
         /// <param name="notificationCallback">Callback function that takes parameter of type T, where T is the return type from the subscription notifications</param>
         public async Task<IMdsSubscription> ApiSubscriptionAsync<T>(string deviceName, string path, int frequency, Action<T> notificationCallback)
-
         {
-            throw new NotImplementedException();
+            return await new ApiSubscription<T>(deviceName, path, frequency).SubscribeAsync(notificationCallback);
         }
     }
 }

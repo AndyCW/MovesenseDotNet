@@ -20,9 +20,19 @@ namespace MovesenseDemo
 
         private void OnClicked(object sender, EventArgs e)
         {
-            this.scan = this.BleAdapter
-                .Scan()
-                .Subscribe(this.OnScanResult);
+            
+            CrossBleAdapter.Current.WhenStatusChanged().Subscribe(status =>
+            {
+                if (status == AdapterStatus.PoweredOn)
+                {
+                    scan = this.BleAdapter.Scan()
+                    .Subscribe(this.OnScanResult);
+                }
+            });
+
+            //this.scan = this.BleAdapter
+                //.ScanWhenAdap()
+                //.Subscribe(this.OnScanResult);
         }
 
         public void StopScanning()
@@ -39,11 +49,8 @@ namespace MovesenseDemo
                 {
                     StopScanning();
 
-                    // Bluetooth connect
-                    var sensor = result.Device;
-                    sensor.Connect();
-
                     // Now do the Mds connection
+                    var sensor = result.Device;
                     var movesense = Plugin.Movesense.CrossMovesense.Current;
                     await movesense.ConnectMdsAsync(sensor.Uuid);
 
@@ -51,15 +58,20 @@ namespace MovesenseDemo
                     var info = await movesense.GetDeviceInfoAsync(sensor.Name);
                     var batt = await movesense.GetBatteryLevelAsync(sensor.Name);
 
+                    // Turn on the LED
+                    await movesense.SetLedStateAsync(sensor.Name, 0, true);
+
                     await DisplayAlert(
                         "Success", 
                         $"Communicated with device {sensor.Name}, firmware version is: {info.DeviceInfo.Sw}, battery: {batt.ChargePercent}", 
                         "OK");
 
+                    // Turn the LED off again
+                    await movesense.SetLedStateAsync(sensor.Name, 0, false);
+
                     // Disconnect Mds
                     await movesense.DisconnectMdsAsync(sensor.Uuid);
-                    // Disconnect Bluetooth
-                    sensor.CancelConnection();
+
                 }
             }
         }

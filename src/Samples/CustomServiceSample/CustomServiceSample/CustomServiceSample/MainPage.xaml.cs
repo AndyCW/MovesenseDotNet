@@ -31,9 +31,14 @@ namespace CustomServiceSample
 
             deviceListView.ItemsSource = MovesenseDevices;
 
-            this.scan = this.BleAdapter
-                .Scan()
-                .Subscribe(this.OnScanResult);
+            CrossBleAdapter.Current.WhenStatusChanged().Subscribe(status =>
+            {
+                if (status == AdapterStatus.PoweredOn)
+                {
+                    scan = this.BleAdapter.Scan()
+                    .Subscribe(this.OnScanResult);
+                }
+            });
         }
 
         private async void OnClicked(object sender, EventArgs e)

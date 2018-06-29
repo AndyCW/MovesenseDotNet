@@ -52,9 +52,6 @@
     <PackageReference Include="Plugin.BluetoothLE">
       <Version>6.0.3</Version>
     </PackageReference>
-    <PackageReference Include="Plugin.Movesense">
-      <Version>0.5.0-beta</Version>
-    </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.12</Version>
     </PackageReference>
@@ -100,6 +97,12 @@
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
     <Folder Include="Resources\drawable\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Nuget\Movesense\Movesense.csproj">
+      <Project>{E8C9EF5B-024C-4222-9B36-0832A2ED36DB}</Project>
+      <Name>Movesense</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\MovesenseDemo\MovesenseDemo.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

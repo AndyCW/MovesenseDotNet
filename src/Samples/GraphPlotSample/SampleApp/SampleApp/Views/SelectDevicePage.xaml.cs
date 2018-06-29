@@ -33,5 +33,10 @@ namespace SampleApp.Views
             VM.StopScanning();
             base.OnDisappearing();
         }
+
+        void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        {
+            VM.HandleSelectedItem(((MovesenseDeviceViewModel)e.SelectedItem).Uuid);
+        }
     }
 }

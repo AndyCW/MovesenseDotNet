@@ -16,13 +16,9 @@ namespace SampleApp.ViewModels
 
         public ObservableCollection<MovesenseDeviceViewModel> Devices { private set; get; }
 
-        public ICommand UpdateCheckBoxCommand { get; set; }
-
         public SelectDevicePageViewModel()
         {
             Devices = new ObservableCollection<MovesenseDeviceViewModel>();
-
-            UpdateCheckBoxCommand = new Xamarin.Forms.Command<Guid>((Id) => UpdateCheckBox(Id));
 
             Application.Current.Properties.Remove("SelectedSensorId");
         }
@@ -32,9 +28,9 @@ namespace SampleApp.ViewModels
             Application.Current.Properties.Remove("SelectedSensorId");
         }
 
-        private void UpdateCheckBox(Guid id)
+        public void HandleSelectedItem(Guid id)
         {
-             MovesenseDeviceViewModel item = Devices.First(d => d.Uuid == id);
+            MovesenseDeviceViewModel item = Devices.First(d => d.Uuid == id);
             item.IsSelected = !item.IsSelected;
             if (item.IsSelected)
             {
@@ -51,9 +47,14 @@ namespace SampleApp.ViewModels
         {
             this.Devices.Clear();
 
-            this.scan = this.BleAdapter
-                .Scan()
-                .Subscribe(this.OnScanResult);
+            CrossBleAdapter.Current.WhenStatusChanged().Subscribe(status =>
+            {
+                if (status == AdapterStatus.PoweredOn)
+                {
+                    scan = this.BleAdapter.Scan()
+                    .Subscribe(this.OnScanResult);
+                }
+            });
         }
 
         public void StopScanning()

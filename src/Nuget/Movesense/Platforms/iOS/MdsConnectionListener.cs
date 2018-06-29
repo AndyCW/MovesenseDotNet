@@ -66,7 +66,7 @@ namespace MdsLibrary
             if (!mIsListening)
             {
                 // Setup the connection listener
-                MDSResponseBlock responseBlock = new MDSResponseBlock(async (arg0) => MdsConnectionListener.Current.OnListenerSetupCompleted(arg0));
+                MDSResponseBlock responseBlock = new MDSResponseBlock((arg0) => MdsConnectionListener.Current.OnListenerSetupCompleted(arg0));
                 MDSEventBlock eventBlock = (MDSEvent arg0) => MdsConnectionListener.Current.OnDeviceConnectionEvent(arg0);
                 ((MDSWrapper)(CrossMovesense.Current.MdsInstance)).DoSubscribe("MDS/ConnectedDevices", new Foundation.NSDictionary(), responseBlock, eventBlock);
             }
@@ -105,10 +105,13 @@ namespace MdsLibrary
             if (method == new NSString("POST"))
             {
                 // Device connected
-                var serial = ((NSString)mdsevent.BodyDictionary.ValueForKey(new NSString("Serial")));
-                // TODO extract Uuid from the BodyDictionary["DeviceInfo"] ??
+                var bodyDict = (NSDictionary)mdsevent.BodyDictionary.ValueForKey(new NSString("Body"));
+                var serial = (NSString)bodyDict.ValueForKey(new NSString("Serial"));
+                var connDict = (NSDictionary)bodyDict.ValueForKey(new NSString("Connection"));
+                var uuid = (NSString)connDict.ValueForKey(new NSString("UUID"));
+
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent CONNECTED: Serial {serial}");
-                ConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                ConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, new Guid(uuid)));
             }
             else if (method == new NSString("DEL"))
             {

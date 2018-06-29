@@ -142,29 +142,33 @@ namespace MdsLibrary.Api
 #if __IOS__
             var mds = (Movesense.MDSWrapper)CrossMovesense.Current.MdsInstance;
             var serial = Util.GetVisibleSerial(mDeviceName);
+            NSDictionary bodyDict = new NSDictionary();
+
             if (mRestOp == MdsOp.POST)
             {
-                NSDictionary bodyDict = null;
                 if (!string.IsNullOrEmpty(mBody))
                 {
-                    bodyDict = JsonConvert.DeserializeObject<NSDictionary>(mBody);
+                    NSData data = NSData.FromString(mBody);
+                    NSError error = new NSError();
+                    bodyDict = (NSDictionary)NSJsonSerialization.Deserialize(data, NSJsonReadingOptions.MutableContainers, out error);
                 }
-                mds.DoPost(serial + mPath, bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoPost(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.DoGet(serial + mPath, null, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoGet(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.DoDelete(serial + mPath, null, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoDelete(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.PUT)
             {
-                NSDictionary bodyDict = null;
                 if (!string.IsNullOrEmpty(mBody))
                 {
-                    bodyDict = JsonConvert.DeserializeObject<NSDictionary>(mBody);
+                    NSData data = NSData.FromString(mBody);
+                    NSError error = new NSError();
+                    bodyDict = (NSDictionary)NSJsonSerialization.Deserialize(data, NSJsonReadingOptions.MutableContainers, out error);
                 }
                 mds.DoPut(serial + mPath, bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
