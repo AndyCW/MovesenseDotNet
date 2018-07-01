@@ -152,6 +152,9 @@
     <PackageReference Include="Plugin.BluetoothLE">
       <Version>6.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Plugin.Movesense">
+      <Version>1.0.1-beta</Version>
+    </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.12</Version>
     </PackageReference>
@@ -164,10 +167,6 @@
     <ProjectReference Include="..\CustomServiceSample\CustomServiceSample.csproj">
       <Project>{A9FB72E1-1192-4457-8D59-154E4AEDFE2B}</Project>
       <Name>CustomServiceSample</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\BasicDemo\MovesenseDebug\MovesenseDebug.csproj">
-      <Project>{3DC6C1C6-5DFA-45E2-B8C6-5365CFA3A48C}</Project>
-      <Name>MovesenseDebug</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

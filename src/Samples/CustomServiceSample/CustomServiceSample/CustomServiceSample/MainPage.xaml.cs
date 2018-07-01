@@ -31,14 +31,30 @@ namespace CustomServiceSample
 
             deviceListView.ItemsSource = MovesenseDevices;
 
-            CrossBleAdapter.Current.WhenStatusChanged().Subscribe(status =>
+            StatusLabel.Text = "No device selected";
+
+            if (BleAdapter.Status == AdapterStatus.PoweredOn)
             {
-                if (status == AdapterStatus.PoweredOn)
+                DoScan();
+            }
+            else
+            {
+                BleAdapter.WhenStatusChanged().Subscribe(status =>
                 {
-                    scan = this.BleAdapter.Scan()
-                    .Subscribe(this.OnScanResult);
-                }
-            });
+                    if (status == AdapterStatus.PoweredOn)
+                    {
+                        DoScan();
+                    }
+                });
+            }
+        }
+
+        private void DoScan()
+        {
+            StatusLabel.Text = "Scanning for devices...";
+
+            scan = this.BleAdapter.Scan()
+            .Subscribe(this.OnScanResult);
         }
 
         private async void OnClicked(object sender, EventArgs e)
@@ -47,8 +63,8 @@ namespace CustomServiceSample
             {
                 StopScanning();
 
-                // Bluetooth connect
-                mSelectedDevice.Connect();
+                StatusLabel.Text = $"Connecting to device {mSelectedDevice.Name}";
+
 
                 // Now do the Mds connection
                 var movesense = Plugin.Movesense.CrossMovesense.Current;
@@ -56,11 +72,15 @@ namespace CustomServiceSample
 
                 // Talk to the device
                 // First get details of the app running on the device
+                StatusLabel.Text = "Querying app details";
+
                 var info = await movesense.GetAppInfoAsync(mSelectedDevice.Name);
 
                 // Now try to get the HelloWorld resource
                 try
                 {
+                    StatusLabel.Text = "Attempting to call HelloWorld service";
+
                     var helloWorldResponse = await movesense.ApiCallAsync<string>(mSelectedDevice.Name, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
                     await DisplayAlert(
                         "Success",
@@ -80,8 +100,9 @@ namespace CustomServiceSample
 
                 // Disconnect Mds
                 await movesense.DisconnectMdsAsync(mSelectedDevice.Uuid);
-                //Disconnect Bluetooth
-                mSelectedDevice.CancelConnection();
+
+                StatusLabel.Text = "Disconnected from device";
+
             }
         }
 

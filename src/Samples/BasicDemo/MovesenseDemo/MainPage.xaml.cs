@@ -20,19 +20,27 @@ namespace MovesenseDemo
 
         private void OnClicked(object sender, EventArgs e)
         {
-            
-            CrossBleAdapter.Current.WhenStatusChanged().Subscribe(status =>
+            if (BleAdapter.Status == AdapterStatus.PoweredOn)
             {
-                if (status == AdapterStatus.PoweredOn)
+                DoScan();
+            }
+            else
+            {
+                BleAdapter.WhenStatusChanged().Subscribe(status =>
                 {
-                    scan = this.BleAdapter.Scan()
-                    .Subscribe(this.OnScanResult);
-                }
-            });
+                    if (status == AdapterStatus.PoweredOn)
+                    {
+                        DoScan();
+                    }
+                });
+            }
+        }
 
-            //this.scan = this.BleAdapter
-                //.ScanWhenAdap()
-                //.Subscribe(this.OnScanResult);
+        private void DoScan()
+        {
+            StatusLabel.Text = "Scanning for devices...";
+            scan = this.BleAdapter.Scan()
+            .Subscribe(this.OnScanResult);
         }
 
         public void StopScanning()
@@ -51,14 +59,18 @@ namespace MovesenseDemo
 
                     // Now do the Mds connection
                     var sensor = result.Device;
+                    StatusLabel.Text = $"Connecting to device {sensor.Name}";
                     var movesense = Plugin.Movesense.CrossMovesense.Current;
                     await movesense.ConnectMdsAsync(sensor.Uuid);
 
                     // Talk to the device
+                    StatusLabel.Text = "Getting device info";
                     var info = await movesense.GetDeviceInfoAsync(sensor.Name);
+                    StatusLabel.Text = "Getting battery level";
                     var batt = await movesense.GetBatteryLevelAsync(sensor.Name);
 
                     // Turn on the LED
+                    StatusLabel.Text = "Turning on LED";
                     await movesense.SetLedStateAsync(sensor.Name, 0, true);
 
                     await DisplayAlert(
@@ -67,10 +79,13 @@ namespace MovesenseDemo
                         "OK");
 
                     // Turn the LED off again
+                    StatusLabel.Text = "Turning off LED";
                     await movesense.SetLedStateAsync(sensor.Name, 0, false);
 
                     // Disconnect Mds
+                    StatusLabel.Text = "Disconnecting";
                     await movesense.DisconnectMdsAsync(sensor.Uuid);
+                    StatusLabel.Text = "Disconnected";
 
                 }
             }

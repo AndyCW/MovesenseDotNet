@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MovesenseBindingiOS</id>
-    <version>0.2-alpha</version>
+    <version>1.0.0</version>
     <title>$title$</title>
     <authors>Anze Vodovnik</authors>
     <owners>Anze Vodovnik, Andy Wigley</owners>
@@ -16,6 +16,6 @@
     <tags>Xamarin Plugin Movesense</tags>
   </metadata>
   <files>
-    <file src="bin/Release/Movesense.dll" target="lib/Xamarin.IOS10"/>
+    <file src="bin/Release/MovesenseBindingiOS.dll" target="lib/Xamarin.IOS10"/>
   </files>
 </package>

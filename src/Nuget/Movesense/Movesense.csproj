@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid71;Xamarin.iOS10</TargetFrameworks>
     <AssemblyName>Plugin.Movesense</AssemblyName>
     <RootNamespace>Plugin.Movesense</RootNamespace>
     <PackageId>Plugin.Movesense</PackageId>
@@ -10,7 +10,7 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>1.0.0</Version>
-    <PackageVersion>0.5.1-beta</PackageVersion>
+    <PackageVersion>1.0.1-beta</PackageVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
     <DefineConstants>$(DefineConstants);</DefineConstants>
@@ -19,7 +19,6 @@
     <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     
-    <!--TODO: Fill these in-->
     <PackageLicenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/AndyCW/MovesenseDotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
@@ -31,7 +30,7 @@
     <Summary>Summary of nuget</Summary>
     <Description>Movesense API for Xamarin</Description>
 
-    <Owners>YOU</Owners>
+    <Owners>Andy Wigley</Owners>
     <Authors>Andy Wigley</Authors>
     <Copyright>Copyright 2018</Copyright>
     <Company>Microsoft Corp.</Company>
@@ -44,7 +43,7 @@
     <Compile Include="Shared\**\*.cs" />
   </ItemGroup>
 
-  <!--<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
@@ -53,15 +52,18 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
     <Compile Include="Platforms\Android\**\*.cs" />
     <PackageReference Include="MovesenseBindingAndroid" Version="0.0.2-alpha" />
-  </ItemGroup>-->
-
-  
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
-    <Compile Include="Platforms\iOS\**\*.cs" />
-    <PackageReference Include="MovesenseBindingiOS" Version="0.2.0-alpha" />    
   </ItemGroup>
 
-  
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
+    <Compile Include="Platforms\iOS\**\*.cs" />
+    <PackageReference Include="MovesenseBindingiOS">
+      <Version>1.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+
+
+
   <ItemGroup>
     <None Remove="Shared\Api\HttpEnum.cs" />
     <None Remove="Shared\Api\IApiSubscription.cs" />

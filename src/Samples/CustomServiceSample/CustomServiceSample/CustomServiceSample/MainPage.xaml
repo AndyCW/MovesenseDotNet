@@ -8,6 +8,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ListView x:Name="deviceListView" Margin="10,0,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
                   ItemSelected="deviceListView_ItemSelected">
@@ -23,6 +24,7 @@
         </ListView>
         <Button Grid.Row="1" Margin="10" Text="Go" VerticalOptions="End"  Clicked="OnClicked"
                         HorizontalOptions="FillAndExpand" />
+        <Label x:Name="StatusLabel" Margin="10,0,0,10" Grid.Row="2"/>
     </Grid>
 
 </ContentPage>

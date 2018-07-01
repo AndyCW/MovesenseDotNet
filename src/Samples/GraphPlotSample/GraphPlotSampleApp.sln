@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp.Android", "Sample
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SampleApp\SampleApp\SampleApp.projitems*{1a397b2c-6f07-4430-a033-75700a443b9b}*SharedItemsImports = 4
 		SampleApp\SampleApp\SampleApp.projitems*{d2c56dbc-90d4-43b3-adae-051da8eb3691}*SharedItemsImports = 13
 		SampleApp\SampleApp\SampleApp.projitems*{e1ca5910-b6ca-4b11-977b-c2dd973a3e62}*SharedItemsImports = 4
 	EndGlobalSection

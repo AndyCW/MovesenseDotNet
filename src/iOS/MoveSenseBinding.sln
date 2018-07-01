@@ -4,7 +4,7 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NothingApp2", "NothingApp2\NothingApp2.csproj", "{05BB873C-9957-4AC6-81C7-D2FDC1605A3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movesense", "Movesense\Movesense.csproj", "{A32D6356-4081-4825-977A-3ED0C9F12C65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesenseBindingiOS", "Movesense\MovesenseBindingiOS.csproj", "{A32D6356-4081-4825-977A-3ED0C9F12C65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
