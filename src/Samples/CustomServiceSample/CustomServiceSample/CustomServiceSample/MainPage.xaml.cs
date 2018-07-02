@@ -119,7 +119,7 @@ namespace CustomServiceSample
             {
                 if (device.Name.StartsWith("Movesense"))
                 {
-                    if (!MovesenseDevices.Contains(device))
+                    if (MovesenseDevices.FirstOrDefault((d)=> d.Name == device.Name) == null)
                     {
                         MovesenseDevices.Add(device);
                         Debug.WriteLine($"Discovered device {device.Name}");

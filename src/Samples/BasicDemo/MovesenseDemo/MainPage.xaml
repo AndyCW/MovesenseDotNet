@@ -5,7 +5,7 @@
              x:Class="MovesenseDemo.MainPage">
 
         <StackLayout>
-            <Button Text="Go" VerticalOptions="Center"  Clicked="OnClicked"
+            <Button Text="Go" Margin="0,50,0,0" Clicked="OnClicked"
                         HorizontalOptions="FillAndExpand" />
         <Label x:Name="StatusLabel" Margin="10,20,0,0"/>
     </StackLayout>

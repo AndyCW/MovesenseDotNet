@@ -229,8 +229,10 @@ namespace MdsLibrary.Api
                 }
                 else
                 {
+                    // First convert NSString result to a .NET string
+                    String netS = s.ToString();
                     // Crazy code to convert a string to a 'T' where 'T' happens to be a string
-                    T result = (T)((object)s);
+                    T result = (T)((object)netS);
                     mTcs.SetResult(result);
                 }
             }
