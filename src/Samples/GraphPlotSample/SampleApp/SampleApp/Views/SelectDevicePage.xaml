@@ -16,14 +16,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <Grid Padding="5,5,5,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
                             <Label Text="{Binding Name}" VerticalOptions="Center" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium"/>
-                            <BoxView Grid.Column="1" HeightRequest="20" WidthRequest="20" 
-                                     BackgroundColor="{Binding DeviceStatus, Converter={StaticResource devicestatusconverter}}">
-                            </BoxView>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
