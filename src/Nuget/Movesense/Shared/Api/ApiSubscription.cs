@@ -25,7 +25,6 @@ namespace MdsLibrary.Api
         private int retries = 0;
         private readonly string mDeviceName;
         private readonly string mPath;
-        private readonly int mFrequency;
         private static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
         TaskCompletionSource<IMdsSubscription> mTcs;
         Action<T> mNotificationCallback;
@@ -39,13 +38,18 @@ namespace MdsLibrary.Api
         /// Utility class for API subscriptions
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
-        /// <param name="path">The path of the MdsLib resource</param>
-        /// <param name="frequency">Sample rate, e.g. 52 for 52Hz</param>
-        public ApiSubscription(string deviceName, string path, int frequency)
+        /// <param name="path">The path of the MdsLib resource, for example "/Meas/Acc/52/Subscription" to subscribe to accelerometer at 52Hz</param>
+        public ApiSubscription(string deviceName, string path)
         {
+            if (string.IsNullOrEmpty(deviceName)) throw new InvalidOperationException("Required parameter deviceName must have value");
+            if (string.IsNullOrEmpty(path)) throw new InvalidOperationException("Required parameter path must have value");
+
             mDeviceName = deviceName;
             mPath = path;
-            mFrequency = frequency;
+            if (mPath.Substring(0,1) != "/")
+            {
+                mPath = "/" + mPath;
+            }
 
             // Define the built-in implementation of the retry function
             // This just retries 2 times, regardless of the exception thrown
@@ -137,9 +141,8 @@ namespace MdsLibrary.Api
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
             var subscription = mds.Subscribe(
                 URI_EVENTLISTENER, 
-                FormatContractToJson(Util.GetVisibleSerial(mDeviceName), mPath + mFrequency), 
+                FormatContractToJson(Util.GetVisibleSerial(mDeviceName), mPath), 
                 this
-                //new MdsNotificationListener(tcs, this, notificationCallback)
                 );
             Subscription = new MdsSubscription(subscription);
 #elif __IOS__
@@ -147,7 +150,7 @@ namespace MdsLibrary.Api
             Movesense.MDSResponseBlock responseBlock = new Movesense.MDSResponseBlock((arg0) => OnSubscribeCompleted(arg0));
             Movesense.MDSEventBlock eventBlock = (Movesense.MDSEvent arg0) => OnSubscriptionEvent(arg0);
 
-            string path = Util.GetVisibleSerial(mDeviceName) + "/" + mPath + mFrequency;
+            string path = Util.GetVisibleSerial(mDeviceName) + mPath;
             mds.DoSubscribe(path, new Foundation.NSDictionary(), responseBlock, eventBlock);
             // Save the path to the subscription for the device in the MdsSubscription
             Subscription = new MdsSubscription(path);
@@ -161,7 +164,6 @@ namespace MdsLibrary.Api
             StringBuilder sb = new StringBuilder();
             sb.Append("{\"Uri\": \"");
             sb.Append(serial);
-            sb.Append("/");
             sb.Append(uri);
             sb.Append("\"}");
             return sb.ToString();

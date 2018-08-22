@@ -21,12 +21,17 @@ namespace MdsLibrary.Api
         /// <param name="notificationCallback">Callback function that the MdsLib calls with periodic notifications</param>
         /// <returns></returns>
         Task<IMdsSubscription> SubscribeAsync(Action<T> notificationCallback);
+
         /// <summary>
         /// Subscribe to the resource. If the initial subscription throws an exception, retry up to two times.
         /// </summary>
         /// <param name="notificationCallback">Callback function that the MdsLib calls with periodic notifications</param>
         /// <returns></returns>
         Task<IMdsSubscription> SubscribeWithRetryAsync(Action<T> notificationCallback);
+
+        /// <summary>
+        /// Unsubscribe to the resource
+        /// </summary>
         void UnSubscribe();
     }
 }

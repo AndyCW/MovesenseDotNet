@@ -9,12 +9,15 @@ namespace Plugin.Movesense
 {
     public partial class MovesenseImplementation
     {
-        private static readonly string LOGGER_ENTRIES_PATH = "/Mem/Logbook/Entries";
+        private static readonly string LOGBOOK_ENTRIES_PATH = "/Mem/Logbook/Entries";
         private static readonly string ACC_INFO_PATH = "/Meas/Acc/Info";
         private static readonly string APP_INFO_PATH = "/Info/App";
         private static readonly string BATTERY_PATH = "/System/Energy/Level";
         private static readonly string LOGBOOK_DATA_PATH = "/Mem/Logbook/byId/{0}/Data";
-        private static readonly string URI_MDS_LOGBOOK_DATA = "/Mem/Logbook/byId/{0}/Descriptors";
+        private static readonly string MDS_LOGBOOK_PREFIX = "MDS/Logbook/";
+        private static readonly string MDS_LOGBOOK_DATA_PATH = "/byId/{0}/Data";
+        private static readonly string MDS_LOGBOOK_ENTRIES_PATH = "/Entries";
+        private static readonly string LOGBOOK_DATA = "/Mem/Logbook/byId/{0}/Descriptors";
         private static readonly string INFO_PATH = "/Info";
         private static readonly string GYRO_INFO_PATH = "/Meas/Gyro/Info";
         private static readonly string IMU_INFO_PATH = "/Meas/IMU/Info";
@@ -24,11 +27,12 @@ namespace Plugin.Movesense
         private static readonly string MAG_INFO_PATH = "/Meas/Magn/Info";
         private static readonly string TIME_PATH = "/Time";
         private static readonly string DATALOGGER_CONFIG_PATH = "/Mem/DataLogger/Config/";
-        private static readonly string ACCELEROMETER_PATH = "Meas/Acc/";
-        private static readonly string GYROMETER_PATH = "Meas/Gyro/";
-        private static readonly string MAGNETOMETER_PATH = "Meas/Magn/";
-        private static readonly string IMU6_PATH = "Meas/IMU6/";
-        private static readonly string IMU9_PATH = "Meas/IMU9/";
+        private static readonly string ACCELEROMETER_SUBSCRIPTION_PATH = "/Meas/Acc/{0}/Subscription";
+        private static readonly string GYROMETER_SUBSCRIPTION_PATH = "/Meas/Gyro/{0}/Subscription";
+        private static readonly string MAGNETOMETER_SUBSCRIPTION_PATH = "/Meas/Magn/{0}/Subscription";
+        private static readonly string IMU6_SUBSCRIPTION_PATH = "/Meas/IMU6/{0}/Subscription";
+        private static readonly string IMU9_SUBSCRIPTION_PATH = "/Meas/IMU9/{0}/Subscription";
+        private static readonly string TIME_SUBSCRIPTION_PATH = "/Time/Subscription";
 
         private const int DEFAULT_SAMPLE_RATE = 26;
 
@@ -38,17 +42,28 @@ namespace Plugin.Movesense
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<CreateLogResult> CreateLogEntryAsync(string deviceName)
         {
-            var op = new ApiCallAsync<CreateLogResult>(deviceName, MdsOp.POST, LOGGER_ENTRIES_PATH);
+            var op = new ApiCallAsync<CreateLogResult>(deviceName, MdsOp.POST, LOGBOOK_ENTRIES_PATH);
             return await op.CallAsync();
         }
 
         /// <summary>
-        /// Get details of Logbook entries
+        /// Get details of Logbook entries by accessing the suunto://{serial}/Mem/Logbook/Entries REST endpoint
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task<LogEntriesResult> GetLogEntriesAsync(string deviceName)
         {
-            var op = new ApiCallAsync<LogEntriesResult>(deviceName, MdsOp.GET, LOGGER_ENTRIES_PATH);
+            var op = new ApiCallAsync<LogEntriesResult>(deviceName, MdsOp.GET, LOGBOOK_ENTRIES_PATH);
+            return await op.CallAsync();
+        }
+
+        /// <summary>
+        /// Get details of Logbook entries by accessing the suunto://MDS/Logbook/{serial}>/Entries" REST endpoint. 
+        /// This MDS Logbook proxy service takes care of paging and also data-json conversion.
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        public async Task<LogEntriesMDSResult> GetLogEntriesJsonAsync(string deviceName)
+        {
+            var op = new ApiCallAsync<LogEntriesMDSResult>(deviceName, MdsOp.GET, MDS_LOGBOOK_ENTRIES_PATH, null, MDS_LOGBOOK_PREFIX);
             return await op.CallAsync();
         }
 
@@ -58,7 +73,7 @@ namespace Plugin.Movesense
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         public async Task DeleteLogEntriesAsync(string deviceName)
         {
-            var op = new ApiCallAsync(deviceName, MdsOp.DELETE, LOGGER_ENTRIES_PATH);
+            var op = new ApiCallAsync(deviceName, MdsOp.DELETE, LOGBOOK_ENTRIES_PATH);
             await op.CallAsync();
         }
 
@@ -99,10 +114,23 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="logId">Number of the entry to get</param>
-        public async Task<BaseResult> GetLogbookDataAsync(string deviceName, int logId)
+        public async Task<string> GetLogbookDataAsync(string deviceName, int logId)
         {
             string datapath = String.Format(LOGBOOK_DATA_PATH, logId);
-            var op = new ApiCallAsync<BaseResult>(deviceName, MdsOp.GET, datapath);
+            var op = new ApiCallAsync<string>(deviceName, MdsOp.GET, datapath);
+            return await op.CallAsync();
+        }
+
+        /// <summary>
+        /// Get data from a Logbook entry as Json by accessing the suunto://MDS/Logbook/{serial}>/ByID/{ID}/Data REST endpoint. 
+        /// This MDS Logbook proxy service takes care of paging and also data-json conversion.  
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="logId">Number of the entry to get</param>
+        public async Task<string> GetLogbookDataJsonAsync(string deviceName, int logId)
+        {
+            string datapath = String.Format(MDS_LOGBOOK_DATA_PATH, logId);
+            var op = new ApiCallAsync<string>(deviceName, MdsOp.GET, datapath, null, MDS_LOGBOOK_PREFIX);
             return await op.CallAsync();
         }
 
@@ -113,7 +141,7 @@ namespace Plugin.Movesense
         /// <param name="logId">Logbook entry to get</param>
         public async Task<BaseResult> GetLogbookDescriptorsAsync(string deviceName, int logId)
         {
-            string datapath = String.Format(URI_MDS_LOGBOOK_DATA, logId);
+            string datapath = String.Format(LOGBOOK_DATA, logId);
             var op = new ApiCallAsync<BaseResult>(deviceName, MdsOp.GET, datapath);
             return await op.CallAsync();
         }
@@ -235,6 +263,22 @@ namespace Plugin.Movesense
             var op = new ApiCallAsync(deviceName, MdsOp.PUT, DATALOGGER_CONFIG_PATH, jsonConfig);
             await op.CallAsync();
         }
+        /// <summary>
+        /// Set configuration for the Datalogger
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="dataLoggerConfig">Configuration to apply to the DataLogger. Config is an array of structs containing paths to the subscription of data to log.
+        /// For example:             
+        /// DataLoggerConfig.DataEntry[] entries = { new DataLoggerConfig.DataEntry("/Meas/IMU9/52") };
+        /// DataLoggerConfig config = new DataLoggerConfig(new DataLoggerConfig.Config(new DataLoggerConfig.DataEntries(entries)));
+        /// </param>
+        public async Task SetLoggerConfigAsync(string deviceName, DataLoggerConfig dataLoggerConfig)
+        {
+            string jsonConfig = Newtonsoft.Json.JsonConvert.SerializeObject(dataLoggerConfig);
+
+            var op = new ApiCallAsync(deviceName, MdsOp.PUT, DATALOGGER_CONFIG_PATH, jsonConfig);
+            await op.CallAsync();
+        }
 
         /// <summary>
         /// Gets current time in number of microseconds since epoch 1.1.1970 (UTC).
@@ -268,7 +312,8 @@ namespace Plugin.Movesense
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         public async Task<IMdsSubscription> SubscribeAccelerometerAsync(string deviceName, Action<AccData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
-            var op = new ApiSubscription<AccData>(deviceName, ACCELEROMETER_PATH, sampleRate);
+            string datapath = String.Format(ACCELEROMETER_SUBSCRIPTION_PATH, sampleRate);
+            var op = new ApiSubscription<AccData>(deviceName, datapath);
             return await op.SubscribeAsync(notificationCallback);
         }
 
@@ -280,7 +325,8 @@ namespace Plugin.Movesense
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         public async Task<IMdsSubscription> SubscribeGyrometerAsync(string deviceName, Action<GyroData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
-            var op = new ApiSubscription<GyroData>(deviceName, GYROMETER_PATH, sampleRate);
+            string datapath = String.Format(GYROMETER_SUBSCRIPTION_PATH, sampleRate);
+            var op = new ApiSubscription<GyroData>(deviceName, datapath);
             return await op.SubscribeAsync(notificationCallback);
         }
 
@@ -292,7 +338,8 @@ namespace Plugin.Movesense
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         public async Task<IMdsSubscription> SubscribeMagnetometerAsync(string deviceName, Action<MagnData> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
-            var op = new ApiSubscription<MagnData>(deviceName, MAGNETOMETER_PATH, sampleRate);
+            string datapath = String.Format(MAGNETOMETER_SUBSCRIPTION_PATH, sampleRate);
+            var op = new ApiSubscription<MagnData>(deviceName, datapath);
             return await op.SubscribeAsync(notificationCallback);
         }
 
@@ -304,7 +351,8 @@ namespace Plugin.Movesense
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         public async Task<IMdsSubscription> SubscribeIMU6Async(string deviceName, Action<IMU6Data> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
-            var op = new ApiSubscription<IMU6Data>(deviceName, IMU6_PATH, sampleRate);
+            string datapath = String.Format(IMU6_SUBSCRIPTION_PATH, sampleRate);
+            var op = new ApiSubscription<IMU6Data>(deviceName, datapath);
             return await op.SubscribeAsync(notificationCallback);
         }
 
@@ -316,7 +364,19 @@ namespace Plugin.Movesense
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         public async Task<IMdsSubscription> SubscribeIMU9Async(string deviceName, Action<IMU9Data> notificationCallback, int sampleRate = DEFAULT_SAMPLE_RATE)
         {
-            var op = new ApiSubscription<IMU9Data>(deviceName, IMU9_PATH, sampleRate);
+            string datapath = String.Format(IMU9_SUBSCRIPTION_PATH, sampleRate);
+            var op = new ApiSubscription<IMU9Data>(deviceName, datapath);
+            return await op.SubscribeAsync(notificationCallback);
+        }
+
+        /// <summary>
+        /// Subscribe to device time notifications
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="notificationCallback">Callback function to receive the time data</param>
+        public async Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeResult> notificationCallback)
+        {
+            var op = new ApiSubscription<TimeResult>(deviceName, TIME_SUBSCRIPTION_PATH);
             return await op.SubscribeAsync(notificationCallback);
         }
     }

@@ -13,7 +13,7 @@ namespace MdsLibrary.Model
         /// <summary>
         /// Data response from MdsAPI
         /// </summary>
-        [JsonProperty("Content")]
+        [JsonProperty("Body")]
         public string Content;
     }
 }

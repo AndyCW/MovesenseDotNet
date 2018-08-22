@@ -28,6 +28,7 @@ namespace MdsLibrary.Api
         private readonly string mPath;
         private readonly string mBody;
         private readonly MdsOp mRestOp;
+        private readonly string mPrefixPath;
         private TaskCompletionSource<T> mTcs = null;
 
         /// <summary>
@@ -37,12 +38,14 @@ namespace MdsLibrary.Api
         /// <param name="restOp">The type of REST call to make to MdsLib</param>
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
-        public ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null)
+        /// <param name="prefixPath">optional prefix of the target URI before the device serial number (defaults to empty string)</param>
+        public ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null, string prefixPath = "")
         {
             mDeviceName = deviceName;
             mPath = path;
             mRestOp = restOp;
             mBody = body;
+            mPrefixPath = prefixPath;
 
             // Define the built-in implementation of the retry function
             // This just retries 2 times, regardless of the exception thrown
@@ -128,19 +131,19 @@ namespace MdsLibrary.Api
             var serial = Util.GetVisibleSerial(mDeviceName);
             if (mRestOp == MdsOp.POST)
             {
-                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, this);
+                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, this);
+                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, null, this);
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, null, this);
+                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, null, this);
             }
             else if (mRestOp == MdsOp.PUT)
             {
-                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + serial + mPath, mBody, this);
+                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
             }
 #elif __IOS__
             var mds = (Movesense.MDSWrapper)CrossMovesense.Current.MdsInstance;
@@ -154,15 +157,15 @@ namespace MdsLibrary.Api
                     NSError error = new NSError();
                     bodyDict = (NSDictionary)NSJsonSerialization.Deserialize(data, NSJsonReadingOptions.MutableContainers, out error);
                 }
-                mds.DoPost(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoPost(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.DoGet(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoGet(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.DoDelete(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoDelete(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.PUT)
             {
@@ -172,7 +175,7 @@ namespace MdsLibrary.Api
                     NSError error = new NSError();
                     bodyDict = (NSDictionary)NSJsonSerialization.Deserialize(data, NSJsonReadingOptions.MutableContainers, out error);
                 }
-                mds.DoPut(serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoPut(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
 #endif
             return mTcs.Task;

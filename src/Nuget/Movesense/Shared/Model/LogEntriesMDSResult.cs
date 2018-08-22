@@ -6,28 +6,16 @@ using System.Text;
 namespace MdsLibrary.Model
 {
     /// <summary>
-    /// Result from query for GetLogEntries
+    /// Result from query for GetLogEntriesMDS
     /// </summary>
-    public class LogEntriesResult
+    public class LogEntriesMDSResult
     {
         /// <summary>
-        /// Result from query for GetLogEntries
+        /// Array of Zero or more log entries describing log contents. 
+        /// Zero entries are received if log iteration has completed.
         /// </summary>
-        [JsonProperty("Content")]
-        public Content LogEntries;
-
-        /// <summary>
-        /// Result content from query for GetLogEntries
-        /// </summary>
-        public class Content
-        {
-            /// <summary>
-            /// Array of Zero or more log entries describing log contents. 
-            /// Zero entries are received if log iteration has completed.
-            /// </summary>
-            [JsonProperty("elements")]
-            public LogEntry[] Elements;
-        }
+        [JsonProperty("elements")]
+        public LogEntry[] Elements;
 
         /// <summary>
         /// Log Entry data
