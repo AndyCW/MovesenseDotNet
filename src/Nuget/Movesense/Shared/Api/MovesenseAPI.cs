@@ -27,12 +27,12 @@ namespace Plugin.Movesense
         private static readonly string MAG_INFO_PATH = "/Meas/Magn/Info";
         private static readonly string TIME_PATH = "/Time";
         private static readonly string DATALOGGER_CONFIG_PATH = "/Mem/DataLogger/Config/";
-        private static readonly string ACCELEROMETER_SUBSCRIPTION_PATH = "/Meas/Acc/{0}/Subscription";
-        private static readonly string GYROMETER_SUBSCRIPTION_PATH = "/Meas/Gyro/{0}/Subscription";
-        private static readonly string MAGNETOMETER_SUBSCRIPTION_PATH = "/Meas/Magn/{0}/Subscription";
-        private static readonly string IMU6_SUBSCRIPTION_PATH = "/Meas/IMU6/{0}/Subscription";
-        private static readonly string IMU9_SUBSCRIPTION_PATH = "/Meas/IMU9/{0}/Subscription";
-        private static readonly string TIME_SUBSCRIPTION_PATH = "/Time/Subscription";
+        private static readonly string ACCELEROMETER_SUBSCRIPTION_PATH = "/Meas/Acc/{0}";
+        private static readonly string GYROMETER_SUBSCRIPTION_PATH = "/Meas/Gyro/{0}";
+        private static readonly string MAGNETOMETER_SUBSCRIPTION_PATH = "/Meas/Magn/{0}";
+        private static readonly string IMU6_SUBSCRIPTION_PATH = "/Meas/IMU6/{0}";
+        private static readonly string IMU9_SUBSCRIPTION_PATH = "/Meas/IMU9/{0}";
+        private static readonly string TIME_SUBSCRIPTION_PATH = "/Time";
 
         private const int DEFAULT_SAMPLE_RATE = 26;
 
@@ -374,9 +374,9 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the time data</param>
-        public async Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeResult> notificationCallback)
+        public async Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeNotificationResult> notificationCallback)
         {
-            var op = new ApiSubscription<TimeResult>(deviceName, TIME_SUBSCRIPTION_PATH);
+            var op = new ApiSubscription<TimeNotificationResult>(deviceName, TIME_SUBSCRIPTION_PATH);
             return await op.SubscribeAsync(notificationCallback);
         }
     }

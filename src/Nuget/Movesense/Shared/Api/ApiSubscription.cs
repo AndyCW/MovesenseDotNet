@@ -38,7 +38,7 @@ namespace MdsLibrary.Api
         /// Utility class for API subscriptions
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
-        /// <param name="path">The path of the MdsLib resource, for example "/Meas/Acc/52/Subscription" to subscribe to accelerometer at 52Hz</param>
+        /// <param name="path">The path of the MdsLib resource, for example "/Meas/Acc/52" to subscribe to accelerometer at 52Hz</param>
         public ApiSubscription(string deviceName, string path)
         {
             if (string.IsNullOrEmpty(deviceName)) throw new InvalidOperationException("Required parameter deviceName must have value");

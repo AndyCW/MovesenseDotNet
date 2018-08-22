@@ -270,6 +270,6 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="notificationCallback">Callback function to receive the time data</param>
-        Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeResult> notificationCallback);
+        Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeNotificationResult> notificationCallback);
     }
 }
