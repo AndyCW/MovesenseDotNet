@@ -20,6 +20,13 @@
   <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onError']"
         name="argsType">ResponseListenerErrorEventArgs</attr>
 
+
+  <!-- Rename one of the onSuccess methods to resolve confusion and hopefully leave the newer (undeprecated) version in the generated output-->
+  <!--<attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onSuccess' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
+        name="managedName">OnDeprecated</attr>-->
+  <!--<attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onSuccess' and count(parameter)=2 and parameter[1][@type='java.lang.String']]" 
+        name="managedName">OnSuccess</attr>-->
+
   <!--<attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsConnectionListener']/method[@name='onError']"
       name="argsType">ConnectionListenerErrorEventArgs</attr>-->
 
