@@ -147,6 +147,11 @@ namespace MdsLibrary.Api
             var serial = Util.GetVisibleSerial(mDeviceName);
             NSDictionary bodyDict = new NSDictionary();
 
+            /// <summary>
+            /// Response LIstener class contains error and success callbacks for a call to Mds
+            /// </summary>
+            /// <param name="tcs">TaskCompletionSource used for handling cancellation</param>
+            public MdsResponseListener(TaskCompletionSource<bool> tcs)
             if (mRestOp == MdsOp.POST)
             {
                 if (!string.IsNullOrEmpty(mBody))
@@ -180,24 +185,26 @@ namespace MdsLibrary.Api
         }
 
 
+            /// <summary>
+            /// Callback on success receives response as a Json string
+            /// </summary>
+            /// <param name="s">response as a Json string</param>
 #if __ANDROID__
-
-#region IMdsResponseListener implementation
-
-        /// <summary>
-        /// Success callback for API calls on Android
-        /// </summary>
-        /// <param name="s">return value as string</param>
-        public void OnSuccess(string s)
+            /// <param name="mdsHeader">Header object with details of the call</param>
+            public void OnSuccess(string s, MdsHeader mdsHeader)
+#else
+            public void OnSuccess(string s)
+#endif
             {
                 Debug.WriteLine($"SUCCESS result = {s}");
                 mTcs.SetResult(true);
             }
 
-        /// <summary>
-        /// Error callback for API calls on Android
-        /// </summary>
-        /// <param name="e">exception</param>
+            /// <summary>
+            /// Error callback
+            /// </summary>
+            /// <param name="e">exception containing details of the error</param>
+#if __ANDROID__
             public void OnError(Com.Movesense.Mds.MdsException e)
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");

@@ -7,10 +7,10 @@
   <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
   -->
   
-  <!--
+
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsRegisterOperation']" />
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsUnregisterOperation']" />
-  -->
+
 
   
   <!-- Correct clash in EventArgs caused by two Listeners having same named event-->
@@ -19,6 +19,14 @@
 
   <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onError']"
         name="argsType">ResponseListenerErrorEventArgs</attr>
+
+
+  <!-- Setting the method to abstract so that it hopefully will bind native calls -->
+  <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onSuccess' and count(parameter)=2]"
+          name="abstract">true</attr>
+  <!-- Setting the MdsResponseHandler visability to public -->
+  <attr path="/api/package[@name='com.movesense.mds.internal.operation']/interface[@name='MdsResponseHandler']" name="visibility">public</attr>
+
 
   <!--<attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsConnectionListener']/method[@name='onError']"
       name="argsType">ConnectionListenerErrorEventArgs</attr>-->

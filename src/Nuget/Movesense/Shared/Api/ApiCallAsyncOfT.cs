@@ -121,11 +121,6 @@ namespace MdsLibrary.Api
         {
             mTcs = new TaskCompletionSource<T>();
 
-            //performCall(
-            //    (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance,
-            //    Util.GetVisibleSerial(mDeviceName),
-            //    new MdsResponseListener(tcs)
-            //    );
 #if __ANDROID__
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
             var serial = Util.GetVisibleSerial(mDeviceName);
@@ -181,15 +176,32 @@ namespace MdsLibrary.Api
             return mTcs.Task;
         }
 
-
+        /// <summary>
+        /// MdsResponseListener called by MdsLib with result of the call (Internal)
+        /// </summary>
+        protected class MdsResponseListener
 #if __ANDROID__
         #region IMdsResponseListener implementation
 
-        /// <summary>
-        /// Success callback for API calls on Android
-        /// </summary>
-        /// <param name="s">return value as string</param>
-        public void OnSuccess(string s)
+            /// <summary>
+            /// Response Listener class contains error and success callbacks for a call to Mds
+            /// </summary>
+            /// <param name="tcs">TaskCompletionSource used for handling cancellation</param>
+            public MdsResponseListener(TaskCompletionSource<T> tcs)
+            {
+                mTcs = tcs;
+            }
+
+            /// <summary>
+            /// Callback on success receives response as a Json string
+            /// </summary>
+            /// <param name="s">response as a Json string</param>
+#if __ANDROID__
+            /// <param name="mdsHeader">Header object with details of the call</param>
+            public void OnSuccess(string s, MdsHeader mdsHeader)
+#else
+            public void OnSuccess(string s)
+#endif
             {
                 Debug.WriteLine($"SUCCESS result = {s}");
                 if (typeof(T) != typeof(String))
@@ -205,6 +217,11 @@ namespace MdsLibrary.Api
                 }
             }
 
+            /// <summary>
+            /// Error callback
+            /// </summary>
+            /// <param name="e">exception containing details of the error</param>
+#if __ANDROID__
             public void OnError(Com.Movesense.Mds.MdsException e)
             {
                 Debug.WriteLine($"ERROR error = {e.ToString()}");
