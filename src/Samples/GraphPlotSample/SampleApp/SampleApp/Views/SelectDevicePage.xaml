@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SampleApp.Views.SelectDevicePage"
@@ -11,22 +11,12 @@
         </Grid.RowDefinitions>
         <ListView x:Name="MyListView"
                   Grid.Row="0"
-            ItemsSource="{Binding Devices, Mode=OneWay}">
+            ItemsSource="{Binding Devices, Mode=OneWay}" ItemSelected="Handle_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <Grid Padding="5,5,5,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" Text="{Binding Name}" VerticalOptions="Center" Style="{DynamicResource ListItemTextStyle}"/>
-                            <Button Grid.Column="0" Opacity="0" Command="{Binding Source={x:Reference SelectSensorPage}, Path=BindingContext.UpdateCheckBoxCommand}" CommandParameter="{Binding Uuid}"/>
-                            <Image Grid.Column="0" Source="{Binding ImageCheckBox}" HeightRequest="20" VerticalOptions="Center" HorizontalOptions="Center"/>
-                            <BoxView Grid.Column="2" HeightRequest="20" WidthRequest="20" 
-                                     BackgroundColor="{Binding DeviceStatus, Converter={StaticResource devicestatusconverter}}">
-                            </BoxView>
+                            <Label Text="{Binding Name}" VerticalOptions="Center" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

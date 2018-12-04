@@ -25,7 +25,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>CustomServiceSample</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.CustomServiceSample</string>
+	<string>com.andywigley.CustomServiceSample</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
@@ -34,5 +34,11 @@
 	<string>CustomServiceSample</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+	</array>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Movesense sensor</string>
 </dict>
 </plist>

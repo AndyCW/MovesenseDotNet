@@ -20,7 +20,6 @@
     <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     
-    <!--TODO: Fill these in-->
     <PackageLicenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/AndyCW/MovesenseDotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
@@ -32,10 +31,11 @@
     <Summary>Summary of nuget</Summary>
     <Description>Movesense API for Xamarin</Description>
 
-    <Owners>YOU</Owners>
+    <Owners>Andy Wigley</Owners>
     <Authors>Andy Wigley</Authors>
     <Copyright>Copyright 2018</Copyright>
     <Company>Microsoft Corp.</Company>
+    <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,7 +57,8 @@
     <PackageReference Include="MovesenseBindingiOS" Version="1.0.1" />
   </ItemGroup>
 
-  
+
+
   <ItemGroup>
     <None Remove="Shared\Api\HttpEnum.cs" />
     <None Remove="Shared\Api\IApiSubscription.cs" />

@@ -14,10 +14,12 @@ namespace MdsLibrary
         /// Event fires when a device connects to MdsLib
         /// </summary>
         public event EventHandler<MdsConnectionListenerEventArgs> Connect;
+
         /// <summary>
         /// Event fires when connection has completed for a device to MdsLib
         /// </summary>
         public event EventHandler<MdsConnectionListenerEventArgs> ConnectionComplete;
+
         /// <summary>
         /// Event fires when a device disconnects from MdsLib
         /// </summary>
@@ -100,6 +102,10 @@ namespace MdsLibrary
         /// </summary>
         public string MACAddress { get; set; }
 
+        /// <summary>
+        /// Create event args for reporting connection events
+        /// </summary>
+        /// <param name="macAddress">MAC address of the device</param>
         public MdsConnectionListenerEventArgs(string macAddress)
         {
             MACAddress = macAddress;

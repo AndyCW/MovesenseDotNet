@@ -48,7 +48,8 @@ namespace Plugin.Movesense
         /// <param name="restOp">The type of REST call to make to MdsLib</param>
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
-        Task ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null);
+        /// <param name="prefixPath">optional prefix of the target URI before the device serial number (defaults to empty string)</param>
+        Task ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null, string prefixPath = "");
 
         /// <summary>
         /// Function to make Mds API call that returns a value of type T
@@ -57,16 +58,16 @@ namespace Plugin.Movesense
         /// <param name="restOp">The type of REST call to make to MdsLib</param>
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
-        Task<T> ApiCallAsync<T>(string deviceName, MdsOp restOp, string path, string body = null);
+        /// <param name="prefixPath">optional prefix of the target URI before the device serial number (defaults to empty string)</param>
+        Task<T> ApiCallAsync<T>(string deviceName, MdsOp restOp, string path, string body = null, string prefixPath = "");
 
         /// <summary>
         /// Function to start a subscription to an Mds resource
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="path">The path of the MdsLib resource</param>
-        /// <param name="frequency">Sample rate, e.g. 52 for 52Hz</param>
         /// <param name="notificationCallback">Callback function that takes parameter of type T, where T is the return type from the subscription notifications</param>
-        Task<IMdsSubscription> ApiSubscriptionAsync<T>(string deviceName, string path, int frequency, Action<T> notificationCallback);
+        Task<IMdsSubscription> ApiSubscriptionAsync<T>(string deviceName, string path, Action<T> notificationCallback);
 
         /// <summary>
         /// Create a new logbook entry resource (increment log Id). Returns the new log Id.
@@ -131,11 +132,19 @@ namespace Plugin.Movesense
         Task<LedState> GetLedStateAsync(string deviceName, int ledIndex = 0);
 
         /// <summary>
-        /// Get data from a Logbook entry
+        /// Get data from a Logbook entry in SBEM format by accessing the suunto://{serial}/Mem/Logbook/ByID/{ID}/Data REST endpoint
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="logId">Number of the entry to get</param>
-        Task<BaseResult> GetLogbookDataAsync(string deviceName, int logId);
+        Task<string> GetLogbookDataAsync(string deviceName, int logId);
+
+        /// <summary>
+        /// Get data from a Logbook entry as JSON by accessing the suunto://MDS/Logbook/{serial}>/ByID/{ID}/Data REST endpoint. 
+        /// This MDS Logbook proxy service takes care of paging and also data-json conversion.  
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="logId">Number of the entry to get</param>
+        Task<string> GetLogbookDataJsonAsync(string deviceName, int logId);
 
         /// <summary>
         /// Get Descriptors for a Logbook entry
@@ -145,7 +154,14 @@ namespace Plugin.Movesense
         Task<BaseResult> GetLogbookDescriptorsAsync(string deviceName, int logId);
 
         /// <summary>
-        /// Get details of Logbook entries
+        /// Get details of Logbook entries by accessing the suunto://MDS/Logbook/{serial}>/Entries" REST endpoint. 
+        /// This MDS Logbook proxy service takes care of paging and also data-json conversion.
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        Task<LogEntriesMDSResult> GetLogEntriesJsonAsync(string deviceName);
+
+        /// <summary>
+        /// Get details of Logbook entries by accessing the suunto://{serial}/Mem/Logbook/Entries REST endpoint
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         Task<LogEntriesResult> GetLogEntriesAsync(string deviceName);
@@ -199,6 +215,17 @@ namespace Plugin.Movesense
         Task SetupLoggerAsync(string deviceName, int freq = 26);
 
         /// <summary>
+        /// Set configuration for the Datalogger
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="dataLoggerConfig">Configuration to apply to the DataLogger. Config is an array of structs containing paths to the subscription of data to log.
+        /// For example:             
+        /// DataLoggerConfig.DataEntry[] entries = { new DataLoggerConfig.DataEntry("/Meas/IMU9/" + freq) };
+        /// DataLoggerConfig config = new DataLoggerConfig(new DataLoggerConfig.Config(new DataLoggerConfig.DataEntries(entries)));
+        /// </param>
+        Task SetLoggerConfigAsync(string deviceName, DataLoggerConfig dataLoggerConfig);
+
+        /// <summary>
         /// Subscribe to periodic linear acceleration measurements.
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
@@ -237,5 +264,12 @@ namespace Plugin.Movesense
         /// <param name="notificationCallback">Callback function to receive the MagnData</param>
         /// <param name="sampleRate">Sampling rate, e.g. 26 for 26Hz</param>
         Task<IMdsSubscription> SubscribeMagnetometerAsync(string deviceName, Action<MagnData> notificationCallback, int sampleRate = 26);
+
+        /// <summary>
+        /// Subscribe to device time notifications
+        /// </summary>
+        /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        /// <param name="notificationCallback">Callback function to receive the time data</param>
+        Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeNotificationResult> notificationCallback);
     }
 }

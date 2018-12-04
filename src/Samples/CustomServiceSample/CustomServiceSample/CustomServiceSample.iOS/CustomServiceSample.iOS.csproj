@@ -27,6 +27,8 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer: andy.wigley@microsoft.com (TR9S659DAX)</CodesignKey>
+    <CodesignProvision>iOS Team Provisioning Profile: com.andywigley.CustomServiceSample</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -48,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: andy.wigley@microsoft.com (TR9S659DAX)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
@@ -161,7 +163,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\CustomServiceSample\CustomServiceSample.csproj">
-      <Project>{5C660255-EF56-4EA0-A16C-E68097AA9582}</Project>
+      <Project>{A9FB72E1-1192-4457-8D59-154E4AEDFE2B}</Project>
       <Name>CustomServiceSample</Name>
     </ProjectReference>
   </ItemGroup>

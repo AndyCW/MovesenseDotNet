@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.28315.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MovesenseDemo", "MovesenseDemo\MovesenseDemo.shproj", "{287653CA-411D-4FD6-A006-015DB6922EB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesenseDemo.iOS", "MovesenseDemo.iOS\MovesenseDemo.iOS.csproj", "{E8538777-1FCF-415A-97EB-5CA767315D03}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesenseDemo.Android", "MovesenseDemo.Android\MovesenseDemo.Android.csproj", "{AEF7BCBF-C8E4-4F4E-85DB-B37080455812}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesenseDemo.iOS", "MovesenseDemo.iOS\MovesenseDemo.iOS.csproj", "{E8538777-1FCF-415A-97EB-5CA767315D03}"
