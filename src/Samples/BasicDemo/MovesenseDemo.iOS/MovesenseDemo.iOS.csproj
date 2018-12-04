@@ -5,13 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{61FA013B-179A-4266-9E20-1E4F319641DD}</ProjectGuid>
+    <ProjectGuid>{E8538777-1FCF-415A-97EB-5CA767315D03}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{6143fdea-f3c2-4a09-aafa-6e230626515e}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CustomServiceSample.iOS</RootNamespace>
+    <RootNamespace>MovesenseDemo.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>CustomServiceSample.iOS</AssemblyName>
+    <AssemblyName>MovesenseDemo.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -147,22 +147,17 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Plugin.BluetoothLE">
-      <Version>6.2.3</Version>
-    </PackageReference>
     <PackageReference Include="Plugin.Movesense">
       <Version>1.7.2-beta</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
+    <PackageReference Include="Plugin.BluetoothLE">
+      <Version>6.2.3</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.12</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\CustomServiceSample\CustomServiceSample.csproj">
-      <Project>{5C660255-EF56-4EA0-A16C-E68097AA9582}</Project>
-      <Name>CustomServiceSample</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\MovesenseDemo\MovesenseDemo.projitems" Label="Shared" />
 </Project>
