@@ -176,58 +176,42 @@ namespace MdsLibrary.Api
             return mTcs.Task;
         }
 
+
         /// <summary>
-        /// MdsResponseListener called by MdsLib with result of the call (Internal)
+        /// Callback on success receives response as a Json string
         /// </summary>
-        protected class MdsResponseListener
+        /// <param name="s">response as a Json string</param>
 #if __ANDROID__
-        #region IMdsResponseListener implementation
-
-            /// <summary>
-            /// Response Listener class contains error and success callbacks for a call to Mds
-            /// </summary>
-            /// <param name="tcs">TaskCompletionSource used for handling cancellation</param>
-            public MdsResponseListener(TaskCompletionSource<T> tcs)
-            {
-                mTcs = tcs;
-            }
-
-            /// <summary>
-            /// Callback on success receives response as a Json string
-            /// </summary>
-            /// <param name="s">response as a Json string</param>
-#if __ANDROID__
-            /// <param name="mdsHeader">Header object with details of the call</param>
-            public void OnSuccess(string s, MdsHeader mdsHeader)
+        /// <param name="mdsHeader">Header object with details of the call</param>
+        public void OnSuccess(string s, MdsHeader mdsHeader)
 #else
-            public void OnSuccess(string s)
+        public void OnSuccess(string s)
 #endif
+        {
+            Debug.WriteLine($"SUCCESS result = {s}");
+            if (typeof(T) != typeof(String))
             {
-                Debug.WriteLine($"SUCCESS result = {s}");
-                if (typeof(T) != typeof(String))
-                {
-                    T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
-                    mTcs.SetResult(result);
-                }
-                else
-                {
-                    // Crazy code to convert a string to a 'T' where 'T' happens to be a string
-                    T result = (T)((object)s);
-                    mTcs.SetResult(result);
-                }
+                T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(s);
+                mTcs.SetResult(result);
             }
+            else
+            {
+                // Crazy code to convert a string to a 'T' where 'T' happens to be a string
+                T result = (T)((object)s);
+                mTcs.SetResult(result);
+            }
+        }
 
-            /// <summary>
-            /// Error callback
-            /// </summary>
-            /// <param name="e">exception containing details of the error</param>
+        /// <summary>
+        /// Error callback
+        /// </summary>
+        /// <param name="e">exception containing details of the error</param>
 #if __ANDROID__
-            public void OnError(Com.Movesense.Mds.MdsException e)
-            {
-                Debug.WriteLine($"ERROR error = {e.ToString()}");
-                mTcs.SetException(new MdsException(e.ToString(), e));
-            }
-        #endregion
+        public void OnError(Com.Movesense.Mds.MdsException e)
+        {
+            Debug.WriteLine($"ERROR error = {e.ToString()}");
+            mTcs.SetException(new MdsException(e.ToString(), e));
+        }
 
 #elif __IOS__
         /// <summary>
