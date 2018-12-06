@@ -1,26 +1,29 @@
 # MovesenseDotNet
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-**UPDATED 2 July 2018 - iOS now supported**
+**UPDATED 5 December 2018 - Latest MDS Libraries now supported. v1.7.2 of the Android and iOS libraries are now wrapped by this plugin. Install Plugin.Movesense v1.7.2.1 from NuGet to get this update.**
+
+**IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1**
+The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use Visual Studio 2019 (Preview) and a specific build of the Xamarin.Android SDK to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects for v1.7.2.1* instructions in the **Setup for Android projects** instructions below.
 
 ## Movesense Plugin Developer Guide
-The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. It is currently in beta so in NuGet Package manager, make sure you check the **Include prerelease** checkbox, then browse for *Movesense*. You should see three packages available:
+The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. If you search in NuGet Package manager for *Movesense*, you will see three packages available:
   * **Plugin.Movesense** - this is the package you should reference in your project. It has the full .NET API for programming for connectivity to Movesense devices, and also includes the *MovesenseBindingAndroid* and *MovesenseBindingiOS* packages which are the C# bindings around the native Android Mdslib.aar and iOS libmds.a libraries
   * **MovesenseBindingAndroid** - this package is the C# binding around the native Android Mdslib.aar library. You do not need to reference this package separately as it is configured as a dependency of the Plugin.Movesense package.
   * **MovesenseBindingiOS** - this package is the C# binding around the native iOS libmds.a library. You do not need to reference this package separately as it is configured as a dependency of the Plugin.Movesense package.
 
   ![Image of NuGet Package Manager](Images/NuGet.PNG)
 
-  Add the **Plugin.Movesense** package to all your projects: to the Xamarin Android and Xamarin iOS projects and also, if you are using it, to the .NET Standard project containing your shared code.
+  The *only* one you need to add to your projects is the **Plugin.Movesense** package, the binding projects are defined as dependencies in the Plugin.Movesense package so will be installed automatically. Add the Plugin.Movesense package to all your projects: to the Xamarin Android and Xamarin iOS projects and also, if you are using it, to the .NET Standard project containing your shared code.
 
 ## Using the Movesense Plugin in your Xamarin App
 To use the Movesense Plugin in your own app:
   * Create your Xamarin Android, Xamarin iOS or Xamarin Forms project
-  * Add reference to the **Plugin.Movesense** NuGet package to your Xamarin Android and Xaamrin iOS projects and - if you are using Xamarin Forms configured with common code in a class library - to your .NET Standard class library contining your shared code.
+  * Add reference to the **Plugin.Movesense** NuGet package to your Xamarin Android and Xamarin iOS projects and - if you are using Xamarin Forms configured with common code in a class library - to your .NET Standard class library contining your shared code.
 
 ### Setup for Android projects
 
-  * **IMPORTANT:** the native MdsLib.aar library that is included in the Movesense Plugin does not support 64 bit targets. Therefore, you *must* change the supported architectutes of your Xamarin Android project. To set this, go to Project Properties - Android Options, scroll down to the bottom and then click Advanced. In the Advanced Android Options window, click Supported Architectures and deselect **x86_64** and **arm64-v8a**
+  * **IMPORTANT:** the native MdsLib.aar library that is included in the Movesense Plugin does not support 64 bit targets. Therefore, you *must* change the supported architectures of your Xamarin Android project. To set this, go to Project Properties - Android Options, scroll down to the bottom and then click Advanced. In the Advanced Android Options window, click Supported Architectures and deselect **x86_64** and **arm64-v8a**. [If shown, also deselect **armeabi** as this architecture is no longer supported by the Xamarin tools]
   * Also on the Advanced Android Options page, you may need to increase the **Java Max Heap Size** value. Suggest you set this to **1G**. If you do not set this, your compilation may fail with Memory Exceeded error.
 
     ![Image of Advanced Android Options](Images/AndroidOptions.PNG)
@@ -48,6 +51,19 @@ To use the Movesense Plugin in your own app:
         ...
     }
 ```
+
+#### Building Android Projects for v1.7.2.1 or later
+Plugin.Movesense v1.7.2.1 wraps the native Mdslib.aar v1.7.2 library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
+
+To build your Xamarin Android project successfully using Plugin.Movesense v1.7.2.1, you must:
+  * Install [Visual Studio 2019 Preview 1](https://visualstudio.microsoft.com/vs/preview/) or later
+  * You must install [Xamarin.Android.Sdk.9.1.199.31.vsix](https://jenkins.mono-project.com/view/Xamarin.Android/job/xamarin-android-builds-master/) or later to add support for the Android D8 compiler
+  * You must edit your project csproj file for your Android client project and add the following to enable the Android D8 compiler for the native code generation step:
+  ```xml
+  <PropertyGroup> 
+    <AndroidDexTool>d8</AndroidDexTool>
+  </PropertyGroup>
+  ```
 
 
 ### Setup for iOS projects
@@ -170,10 +186,10 @@ See [Movesense.NET Documentation](https://github.com/AndyCW/MovesenseDotNet/tree
 ### Samples
 See [Samples](https://github.com/AndyCW/MovesenseDotNet/src/Samples) for sample applications using Movesense.NET.
 
-### Calling custom app resources
-If you need to call a custom resource that is exposed by your own app running on a Movesense device, such as the **Hello World** sample included in the [Movesense mobile-device-lib samples](https://bitbucket.org/suunto/movesense-device-lib/src/master/samples/hello_world_app/) this is easily achieved. Simply call the **ApiCallAsync<T>** method in the Plugin.Movesense API, where T is the return type of the resource (use *string* to just return the JSON response, or define the return type in your app and pass that whereupon ApiCallAsync<T> will deserialize the JSON for you). The parameters you pass in the call to ApiCallAsync are the device name, the type of operation (GET, POST, PUT, DELETE) and the path to the resource.
+### Calling custom app resources, or REST endpoints not mapped to Movesense.NET methods
+If you need to call a custom resource that is exposed by your own app running on a Movesense device, such as the **Hello World** sample included in the [Movesense mobile-device-lib samples](https://bitbucket.org/suunto/movesense-device-lib/src/master/samples/hello_world_app/) this is easily achieved. Simply call the **ApiCallAsync<T>** method in the Plugin.Movesense API, where T is the return type of the resource (use *string* to just return the JSON response, or define the return type in your app and pass that whereupon ApiCallAsync<T> will deserialize the JSON for you). The parameters you pass in the call to ApiCallAsync are the device name, the type of operation (GET, POST, PUT, DELETE) and the path to the resource. You can use the same technique for REST endpoints not currently mapped to Movesense.NET API methods.
 
-For eaxample for a GET of the Hello World resource:
+For example for a GET of the Hello World resource:
 
 ```C#
 var helloWorldResponse = await Plugin.Movesense.CrossMovesense.Current.ApiCallAsync<string>(mSelectedDevice.Name, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
