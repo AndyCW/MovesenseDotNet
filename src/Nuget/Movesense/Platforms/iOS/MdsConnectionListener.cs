@@ -15,14 +15,24 @@ namespace MdsLibrary
     public sealed class MdsConnectionListener
     {
         /// <summary>
-        /// Event fires when connection has completed for a device to MdsLib
+        /// Event fires when a device connects to MdsLib
         /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> ConnectionComplete;
+        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnected;
+
+        /// <summary>
+        /// Event fires when connection has completed to WhiteBoard for a device to MdsLib
+        /// </summary>
+        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnectionComplete;
 
         /// <summary>
         /// Event fires when a device disconnects from MdsLib
         /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> Disconnect;
+        public event EventHandler<MdsConnectionListenerEventArgs> DeviceDisconnected;
+
+        /// <summary>
+        /// Event fires when MdsLib reports unexpected connection error
+        /// </summary>
+        public event EventHandler<MdsException> DeviceConnectionError;
 
         private static MdsConnectionListener instance = null;
 
@@ -111,14 +121,15 @@ namespace MdsLibrary
                 var uuid = (NSString)connDict.ValueForKey(new NSString("UUID"));
 
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent CONNECTED: Serial {serial}");
-                ConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, new Guid(uuid)));
+                DeviceConnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, new Guid(uuid)));
+                DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, new Guid(uuid)));
             }
             else if (method == new NSString("DEL"))
             {
                 // Device disconnected
                 var serial = ((NSString)mdsevent.BodyDictionary.ValueForKey(new NSString("Serial")));
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent DISCONNECTED: Serial {serial}");
-                Disconnect?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
             }
             else
             {

@@ -13,17 +13,22 @@ namespace MdsLibrary
         /// <summary>
         /// Event fires when a device connects to MdsLib
         /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> Connect;
+        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnected;
 
         /// <summary>
-        /// Event fires when connection has completed for a device to MdsLib
+        /// Event fires when connection has completed to WhiteBoard for a device to MdsLib
         /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> ConnectionComplete;
+        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnectionComplete;
 
         /// <summary>
         /// Event fires when a device disconnects from MdsLib
         /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> Disconnect;
+        public event EventHandler<MdsConnectionListenerEventArgs> DeviceDisconnected;
+
+        /// <summary>
+        /// Event fires when MdsLib reports unexpected connection error
+        /// </summary>
+        public event EventHandler<MdsException> DeviceConnectionError;
 
         private static MdsConnectionListener instance = null;
 
@@ -58,7 +63,7 @@ namespace MdsLibrary
         public void OnConnect(string MACaddress)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnConnect callback called: MACaddress {MACaddress}");
-            Connect?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            DeviceConnected?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
         }
 
         /// <summary>
@@ -69,7 +74,7 @@ namespace MdsLibrary
         public void OnConnectionComplete(string MACaddress, string serial)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnConnectionComplete callback called: MACaddress {MACaddress} Serial {serial}");
-            ConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
         }
 
         /// <summary>
@@ -79,7 +84,7 @@ namespace MdsLibrary
         public void OnDisconnect(string MACaddress)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnDisconnect callback called: MACaddress {MACaddress}");
-            Disconnect?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
         }
 
         /// <summary>
@@ -88,7 +93,21 @@ namespace MdsLibrary
         /// <param name="e"></param>
         public void OnError(Com.Movesense.Mds.MdsException e)
         {
-            throw new MdsException(e.ToString(), e);
+            // Unexpected device disconnections come in here
+            if (e.Message.StartsWith("com.polidea.rxandroidble.exceptions.BleDisconnectedException"))
+            {
+                var msgParts = e.Message.Split(" ");
+                string MACaddress = msgParts[msgParts.Length - 1];
+
+                Debug.WriteLine($"DISCONNECT MdsConnectionListener OnError callback called for unintended disconnection: MACaddress {MACaddress}");
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            }
+            else
+            {
+                // Other unexpected error
+                Debug.WriteLine($"ERROR MdsConnectionListener OnError callback called for unexpected error: {e.ToString()}");
+                DeviceConnectionError?.Invoke(this, new MdsException("MdsConnectionListener unexpected error", e));
+            }
         }
     }
 

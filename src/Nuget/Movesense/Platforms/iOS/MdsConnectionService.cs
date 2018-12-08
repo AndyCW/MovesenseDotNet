@@ -29,7 +29,7 @@ namespace MdsLibrary
             mListener.EnsureInitializedAsync().Wait();
 
             // Listen for connect/disconnect events
-            mListener.ConnectionComplete += MListener_ConnectionComplete;
+            mListener.DeviceConnectionComplete += MListener_ConnectionComplete;
 
             // Start the device connection
             ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).ConnectPeripheralWithUUID(new Foundation.NSUuid(Uuid));
@@ -51,7 +51,7 @@ namespace MdsLibrary
             // Ensure the connection listener is setup
             mListener.EnsureInitializedAsync().Wait();
 
-            mListener.Disconnect += MListener_Disconnect;
+            mListener.DeviceDisconnected += MListener_Disconnect;
 
             ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).DisconnectPeripheralWithUUID(new Foundation.NSUuid(Uuid));
 
@@ -63,7 +63,7 @@ namespace MdsLibrary
             if (e.Uuid == new System.Guid(mUuid))
             {
                 connectiontcs?.TrySetResult(null);
-                mListener.ConnectionComplete -= MListener_ConnectionComplete;
+                mListener.DeviceConnectionComplete -= MListener_ConnectionComplete;
             }
         }
 
@@ -75,7 +75,7 @@ namespace MdsLibrary
             //if (e.MACAddress == mUuid)
             //{
                 disconnectTcs?.TrySetResult(null);
-                mListener.Disconnect -= MListener_Disconnect;
+                mListener.DeviceDisconnected -= MListener_Disconnect;
             //}
         }
     }
