@@ -243,8 +243,11 @@ namespace MdsLibrary.Api
             }
             else
             {
+                // First convert NSString result to a .NET string
+                String netS = string.Empty;
+                netS = s?.ToString();
                 // Crazy code to convert a string to a 'T' where 'T' happens to be a string
-                T result = (T)((object)s);
+                T result = (T)((object)netS);
                 // Return the subscription to the awaiting caller
                 mTcs.TrySetResult(Subscription);
                 // Invoke the callers callback function
