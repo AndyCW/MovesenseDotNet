@@ -122,9 +122,9 @@ namespace MdsLibrary
             {
                 // Device connected
                 var bodyDict = (NSDictionary)mdsevent.BodyDictionary.ValueForKey(new NSString("Body"));
-                var serial = (NSString)bodyDict.ValueForKey(new NSString("Serial"));
+                var serial = ((NSString)bodyDict.ValueForKey(new NSString("Serial"))).ToString();
                 var connDict = (NSDictionary)bodyDict.ValueForKey(new NSString("Connection"));
-                var uuid = (NSString)connDict.ValueForKey(new NSString("UUID"));
+                var uuid = ((NSString)connDict.ValueForKey(new NSString("UUID"))).ToString();
 
                 this.MACAddressToSerialMapper.TryAdd(uuid, serial);
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent CONNECTED: Serial {serial}");
@@ -134,7 +134,9 @@ namespace MdsLibrary
             else if (method == new NSString("DEL"))
             {
                 // Device disconnected
-                var serial = ((NSString)mdsevent.BodyDictionary.ValueForKey(new NSString("Serial")));
+                var bodyDict = (NSDictionary)mdsevent.BodyDictionary.ValueForKey(new NSString("Body"));
+                var serial = ((NSString)bodyDict.ValueForKey(new NSString("Serial"))).ToString();
+
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent DISCONNECTED: Serial {serial}");
                 DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
             }

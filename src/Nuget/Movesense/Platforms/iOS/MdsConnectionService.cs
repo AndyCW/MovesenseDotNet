@@ -21,7 +21,7 @@ namespace MdsLibrary
         /// <returns></returns>
         public Task<object> ConnectMdsAsync(string Uuid)
         {
-            mUuid = Uuid;
+            mUuid = Uuid.ToUpper();
             connectiontcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
@@ -44,7 +44,7 @@ namespace MdsLibrary
         /// <returns></returns>
         public Task<object> DisconnectMdsAsync(string Uuid)
         {
-            mUuid = Uuid;
+            mUuid = Uuid.ToUpper();
             disconnectTcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
@@ -62,7 +62,7 @@ namespace MdsLibrary
         {
             var serial = string.Empty;
             MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
-            if (e.Serial == serial)
+            if (e.Serial.ToUpper() == serial)
             {
                 connectiontcs?.TrySetResult(null);
                 mListener.DeviceConnectionComplete -= MListener_ConnectionComplete;
@@ -74,7 +74,7 @@ namespace MdsLibrary
             var serial = string.Empty;
             MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
 
-            if (e.Serial == serial)
+            if (e.Serial.ToUpper() == serial)
             {
                 disconnectTcs?.TrySetResult(null);
                 mListener.DeviceDisconnected -= MListener_Disconnect;
