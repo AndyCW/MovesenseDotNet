@@ -60,7 +60,9 @@ namespace MdsLibrary
 
         private void MListener_ConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.Uuid == new System.Guid(mUuid))
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
+            if (e.Serial == serial)
             {
                 connectiontcs?.TrySetResult(null);
                 mListener.DeviceConnectionComplete -= MListener_ConnectionComplete;
@@ -69,14 +71,14 @@ namespace MdsLibrary
 
         private void MListener_Disconnect(object sender, MdsConnectionListenerEventArgs e)
         {
-            // TODO review this - Disconnection on iOS only returns Serial number in response block, 
-            // yet disconnection is done using Uuid -how do we know the intended device has disconnected?
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
 
-            //if (e.MACAddress == mUuid)
-            //{
+            if (e.Serial == serial)
+            {
                 disconnectTcs?.TrySetResult(null);
                 mListener.DeviceDisconnected -= MListener_Disconnect;
-            //}
+            }
         }
     }
 }

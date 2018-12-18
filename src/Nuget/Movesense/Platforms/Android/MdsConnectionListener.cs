@@ -11,9 +11,9 @@ namespace MdsLibrary
     public sealed class MdsConnectionListener : Java.Lang.Object, Com.Movesense.Mds.IMdsConnectionListener
     {
         /// <summary>
-        /// Event fires when a device connects to MdsLib
+        /// Event fires when a device connects to BLE
         /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnected;
+        public event EventHandler<MdsConnectionListenerBLEConnectedEventArgs> DeviceConnected;
 
         /// <summary>
         /// Event fires when connection has completed to WhiteBoard for a device to MdsLib
@@ -34,8 +34,14 @@ namespace MdsLibrary
 
         private static readonly object padlock = new object();
 
+        /// <summary>
+        /// Lookup of device serial number to UUID
+        /// </summary>
+        public Dictionary<string, string> MACAddressToSerialMapper;
+
         private MdsConnectionListener()
         {
+            MACAddressToSerialMapper = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -63,7 +69,7 @@ namespace MdsLibrary
         public void OnConnect(string MACaddress)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnConnect callback called: MACaddress {MACaddress}");
-            DeviceConnected?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            DeviceConnected?.Invoke(this, new MdsConnectionListenerBLEConnectedEventArgs(MACaddress));
         }
 
         /// <summary>
@@ -74,7 +80,9 @@ namespace MdsLibrary
         public void OnConnectionComplete(string MACaddress, string serial)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnConnectionComplete callback called: MACaddress {MACaddress} Serial {serial}");
-            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            this.MACAddressToSerialMapper.TryAdd(MACaddress, serial);
+
+            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
         }
 
         /// <summary>
@@ -84,7 +92,9 @@ namespace MdsLibrary
         public void OnDisconnect(string MACaddress)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnDisconnect callback called: MACaddress {MACaddress}");
-            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+            var serial = string.Empty;
+            this.MACAddressToSerialMapper.TryGetValue(MACaddress, out serial);
+            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
         }
 
         /// <summary>
@@ -100,7 +110,9 @@ namespace MdsLibrary
                 string MACaddress = msgParts[msgParts.Length - 1];
 
                 Debug.WriteLine($"DISCONNECT MdsConnectionListener OnError callback called for unintended disconnection: MACaddress {MACaddress}");
-                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(MACaddress));
+                var serial = string.Empty;
+                this.MACAddressToSerialMapper.TryGetValue(MACaddress, out serial);
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
             }
             else
             {
@@ -108,26 +120,6 @@ namespace MdsLibrary
                 Debug.WriteLine($"ERROR MdsConnectionListener OnError callback called for unexpected error: {e.ToString()}");
                 DeviceConnectionError?.Invoke(this, new MdsException("MdsConnectionListener unexpected error", e));
             }
-        }
-    }
-
-    /// <summary>
-    /// Event args for MdsConnectionListener events
-    /// </summary>
-    public class MdsConnectionListenerEventArgs : EventArgs
-    {
-        /// <summary>
-        /// MAC address of the device
-        /// </summary>
-        public string MACAddress { get; set; }
-
-        /// <summary>
-        /// Create event args for reporting connection events
-        /// </summary>
-        /// <param name="macAddress">MAC address of the device</param>
-        public MdsConnectionListenerEventArgs(string macAddress)
-        {
-            MACAddress = macAddress;
         }
     }
 }

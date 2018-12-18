@@ -52,7 +52,9 @@ namespace MdsLibrary
 
         private void MListener_DeviceDisconnected(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.MACAddress == mMACAddress)
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mMACAddress, out serial);
+            if (e.Serial == serial)
             {
                 disconnectTcs?.TrySetResult(null);
                 mListener.DeviceDisconnected -= MListener_DeviceDisconnected;
@@ -61,7 +63,9 @@ namespace MdsLibrary
 
         private void MListener_DeviceConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.MACAddress == mMACAddress)
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mMACAddress, out serial);
+            if (e.Serial == serial)
             {
                 connectiontcs?.TrySetResult(null);
                 mListener.DeviceConnectionComplete -= MListener_DeviceConnectionComplete;
