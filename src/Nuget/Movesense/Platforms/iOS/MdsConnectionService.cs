@@ -21,7 +21,7 @@ namespace MdsLibrary
         /// <returns></returns>
         public Task<object> ConnectMdsAsync(string Uuid)
         {
-            mUuid = Uuid;
+            mUuid = Uuid.ToUpper();
             connectiontcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
@@ -29,7 +29,7 @@ namespace MdsLibrary
             mListener.EnsureInitializedAsync().Wait();
 
             // Listen for connect/disconnect events
-            mListener.ConnectionComplete += MListener_ConnectionComplete;
+            mListener.DeviceConnectionComplete += MListener_ConnectionComplete;
 
             // Start the device connection
             ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).ConnectPeripheralWithUUID(new Foundation.NSUuid(Uuid));
@@ -44,14 +44,14 @@ namespace MdsLibrary
         /// <returns></returns>
         public Task<object> DisconnectMdsAsync(string Uuid)
         {
-            mUuid = Uuid;
+            mUuid = Uuid.ToUpper();
             disconnectTcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             // Ensure the connection listener is setup
             mListener.EnsureInitializedAsync().Wait();
 
-            mListener.Disconnect += MListener_Disconnect;
+            mListener.DeviceDisconnected += MListener_Disconnect;
 
             ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).DisconnectPeripheralWithUUID(new Foundation.NSUuid(Uuid));
 
@@ -60,23 +60,25 @@ namespace MdsLibrary
 
         private void MListener_ConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.Uuid == new System.Guid(mUuid))
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
+            if (e.Serial.ToUpper() == serial)
             {
                 connectiontcs?.TrySetResult(null);
-                mListener.ConnectionComplete -= MListener_ConnectionComplete;
+                mListener.DeviceConnectionComplete -= MListener_ConnectionComplete;
             }
         }
 
         private void MListener_Disconnect(object sender, MdsConnectionListenerEventArgs e)
         {
-            // TODO review this - Disconnection on iOS only returns Serial number in response block, 
-            // yet disconnection is done using Uuid -how do we know the intended device has disconnected?
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
 
-            //if (e.MACAddress == mUuid)
-            //{
+            if (e.Serial.ToUpper() == serial)
+            {
                 disconnectTcs?.TrySetResult(null);
-                mListener.Disconnect -= MListener_Disconnect;
-            //}
+                mListener.DeviceDisconnected -= MListener_Disconnect;
+            }
         }
     }
 }

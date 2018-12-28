@@ -24,7 +24,7 @@ namespace MdsLibrary
             connectiontcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
-            mListener.ConnectionComplete += MListener_ConnectionComplete;
+            mListener.DeviceConnectionComplete += MListener_DeviceConnectionComplete;
 
             // Start the connection
             ((Com.Movesense.Mds.Mds)(CrossMovesense.Current.MdsInstance)).Connect(MACAddress, mListener);
@@ -43,28 +43,32 @@ namespace MdsLibrary
             disconnectTcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
-            mListener.Disconnect += MListener_Disconnect;
+            mListener.DeviceDisconnected += MListener_DeviceDisconnected;
 
             ((Com.Movesense.Mds.Mds)(CrossMovesense.Current.MdsInstance)).Disconnect(MACAddress);
 
             return disconnectTcs.Task;
         }
 
-        private void MListener_Disconnect(object sender, MdsConnectionListenerEventArgs e)
+        private void MListener_DeviceDisconnected(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.MACAddress == mMACAddress)
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mMACAddress, out serial);
+            if (e.Serial == serial)
             {
                 disconnectTcs?.TrySetResult(null);
-                mListener.Disconnect -= MListener_Disconnect;
+                mListener.DeviceDisconnected -= MListener_DeviceDisconnected;
             }
         }
 
-        private void MListener_ConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
+        private void MListener_DeviceConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
         {
-            if (e.MACAddress == mMACAddress)
+            var serial = string.Empty;
+            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mMACAddress, out serial);
+            if (e.Serial == serial)
             {
                 connectiontcs?.TrySetResult(null);
-                mListener.ConnectionComplete -= MListener_ConnectionComplete;
+                mListener.DeviceConnectionComplete -= MListener_DeviceConnectionComplete;
             }
         }
 

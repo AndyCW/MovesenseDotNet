@@ -130,11 +130,11 @@ namespace MdsLibrary.Api
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, null, this);
+                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, null, this);
+                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.PUT)
             {
@@ -233,8 +233,8 @@ namespace MdsLibrary.Api
                 }
                 else
                 {
-                    // First convert NSString result to a .NET string
-                    String netS = s.ToString();
+                    String netS = string.Empty;
+                    netS = s?.ToString();
                     // Crazy code to convert a string to a 'T' where 'T' happens to be a string
                     T result = (T)((object)netS);
                     mTcs.SetResult(result);
