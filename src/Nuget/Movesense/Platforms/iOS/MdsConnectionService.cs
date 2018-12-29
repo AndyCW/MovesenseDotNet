@@ -7,6 +7,7 @@ namespace MdsLibrary
     /// <summary>
     /// Connection logic for iOS devices
     /// </summary>
+#if __IOS__
     public class MdsConnectionService
     {
         private MdsConnectionListener mListener;
@@ -81,5 +82,5 @@ namespace MdsLibrary
             }
         }
     }
+#endif
 }
-

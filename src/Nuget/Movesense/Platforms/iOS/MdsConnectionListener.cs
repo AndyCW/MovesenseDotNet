@@ -12,6 +12,7 @@ namespace MdsLibrary
     /// <summary>
     /// Listener for callbacks from MdsLib for device connections and disconnections
     /// </summary>
+#if __IOS__
     public sealed class MdsConnectionListener
     {
         /// <summary>
@@ -146,4 +147,5 @@ namespace MdsLibrary
             }
         }
     }
+#endif
 }

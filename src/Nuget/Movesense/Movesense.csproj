@@ -69,6 +69,16 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <Compile Include="Platforms\Android\MdsConnectionListener.cs" />
+    <Compile Include="Platforms\Android\MdsConnectionService.cs" />
+    <Compile Include="Platforms\Android\MovesenseImplementation.cs" />
+    <Compile Include="Platforms\iOS\MdsConnectionListener.cs" />
+    <Compile Include="Platforms\iOS\MdsConnectionService.cs" />
+    <Compile Include="Platforms\iOS\MovesenseImplementation.cs" />
+  </ItemGroup>
+
+
   <!--
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
     <Compile Include="Platforms\DotNet\**\*.cs" />

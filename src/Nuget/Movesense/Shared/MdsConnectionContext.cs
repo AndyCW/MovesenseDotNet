@@ -18,17 +18,17 @@ namespace Plugin.Movesense
         /// <summary>
         /// MAC address of the connected device
         /// </summary>
-        public string MAC { get; private set; }
+        public Guid Uuid { get; private set; }
 
         /// <summary>
         /// Constructs an MdsConnectionContext
         /// </summary>
         /// <param name="serial">Serial number of the device</param>
-        /// <param name="mac">MAC Address of ther device</param>
-        public MdsConnectionContext(string serial, string mac)
+        /// <param name="uuid">MAC Address of ther device</param>
+        public MdsConnectionContext(string serial, Guid uuid)
         {
             this.Serial = serial;
-            this.MAC = mac;
+            this.Uuid = uuid;
         }
 
     }

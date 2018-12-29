@@ -39,7 +39,7 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns>null</returns>
-        [Obsolete("DisconnectMdsAsync(Guid) is deprecated, please use DisconnectMdsAsync(MdsConnectionContect) instead.")]
+        [Obsolete("DisconnectMdsAsync(Guid) is deprecated, please use DisconnectMdsAsync(MdsConnectionContext) instead.")]
         Task<object> DisconnectMdsAsync(Guid Uuid);
 
         /// <summary>
@@ -47,7 +47,6 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="connectionContext">Connection context of the device</param>
         /// <returns>null</returns>
-        [Obsolete("DisconnectMdsAsync(Guid) is deprecated, please use DisconnectMdsAsync(MdsConnectionContext) instead.")]
         Task<object> DisconnectMdsAsync(MdsConnectionContext connectionContext);
 
         /// <summary>

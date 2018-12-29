@@ -6,6 +6,7 @@ namespace MdsLibrary
     /// <summary>
     /// Connection logic for Android devices
     /// </summary>
+#if __ANDROID__
     public class MdsConnectionService
     {
         private MdsConnectionListener mListener;
@@ -73,5 +74,6 @@ namespace MdsLibrary
         }
 
     }
+#endif
 }
 

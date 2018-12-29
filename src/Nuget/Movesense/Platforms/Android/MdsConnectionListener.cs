@@ -8,6 +8,7 @@ namespace MdsLibrary
     /// <summary>
     /// Listener for callbacks from MdsLib for device connections and disconnections
     /// </summary>
+#if __ANDROID__
     public sealed class MdsConnectionListener : Java.Lang.Object, Com.Movesense.Mds.IMdsConnectionListener
     {
         /// <summary>
@@ -122,4 +123,5 @@ namespace MdsLibrary
             }
         }
     }
+#endif
 }
