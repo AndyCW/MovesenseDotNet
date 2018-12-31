@@ -23,11 +23,13 @@ namespace MdsLibrary.Api
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
         private int retries = 0;
-        private readonly string mDeviceName;
+        private readonly string mSerial;
         private readonly string mPath;
-        private static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
         TaskCompletionSource<IMdsSubscription> mTcs;
         Action<T> mNotificationCallback;
+#if __ANDROID__
+        private static readonly string URI_EVENTLISTENER = "suunto://MDS/EventListener";
+#endif
 
         /// <summary>
         /// The context for the subscription
@@ -39,14 +41,47 @@ namespace MdsLibrary.Api
         /// </summary>
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
         /// <param name="path">The path of the MdsLib resource, for example "/Meas/Acc/52" to subscribe to accelerometer at 52Hz</param>
+        [Obsolete("Passing argument of deviceName is deprecated, please use ApiSubscription(MdsConnectionContext, string) constructor instead.")]
         public ApiSubscription(string deviceName, string path)
         {
             if (string.IsNullOrEmpty(deviceName)) throw new InvalidOperationException("Required parameter deviceName must have value");
             if (string.IsNullOrEmpty(path)) throw new InvalidOperationException("Required parameter path must have value");
 
-            mDeviceName = deviceName;
+            mSerial = Util.GetVisibleSerial(deviceName);
             mPath = path;
-            if (mPath.Substring(0,1) != "/")
+            if (mPath.Substring(0, 1) != "/")
+            {
+                mPath = "/" + mPath;
+            }
+
+            // Define the built-in implementation of the retry function
+            // This just retries 2 times, regardless of the exception thrown
+            // The user may provide their own implementation of the Retry function to override this behavior
+            RetryFunction = new Func<Exception, bool?>((Exception ex) =>
+            {
+                bool? cancel = false;
+                if (++retries > MAX_RETRY_COUNT)
+                {
+                    cancel = true;
+                }
+                return cancel;
+            }
+        );
+        }
+
+        /// <summary>
+        /// Utility class for API subscriptions
+        /// </summary>
+        /// <param name="connectionContext">MdsConnectionContext for the device</param>
+        /// <param name="path">The path of the MdsLib resource, for example "/Meas/Acc/52" to subscribe to accelerometer at 52Hz</param>
+        public ApiSubscription(MdsConnectionContext connectionContext, string path)
+        {
+            if (connectionContext is null) throw new InvalidOperationException("Required parameter connectionContext must have value");
+            if (string.IsNullOrEmpty(path)) throw new InvalidOperationException("Required parameter path must have value");
+
+            mSerial = connectionContext.Serial;
+            mPath = path;
+            if (mPath.Substring(0, 1) != "/")
             {
                 mPath = "/" + mPath;
             }
@@ -141,7 +176,7 @@ namespace MdsLibrary.Api
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
             var subscription = mds.Subscribe(
                 URI_EVENTLISTENER, 
-                FormatContractToJson(Util.GetVisibleSerial(mDeviceName), mPath), 
+                FormatContractToJson(mSerial, mPath), 
                 this
                 );
             Subscription = new MdsSubscription(subscription);
@@ -150,7 +185,7 @@ namespace MdsLibrary.Api
             Movesense.MDSResponseBlock responseBlock = new Movesense.MDSResponseBlock((arg0) => OnSubscribeCompleted(arg0));
             Movesense.MDSEventBlock eventBlock = (Movesense.MDSEvent arg0) => OnSubscriptionEvent(arg0);
 
-            string path = Util.GetVisibleSerial(mDeviceName) + mPath;
+            string path = mSerial + mPath;
             mds.DoSubscribe(path, new Foundation.NSDictionary(), responseBlock, eventBlock);
             // Save the path to the subscription for the device in the MdsSubscription
             Subscription = new MdsSubscription(path);

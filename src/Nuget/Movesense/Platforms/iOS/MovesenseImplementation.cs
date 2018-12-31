@@ -1,4 +1,5 @@
-﻿using MdsLibrary;
+﻿#if __IOS__
+using MdsLibrary;
 using MdsLibrary.Api;
 using Movesense;
 using Plugin.Movesense.Api;
@@ -12,7 +13,7 @@ namespace Plugin.Movesense
     /// <summary>
     /// Interface for $safeprojectgroupname$
     /// </summary>
-#if __IOS__
+
     public partial class MovesenseImplementation : IMovesense
     {
         private static MDSWrapper instance = null;
@@ -77,8 +78,8 @@ namespace Plugin.Movesense
         /// <returns>null</returns>
         public async Task<object> DisconnectMdsAsync(MdsConnectionContext mdsConnectionContext)
         {
-            return await new MdsConnectionService().DisconnectMdsAsync(mdsConnectionContext.Uuid.ToString());
+            return await new MdsConnectionService().DisconnectMdsAsync(mdsConnectionContext.UniqueIdentifier);
         }
     }
-#endif
 }
+#endif

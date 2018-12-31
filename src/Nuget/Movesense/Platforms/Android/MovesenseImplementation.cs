@@ -1,4 +1,5 @@
-﻿using Com.Movesense.Mds;
+﻿#if __ANDROID__
+using Com.Movesense.Mds;
 using MdsLibrary;
 using MdsLibrary.Api;
 using MdsLibrary.Model;
@@ -15,7 +16,7 @@ namespace Plugin.Movesense
     /// <summary>
     /// Implementation for the IMovesense plugin access interface
     /// </summary>
-#if __ANDROID__
+
     public partial class MovesenseImplementation : IMovesense
     {
         private static Mds instance = null;
@@ -84,7 +85,7 @@ namespace Plugin.Movesense
         /// <returns>null</returns>
         public Task<object> DisconnectMdsAsync(MdsConnectionContext mdsConnectionContext)
         {
-            return new MdsConnectionService().DisconnectMdsAsync(GetMACAddressFromUuid(mdsConnectionContext.Uuid));
+            return new MdsConnectionService().DisconnectMdsAsync(mdsConnectionContext.UniqueIdentifier);
         }
 
         private string GetMACAddressFromUuid(Guid Uuid)
@@ -101,5 +102,5 @@ namespace Plugin.Movesense
             return formattedMAC.ToString();
         }
     }
-#endif
 }
+#endif

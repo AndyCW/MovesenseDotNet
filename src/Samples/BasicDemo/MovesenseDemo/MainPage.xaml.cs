@@ -1,4 +1,5 @@
-﻿using Plugin.BluetoothLE;
+﻿using MdsLibrary;
+using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,18 +61,20 @@ namespace MovesenseDemo
                     // Now do the Mds connection
                     var sensor = result.Device;
                     StatusLabel.Text = $"Connecting to device {sensor.Name}";
+
                     var movesense = Plugin.Movesense.CrossMovesense.Current;
-                    await movesense.ConnectMdsAsync(sensor.Uuid);
+                    var connectionContext = await movesense.ConnectMdsAsync(sensor.Uuid);
 
                     // Talk to the device
                     StatusLabel.Text = "Getting device info";
-                    var info = await movesense.GetDeviceInfoAsync(sensor.Name);
+                    var info = await movesense.GetDeviceInfoAsync(connectionContext);
+
                     StatusLabel.Text = "Getting battery level";
-                    var batt = await movesense.GetBatteryLevelAsync(sensor.Name);
+                    var batt = await movesense.GetBatteryLevelAsync(connectionContext);
 
                     // Turn on the LED
                     StatusLabel.Text = "Turning on LED";
-                    await movesense.SetLedStateAsync(sensor.Name, 0, true);
+                    await movesense.SetLedStateAsync(connectionContext, 0, true);
 
                     await DisplayAlert(
                         "Success", 
@@ -80,11 +83,11 @@ namespace MovesenseDemo
 
                     // Turn the LED off again
                     StatusLabel.Text = "Turning off LED";
-                    await movesense.SetLedStateAsync(sensor.Name, 0, false);
+                    await movesense.SetLedStateAsync(connectionContext, 0, false);
 
                     // Disconnect Mds
                     StatusLabel.Text = "Disconnecting";
-                    await movesense.DisconnectMdsAsync(sensor.Uuid);
+                    await movesense.DisconnectMdsAsync(connectionContext);
                     StatusLabel.Text = "Disconnected";
 
                 }

@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace MdsLibrary.Helpers
 {
+    /// <summary>
+    /// Contains utility methods
+    /// </summary>
     public class Util
     {
         /// <summary>

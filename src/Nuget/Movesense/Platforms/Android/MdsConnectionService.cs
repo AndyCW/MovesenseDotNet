@@ -1,4 +1,5 @@
-﻿using Plugin.Movesense;
+﻿#if __ANDROID__
+using Plugin.Movesense;
 using System.Threading.Tasks;
 
 namespace MdsLibrary
@@ -6,12 +7,12 @@ namespace MdsLibrary
     /// <summary>
     /// Connection logic for Android devices
     /// </summary>
-#if __ANDROID__
+
     public class MdsConnectionService
     {
         private MdsConnectionListener mListener;
         private string mMACAddress;
-        private TaskCompletionSource<object> connectiontcs;
+        private TaskCompletionSource<MdsConnectionContext> connectiontcs;
         private TaskCompletionSource<object> disconnectTcs;
 
         /// <summary>
@@ -19,10 +20,10 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="MACAddress">MAC address of the device</param>
         /// <returns></returns>
-        public Task<object> ConnectMdsAsync(string MACAddress)
+        public Task<MdsConnectionContext> ConnectMdsAsync(string MACAddress)
         {
             mMACAddress = MACAddress;
-            connectiontcs = new TaskCompletionSource<object>();
+            connectiontcs = new TaskCompletionSource<MdsConnectionContext>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             mListener.DeviceConnectionComplete += MListener_DeviceConnectionComplete;
@@ -68,12 +69,11 @@ namespace MdsLibrary
             MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mMACAddress, out serial);
             if (e.Serial == serial)
             {
-                connectiontcs?.TrySetResult(null);
+                connectiontcs?.TrySetResult(new MdsConnectionContext(serial, mMACAddress));
                 mListener.DeviceConnectionComplete -= MListener_DeviceConnectionComplete;
             }
         }
 
     }
-#endif
 }
-
+#endif

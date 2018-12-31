@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿#if __IOS__
+using Foundation;
 using Movesense;
 using Plugin.Movesense;
 using System;
@@ -12,7 +13,7 @@ namespace MdsLibrary
     /// <summary>
     /// Listener for callbacks from MdsLib for device connections and disconnections
     /// </summary>
-#if __IOS__
+
     public sealed class MdsConnectionListener
     {
         /// <summary>
@@ -147,5 +148,5 @@ namespace MdsLibrary
             }
         }
     }
-#endif
 }
+#endif

@@ -25,7 +25,7 @@ namespace MdsLibrary.Api
         private static readonly int RETRY_DELAY = 5000; //5 sec
         private static int MAX_RETRY_COUNT = 2;
         private int retries = 0;
-        private readonly string mDeviceName;
+        private readonly string mSerial;
         private readonly string mPath;
         private readonly string mBody;
         private readonly MdsOp mRestOp;
@@ -40,9 +40,40 @@ namespace MdsLibrary.Api
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
         /// <param name="prefixPath">optional prefix of the target URI before the device serial number (defaults to empty string)</param>
+        [Obsolete("Passing argument of deviceName is deprecated, please use ApiCallAsync(MdsConnectionContext...) constructor instead.")]
         public ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null, string prefixPath = "")
         {
-            mDeviceName = deviceName;
+            mSerial = Util.GetVisibleSerial(deviceName);
+            mPath = path;
+            mRestOp = restOp;
+            mBody = body;
+            mPrefixPath = prefixPath;
+
+            // Define the built-in implementation of the retry function
+            // This just retries 2 times, regardless of the exception thrown
+            // The user may provide their own implementation of the Retry function to override this behavior
+            RetryFunction = new Func<Exception, bool?>((Exception ex) =>
+            {
+                bool? cancel = false;
+                if (++retries > MAX_RETRY_COUNT)
+                {
+                    cancel = true;
+                }
+                return cancel;
+            }
+        );
+        }
+        /// <summary>
+        /// Create an ApiCall instance
+        /// </summary>
+        /// <param name="connectionContext">MdsConnectionContext for the device</param>
+        /// <param name="restOp">The type of REST call to make to MdsLib</param>
+        /// <param name="path">The path of the MdsLib resource</param>
+        /// <param name="body">JSON body if any</param>
+        /// <param name="prefixPath">optional prefix of the target URI before the device serial number (defaults to empty string)</param>
+        public ApiCallAsync(MdsConnectionContext connectionContext, MdsOp restOp, string path, string body = null, string prefixPath = "")
+        {
+            mSerial = connectionContext.Serial;
             mPath = path;
             mRestOp = restOp;
             mBody = body;
@@ -123,28 +154,26 @@ namespace MdsLibrary.Api
 
 #if __ANDROID__
             var mds = (Com.Movesense.Mds.Mds)CrossMovesense.Current.MdsInstance;
-            var serial = Util.GetVisibleSerial(mDeviceName);
             if (mRestOp == MdsOp.POST)
             {
-                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
+                mds.Post(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + mSerial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
+                mds.Get(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + mSerial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
+                mds.Delete(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + mSerial + mPath, mBody, this);
             }
             else if (mRestOp == MdsOp.PUT)
             {
-                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + serial + mPath, mBody, this);
+                mds.Put(Plugin.Movesense.CrossMovesense.Current.SCHEME_PREFIX + mPrefixPath + mSerial + mPath, mBody, this);
             }
 #endif
 
 #if __IOS__
             var mds = (Movesense.MDSWrapper)CrossMovesense.Current.MdsInstance;
-            var serial = Util.GetVisibleSerial(mDeviceName);
             NSDictionary bodyDict = new NSDictionary();
             if (mRestOp == MdsOp.POST)
             {
@@ -154,15 +183,15 @@ namespace MdsLibrary.Api
                     NSError error = new NSError();
                     bodyDict = (NSDictionary)NSJsonSerialization.Deserialize(data, NSJsonReadingOptions.MutableContainers, out error);
                 }
-                mds.DoPost(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoPost(mPrefixPath + mSerial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.GET)
             {
-                mds.DoGet(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoGet(mPrefixPath + mSerial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.DELETE)
             {
-                mds.DoDelete(mPrefixPath + serial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoDelete(mPrefixPath + mSerial + mPath, contract: bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
             else if (mRestOp == MdsOp.PUT)
             {
@@ -172,20 +201,25 @@ namespace MdsLibrary.Api
                     NSError error = new NSError();
                     bodyDict = (NSDictionary)NSJsonSerialization.Deserialize(data, NSJsonReadingOptions.MutableContainers, out error);
                 }
-                mds.DoPut(mPrefixPath + serial + mPath, bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
+                mds.DoPut(mPrefixPath + mSerial + mPath, bodyDict, completion: (arg0) => CallCompletionCallback(arg0));
             }
 #endif
             return mTcs.Task;
         }
 
+
+#if __ANDROID__
         /// <summary>
         /// Callback on success receives response as a Json string
         /// </summary>
         /// <param name="s">response as a Json string</param>
-#if __ANDROID__
         /// <param name="mdsHeader">Header object with details of the call</param>
         public void OnSuccess(string s, MdsHeader mdsHeader)
 #else
+        /// <summary>
+        /// Callback on success receives response as a Json string
+        /// </summary>
+        /// <param name="s">response as a Json string</param>
         public void OnSuccess(string s)
 #endif
         {
@@ -193,11 +227,12 @@ namespace MdsLibrary.Api
             mTcs.SetResult(true);
         }
 
+
+#if __ANDROID__
         /// <summary>
         /// Error callback
         /// </summary>
         /// <param name="e">exception containing details of the error</param>
-#if __ANDROID__
         public void OnError(Com.Movesense.Mds.MdsException e)
         {
             Debug.WriteLine($"ERROR error = {e.ToString()}");

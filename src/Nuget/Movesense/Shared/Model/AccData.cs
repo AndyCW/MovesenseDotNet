@@ -5,11 +5,21 @@ using System.Text;
 
 namespace MdsLibrary.Model
 {
+    /// <summary>
+    /// Class representation of the JSON returned by an Accelerometer subscription
+    /// </summary>
     public class AccData
     {
+        /// <summary>
+        /// Body data
+        /// </summary>
         [JsonProperty("Body")]
         public Body Data;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="body">body data</param>
         public AccData(Body body)
         {
             this.Data = body;
@@ -89,11 +99,21 @@ namespace MdsLibrary.Model
             }
         }
 
+        /// <summary>
+        /// Header data
+        /// </summary>
         public class Headers
         {
+            /// <summary>
+            /// Parameter 0
+            /// </summary>
             [JsonProperty("Param0")]
             public int Param0;
 
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="param0">parameter</param>
             public Headers(int param0)
             {
                 this.Param0 = param0;

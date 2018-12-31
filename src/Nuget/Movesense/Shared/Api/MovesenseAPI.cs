@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Plugin.Movesense
 {
+    /// <summary>
+    /// Implements the methods of the IMovesense interface
+    /// </summary>
     public partial class MovesenseImplementation
     {
         private static readonly string LOGBOOK_ENTRIES_PATH = "/Mem/Logbook/Entries";
@@ -540,8 +543,8 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get Battery level, CallAsync returns BatteryResult
         /// </summary>
-        [Obsolete("Passing argument of deviceName is deprecated, please use GetBatteryLevelAsync(MdsConnectionContext) instead.")]
         /// <param name="deviceName">Name of the device, e.g. Movesense 174430000051</param>
+        [Obsolete("Passing argument of deviceName is deprecated, please use GetBatteryLevelAsync(MdsConnectionContext) instead.")]
         public async Task<BatteryResult> GetBatteryLevelAsync(string deviceName)
         {
             var op = new ApiCallAsync<BatteryResult>(deviceName, MdsOp.GET, BATTERY_PATH);

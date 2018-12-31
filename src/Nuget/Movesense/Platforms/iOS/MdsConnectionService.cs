@@ -1,4 +1,4 @@
-﻿using Movesense;
+﻿#if __IOS__
 using Plugin.Movesense;
 using System.Threading.Tasks;
 
@@ -7,12 +7,12 @@ namespace MdsLibrary
     /// <summary>
     /// Connection logic for iOS devices
     /// </summary>
-#if __IOS__
+
     public class MdsConnectionService
     {
         private MdsConnectionListener mListener;
         private string mUuid;
-        private TaskCompletionSource<object> connectiontcs;
+        private TaskCompletionSource<MdsConnectionContext> connectiontcs;
         private TaskCompletionSource<object> disconnectTcs;
 
         /// <summary>
@@ -20,10 +20,10 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public Task<object> ConnectMdsAsync(string Uuid)
+        public Task<MdsConnectionContext> ConnectMdsAsync(string Uuid)
         {
             mUuid = Uuid.ToUpper();
-            connectiontcs = new TaskCompletionSource<object>();
+            connectiontcs = new TaskCompletionSource<MdsConnectionContext>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             // Ensure the connection listener is setup
@@ -65,7 +65,7 @@ namespace MdsLibrary
             MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
             if (e.Serial.ToUpper() == serial)
             {
-                connectiontcs?.TrySetResult(null);
+                connectiontcs?.TrySetResult(new MdsConnectionContext(serial, mUuid));
                 mListener.DeviceConnectionComplete -= MListener_ConnectionComplete;
             }
         }
@@ -82,5 +82,5 @@ namespace MdsLibrary
             }
         }
     }
-#endif
 }
+#endif
