@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Plugin.BluetoothLE;
+using Plugin.Movesense;
 
 namespace SampleApp.ViewModels
 {
     public class MovesenseDeviceViewModel : ViewModelBase
     {
         public IDevice Device { get; private set; }
+
+        public IMovesenseDevice MovesenseDevice { get; private set; }
 
         public MovesenseDeviceViewModel()
         {
@@ -175,11 +178,9 @@ namespace SampleApp.ViewModels
         public async Task Connect()
         {
             DeviceStatus = DeviceStatus.Connecting;
-            this.Device.Connect();
-            Debug.WriteLine("Ble Connected!");
 
             // Now do the Mds connection
-            await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(Uuid);
+            this.MovesenseDevice = await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(Uuid);
 
             DeviceStatus = DeviceStatus.Connected;
         }
@@ -189,12 +190,9 @@ namespace SampleApp.ViewModels
             DeviceStatus = DeviceStatus.Connecting;
 
             // Disconnect Mds
-            await Plugin.Movesense.CrossMovesense.Current.DisconnectMdsAsync(Uuid);
+            await this.MovesenseDevice.DisconnectMdsAsync();
 
-            // Disconnect SensorKit
-            this.Device.CancelConnection();
-
-            Debug.WriteLine("Ble DisConnected!");
+            Debug.WriteLine("Device Disconnected!");
 
             DeviceStatus = DeviceStatus.Discovered;
         }

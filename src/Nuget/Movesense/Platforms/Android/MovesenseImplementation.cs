@@ -61,8 +61,8 @@ namespace Plugin.Movesense
         /// Connect a device to MdsLib
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
-        /// <returns>MdsConnectionContext contains device IDs. Pass this object in all other Movesense.NET API calls to specify target device.</returns>
-        public async Task<MdsConnectionContext> ConnectMdsAsync(Guid Uuid)
+        /// <returns>MdsMovesenseDevice object for the device.</returns>
+        public async Task<IMovesenseDevice> ConnectMdsAsync(Guid Uuid)
         {
             return await new MdsConnectionService().ConnectMdsAsync(GetMACAddressFromUuid(Uuid));
         }
@@ -81,11 +81,11 @@ namespace Plugin.Movesense
         /// <summary>
         /// Disconnect a device from MdsLib
         /// </summary>
-        /// <param name="mdsConnectionContext">MdsConnectionContext of the device</param>
+        /// <param name="mdsDevice">IMovesenseDevice of the device</param>
         /// <returns>null</returns>
-        public Task<object> DisconnectMdsAsync(MdsConnectionContext mdsConnectionContext)
+        public Task<object> DisconnectMdsAsync(IMovesenseDevice mdsDevice)
         {
-            return new MdsConnectionService().DisconnectMdsAsync(mdsConnectionContext.UniqueIdentifier);
+            return new MdsConnectionService().DisconnectMdsAsync(mdsDevice.UniqueIdentifier);
         }
 
         private string GetMACAddressFromUuid(Guid Uuid)

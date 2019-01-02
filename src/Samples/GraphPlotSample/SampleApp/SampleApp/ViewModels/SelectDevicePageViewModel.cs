@@ -34,12 +34,12 @@ namespace SampleApp.ViewModels
             item.IsSelected = !item.IsSelected;
             if (item.IsSelected)
             {
-                App.Locator.LinearAccelerationPageVM.MovesenseDevice = item;
+                App.Locator.LinearAccelerationPageVM.MovesenseDeviceVM = item;
             }
             // If none selected, clear setting
             if (Devices.FirstOrDefault(x => x.IsSelected) == null)
             {
-                App.Locator.LinearAccelerationPageVM.MovesenseDevice = null;
+                App.Locator.LinearAccelerationPageVM.MovesenseDeviceVM = null;
             }
         }
 

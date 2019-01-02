@@ -7,23 +7,31 @@ namespace MdsLibrary
     /// <summary>
     /// Connection logic for iOS devices
     /// </summary>
-
-    public class MdsConnectionService
+    public partial class MdsConnectionService : IMdsConnectionService
     {
         private MdsConnectionListener mListener;
         private string mUuid;
-        private TaskCompletionSource<MdsConnectionContext> connectiontcs;
+        private TaskCompletionSource<IMovesenseDevice> connectiontcs;
         private TaskCompletionSource<object> disconnectTcs;
+
+
+        /// <summary>
+        ///  Return an instance of MdsConnection Service
+        /// </summary>
+        public static IMdsConnectionService GetInstance()
+        {
+            return new MdsConnectionService();
+        }
 
         /// <summary>
         /// Connect a device to MdsLib
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public Task<MdsConnectionContext> ConnectMdsAsync(string Uuid)
+        public Task<IMovesenseDevice> ConnectMdsAsync(string Uuid)
         {
             mUuid = Uuid.ToUpper();
-            connectiontcs = new TaskCompletionSource<MdsConnectionContext>();
+            connectiontcs = new TaskCompletionSource<IMovesenseDevice>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             // Ensure the connection listener is setup
@@ -65,7 +73,7 @@ namespace MdsLibrary
             MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
             if (e.Serial.ToUpper() == serial)
             {
-                connectiontcs?.TrySetResult(new MdsConnectionContext(serial, mUuid));
+                connectiontcs?.TrySetResult(new MdsMovesenseDevice(serial, mUuid));
                 mListener.DeviceConnectionComplete -= MListener_ConnectionComplete;
             }
         }

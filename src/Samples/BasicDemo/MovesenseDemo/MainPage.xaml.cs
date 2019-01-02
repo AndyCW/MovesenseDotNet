@@ -58,23 +58,28 @@ namespace MovesenseDemo
                 {
                     StopScanning();
 
+                    var movesense = Plugin.Movesense.CrossMovesense.Current;
+
+                    movesense.ConnectionListener.DeviceDisconnected += async (s, a) =>
+                        {
+                            await DisplayAlert("Disconnection", $"Device {a.Serial} disconnected", "OK");
+                        };
+
                     // Now do the Mds connection
                     var sensor = result.Device;
                     StatusLabel.Text = $"Connecting to device {sensor.Name}";
-
-                    var movesense = Plugin.Movesense.CrossMovesense.Current;
-                    var connectionContext = await movesense.ConnectMdsAsync(sensor.Uuid);
+                    var movesenseDevice = await movesense.ConnectMdsAsync(sensor.Uuid);
 
                     // Talk to the device
                     StatusLabel.Text = "Getting device info";
-                    var info = await movesense.GetDeviceInfoAsync(connectionContext);
+                    var info = await movesenseDevice.GetDeviceInfoAsync();
 
                     StatusLabel.Text = "Getting battery level";
-                    var batt = await movesense.GetBatteryLevelAsync(connectionContext);
+                    var batt = await movesenseDevice.GetBatteryLevelAsync();
 
                     // Turn on the LED
                     StatusLabel.Text = "Turning on LED";
-                    await movesense.SetLedStateAsync(connectionContext, 0, true);
+                    await movesenseDevice.SetLedStateAsync(0, true);
 
                     await DisplayAlert(
                         "Success", 
@@ -83,11 +88,11 @@ namespace MovesenseDemo
 
                     // Turn the LED off again
                     StatusLabel.Text = "Turning off LED";
-                    await movesense.SetLedStateAsync(connectionContext, 0, false);
+                    await movesenseDevice.SetLedStateAsync(0, false);
 
                     // Disconnect Mds
                     StatusLabel.Text = "Disconnecting";
-                    await movesense.DisconnectMdsAsync(connectionContext);
+                    await movesenseDevice.DisconnectMdsAsync();
                     StatusLabel.Text = "Disconnected";
 
                 }

@@ -65,14 +65,14 @@ namespace MdsLibrary.Api
         /// <summary>
         /// Helper class for all Mds API calls
         /// </summary>
-        /// <param name="connectionContext">MdsConnectionContext for the device</param>
+        /// <param name="movesenseDevice">IMovesenseDevice for the device</param>
         /// <param name="restOp">The type of REST call to make to MdsLib</param>
         /// <param name="path">The path of the MdsLib resource</param>
         /// <param name="body">JSON body if any</param>
         /// <param name="prefixPath">optional prefix of the target URI before the device serial number (defaults to empty string)</param>
-        public ApiCallAsync(MdsConnectionContext connectionContext, MdsOp restOp, string path, string body = null, string prefixPath = "")
+        public ApiCallAsync(IMovesenseDevice movesenseDevice, MdsOp restOp, string path, string body = null, string prefixPath = "")
         {
-            mSerial = connectionContext.Serial;
+            mSerial = movesenseDevice.Serial;
             mPath = path;
             mRestOp = restOp;
             mBody = body;

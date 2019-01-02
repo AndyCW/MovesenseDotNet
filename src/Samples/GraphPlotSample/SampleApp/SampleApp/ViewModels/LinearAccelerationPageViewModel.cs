@@ -32,11 +32,10 @@ namespace SampleApp.ViewModels
                     if (IsSubscribeSwitchOn)
                     {
                         ConnectionStatusText = "Connecting...";
-                        await MovesenseDevice.Connect();
+                        await MovesenseDeviceVM.Connect();
                         ConnectionStatusText = "Subscribing...";
 
-                        subscription = await CrossMovesense.Current.SubscribeAccelerometerAsync(
-                            MovesenseDevice.Name, 
+                        subscription = await MovesenseDeviceVM.MovesenseDevice.SubscribeAccelerometerAsync(
                             (d) =>
                             {
                                 PlotData(d.Data.Timestamp, d.Data.AccData[0].X, d.Data.AccData[0].Y, d.Data.AccData[0].Z);
@@ -50,11 +49,11 @@ namespace SampleApp.ViewModels
                         // Unsubscribe
                         subscription.Unsubscribe();
                         ConnectionStatusText = "Unsubscribed";
-                        await MovesenseDevice.Disconnect();
+                        await MovesenseDeviceVM.Disconnect();
                         ConnectionStatusText = "Disconnected";
                     }
                 }
-                , () => (MovesenseDevice != null) // Enable command only if we've got a device
+                , () => (MovesenseDeviceVM != null) // Enable command only if we've got a device
             );
 
             InitPlotModel();
@@ -62,13 +61,13 @@ namespace SampleApp.ViewModels
 
 
         private MovesenseDeviceViewModel _movesenseDeviceViewModel;
-        public MovesenseDeviceViewModel MovesenseDevice
+        public MovesenseDeviceViewModel MovesenseDeviceVM
         {
             get { return _movesenseDeviceViewModel;
             }
             set
             {
-                Set(() => MovesenseDevice, ref _movesenseDeviceViewModel, value);
+                Set(() => MovesenseDeviceVM, ref _movesenseDeviceViewModel, value);
                 ((Xamarin.Forms.Command)ToggleSubscribeSwitchCommand).ChangeCanExecute();
             }
         }

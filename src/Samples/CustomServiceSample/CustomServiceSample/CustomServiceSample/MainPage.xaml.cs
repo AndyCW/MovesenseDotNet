@@ -65,23 +65,29 @@ namespace CustomServiceSample
 
                 StatusLabel.Text = $"Connecting to device {mSelectedDevice.Name}";
 
+                var movesense = Plugin.Movesense.CrossMovesense.Current;
+
+                // Show how to hook device connection events
+                movesense.ConnectionListener.DeviceDisconnected += async (s, a) =>
+                {
+                    await DisplayAlert("Disconnection", $"Device {a.Serial} disconnected", "OK");
+                };
 
                 // Now do the Mds connection
-                var movesense = Plugin.Movesense.CrossMovesense.Current;
-                await movesense.ConnectMdsAsync(mSelectedDevice.Uuid);
+                var movesenseDevice = await movesense.ConnectMdsAsync(mSelectedDevice.Uuid);
 
                 // Talk to the device
                 // First get details of the app running on the device
                 StatusLabel.Text = "Querying app details";
 
-                var info = await movesense.GetAppInfoAsync(mSelectedDevice.Name);
+                var info = await movesenseDevice.GetAppInfoAsync();
 
                 // Now try to get the HelloWorld resource
                 try
                 {
                     StatusLabel.Text = "Attempting to call HelloWorld service";
 
-                    var helloWorldResponse = await movesense.ApiCallAsync<string>(mSelectedDevice.Name, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
+                    var helloWorldResponse = await movesense.ApiCallAsync<string>(movesenseDevice, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
                     await DisplayAlert(
                         "Success",
                         $"App on device {mSelectedDevice.Name} is {info.Data.ApplicationName} version {info.Data.ApplicationVersion}, GET of /Sample/HelloWorld returned {helloWorldResponse}",
@@ -99,7 +105,7 @@ namespace CustomServiceSample
                 }
 
                 // Disconnect Mds
-                await movesense.DisconnectMdsAsync(mSelectedDevice.Uuid);
+                await movesenseDevice.DisconnectMdsAsync();
 
                 StatusLabel.Text = "Disconnected from device";
 

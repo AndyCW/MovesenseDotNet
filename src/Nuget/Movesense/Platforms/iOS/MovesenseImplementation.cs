@@ -11,9 +11,8 @@ using System.Threading.Tasks;
 namespace Plugin.Movesense
 {
     /// <summary>
-    /// Interface for $safeprojectgroupname$
+    /// Implements the Movesense.NET API
     /// </summary>
-
     public partial class MovesenseImplementation : IMovesense
     {
         private static MDSWrapper instance = null;
@@ -52,7 +51,7 @@ namespace Plugin.Movesense
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns>MdsConnectionContext contains device IDs. Pass this object in all other Movesense.NET API calls to specify target device.</returns>
-        public async Task<MdsConnectionContext> ConnectMdsAsync(Guid Uuid)
+        public async Task<IMovesenseDevice> ConnectMdsAsync(Guid Uuid)
         {
             // Ensure the listener is initialized
             await MdsConnectionListener.Current.EnsureInitializedAsync();
@@ -74,11 +73,11 @@ namespace Plugin.Movesense
         /// <summary>
         /// Disconnect a device from MdsLib
         /// </summary>
-        /// <param name="mdsConnectionContext">MdsConnectionContext of the device</param>
+        /// <param name="mdsDevice">IMovesenseDevice of the device</param>
         /// <returns>null</returns>
-        public async Task<object> DisconnectMdsAsync(MdsConnectionContext mdsConnectionContext)
+        public Task<object> DisconnectMdsAsync(IMovesenseDevice mdsDevice)
         {
-            return await new MdsConnectionService().DisconnectMdsAsync(mdsConnectionContext.UniqueIdentifier);
+            return new MdsConnectionService().DisconnectMdsAsync(mdsDevice.UniqueIdentifier);
         }
     }
 }

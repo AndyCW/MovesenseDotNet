@@ -8,22 +8,30 @@ namespace MdsLibrary
     /// Connection logic for Android devices
     /// </summary>
 
-    public class MdsConnectionService
+    public partial class MdsConnectionService : IMdsConnectionService
     {
         private MdsConnectionListener mListener;
         private string mMACAddress;
-        private TaskCompletionSource<MdsConnectionContext> connectiontcs;
+        private TaskCompletionSource<IMovesenseDevice> connectiontcs;
         private TaskCompletionSource<object> disconnectTcs;
+
+        /// <summary>
+        ///  Return an instance of MdsConnection Service
+        /// </summary>
+        public static IMdsConnectionService GetInstance()
+        {
+            return new MdsConnectionService();
+        }
 
         /// <summary>
         /// Connect a device to MdsLib
         /// </summary>
         /// <param name="MACAddress">MAC address of the device</param>
         /// <returns></returns>
-        public Task<MdsConnectionContext> ConnectMdsAsync(string MACAddress)
+        public Task<IMovesenseDevice> ConnectMdsAsync(string MACAddress)
         {
             mMACAddress = MACAddress;
-            connectiontcs = new TaskCompletionSource<MdsConnectionContext>();
+            connectiontcs = new TaskCompletionSource<IMovesenseDevice>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
             mListener.DeviceConnectionComplete += MListener_DeviceConnectionComplete;
@@ -69,7 +77,7 @@ namespace MdsLibrary
             MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mMACAddress, out serial);
             if (e.Serial == serial)
             {
-                connectiontcs?.TrySetResult(new MdsConnectionContext(serial, mMACAddress));
+                connectiontcs?.TrySetResult(new MdsMovesenseDevice(serial, mMACAddress));
                 mListener.DeviceConnectionComplete -= MListener_DeviceConnectionComplete;
             }
         }

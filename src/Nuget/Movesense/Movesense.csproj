@@ -10,7 +10,7 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>1.0.0</Version>
-    <PackageVersion>1.28.1.1-beta</PackageVersion>
+    <PackageVersion>2.0.0.1-beta</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -64,7 +64,6 @@
     <None Remove="Shared\Api\IMdsSubscription.cs" />
     <None Remove="Shared\Api\LedColorEnum.cs" />
     <None Remove="Shared\Api\MdsSubscription.cs" />
-    <None Remove="Shared\Api\MovesenseAPI.cs" />
     <None Remove="Shared\Model\AppInfo.cs" />
   </ItemGroup>
 

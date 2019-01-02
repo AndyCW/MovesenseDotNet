@@ -72,14 +72,14 @@ namespace MdsLibrary.Api
         /// <summary>
         /// Utility class for API subscriptions
         /// </summary>
-        /// <param name="connectionContext">MdsConnectionContext for the device</param>
+        /// <param name="movesenseDevice">IMovesenseDevice for the device</param>
         /// <param name="path">The path of the MdsLib resource, for example "/Meas/Acc/52" to subscribe to accelerometer at 52Hz</param>
-        public ApiSubscription(MdsConnectionContext connectionContext, string path)
+        public ApiSubscription(IMovesenseDevice movesenseDevice, string path)
         {
-            if (connectionContext is null) throw new InvalidOperationException("Required parameter connectionContext must have value");
+            if (movesenseDevice is null) throw new InvalidOperationException("Required parameter connectionContext must have value");
             if (string.IsNullOrEmpty(path)) throw new InvalidOperationException("Required parameter path must have value");
 
-            mSerial = connectionContext.Serial;
+            mSerial = movesenseDevice.Serial;
             mPath = path;
             if (mPath.Substring(0, 1) != "/")
             {
