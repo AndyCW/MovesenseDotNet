@@ -13,12 +13,19 @@ namespace MdsLibrary
         public string Serial { get; set; }
 
         /// <summary>
+        /// Unique ID of the device
+        /// </summary>
+        public Guid Uuid { get; set; }
+
+        /// <summary>
         /// Create event args for reporting connection events
         /// </summary>
         /// <param name="serial">Serial number of the device</param>
-        public MdsConnectionListenerEventArgs(string serial)
+        /// <param name="uuid">Unique ID of the device</param>
+        public MdsConnectionListenerEventArgs(string serial, Guid uuid)
         {
             Serial = serial;
+            Uuid = uuid;
         }
     }
 }

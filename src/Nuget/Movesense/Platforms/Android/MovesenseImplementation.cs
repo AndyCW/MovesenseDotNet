@@ -64,7 +64,7 @@ namespace Plugin.Movesense
         /// <returns>MdsMovesenseDevice object for the device.</returns>
         public async Task<IMovesenseDevice> ConnectMdsAsync(Guid Uuid)
         {
-            return await new MdsConnectionService().ConnectMdsAsync(GetMACAddressFromUuid(Uuid));
+            return await new MdsConnectionService().ConnectMdsAsync(Uuid);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Plugin.Movesense
         [Obsolete("DisconnectMdsAsync(Guid) is deprecated, please use DisconnectMdsAsync(MdsConnectionContext) instead.")]
         public Task<object> DisconnectMdsAsync(Guid Uuid)
         {
-            return new MdsConnectionService().DisconnectMdsAsync(GetMACAddressFromUuid(Uuid));
+            return new MdsConnectionService().DisconnectMdsAsync(Uuid);
         }
 
         /// <summary>
@@ -85,21 +85,7 @@ namespace Plugin.Movesense
         /// <returns>null</returns>
         public Task<object> DisconnectMdsAsync(IMovesenseDevice mdsDevice)
         {
-            return new MdsConnectionService().DisconnectMdsAsync(mdsDevice.UniqueIdentifier);
-        }
-
-        private string GetMACAddressFromUuid(Guid Uuid)
-        {
-            string[] idParts = Uuid.ToString().Split(new char[] { '-' });
-            string macAddress = idParts.Last().ToUpper();
-            StringBuilder formattedMAC = new StringBuilder();
-            for (int i = 0; i < macAddress.Length; i += 2)
-            {
-                if (i > 0) formattedMAC.Append(":");
-                formattedMAC.Append(macAddress.Substring(i, 2));
-            }
-
-            return formattedMAC.ToString();
+            return new MdsConnectionService().DisconnectMdsAsync(mdsDevice.Uuid);
         }
     }
 }

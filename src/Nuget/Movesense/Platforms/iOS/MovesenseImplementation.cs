@@ -56,7 +56,7 @@ namespace Plugin.Movesense
             // Ensure the listener is initialized
             await MdsConnectionListener.Current.EnsureInitializedAsync();
             // Connect the device
-            return await new MdsConnectionService().ConnectMdsAsync(Uuid.ToString());
+            return await new MdsConnectionService().ConnectMdsAsync(Uuid);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Plugin.Movesense
         [Obsolete("DisconnectMdsAsync(Guid) is deprecated, please use DisconnectMdsAsync(MdsConnectionContext) instead.")]
         public async Task<object> DisconnectMdsAsync(Guid Uuid)
         {
-            return await new MdsConnectionService().DisconnectMdsAsync(Uuid.ToString());
+            return await new MdsConnectionService().DisconnectMdsAsync(Uuid);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Plugin.Movesense
         /// <returns>null</returns>
         public Task<object> DisconnectMdsAsync(IMovesenseDevice mdsDevice)
         {
-            return new MdsConnectionService().DisconnectMdsAsync(mdsDevice.UniqueIdentifier);
+            return new MdsConnectionService().DisconnectMdsAsync(mdsDevice.Uuid);
         }
     }
 }

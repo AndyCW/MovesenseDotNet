@@ -2,6 +2,7 @@
 using Foundation;
 using Movesense;
 using Plugin.Movesense;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -73,19 +74,25 @@ namespace MdsLibrary
                 var connDict = (NSDictionary)bodyDict.ValueForKey(new NSString("Connection"));
                 var uuid = ((NSString)connDict.ValueForKey(new NSString("UUID"))).ToString();
 
-                this.MACAddressToSerialMapper.TryAdd(uuid, serial);
+                var uniqueIDGuid = new Guid(uuid);
+                this.UuidToSerialMapper.TryAdd(uniqueIDGuid, serial);
+
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent CONNECTED: Serial {serial}");
                 DeviceConnected?.Invoke(this, new MdsConnectionListenerBLEConnectedEventArgs(uuid));
-                DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uniqueIDGuid));
             }
             else if (method == new NSString("DEL"))
             {
                 // Device disconnected
                 var bodyDict = (NSDictionary)mdsevent.BodyDictionary.ValueForKey(new NSString("Body"));
                 var serial = ((NSString)bodyDict.ValueForKey(new NSString("Serial"))).ToString();
+                var connDict = (NSDictionary)bodyDict.ValueForKey(new NSString("Connection"));
+                var uuid = ((NSString)connDict.ValueForKey(new NSString("UUID"))).ToString();
+
+                var uniqueIDGuid = new Guid(uuid);
 
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent DISCONNECTED: Serial {serial}");
-                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uniqueIDGuid));
             }
             else
             {

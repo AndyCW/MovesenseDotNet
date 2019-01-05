@@ -35,13 +35,13 @@ namespace MdsLibrary
 
 
         /// <summary>
-        /// Lookup of device serial number to UUID
+        /// Lookup of Uuid to device serial number
         /// </summary>
-        public Dictionary<string, string> MACAddressToSerialMapper;
+        public Dictionary<Guid, string> UuidToSerialMapper;
 
         private MdsConnectionListener()
         {
-            MACAddressToSerialMapper = new Dictionary<string, string>();
+            UuidToSerialMapper = new Dictionary<Guid, string>();
         }
 
         /// <summary>

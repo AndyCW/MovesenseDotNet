@@ -5,7 +5,7 @@ using System.Text;
 namespace MdsLibrary
 {
     /// <summary>
-    /// Event args for MdsConnectionListener events, for reporting device connection/discopnnection to/from Mds Whiteboard
+    /// Event args for MdsConnectionListener events, for reporting device connection to BLE
     /// </summary>
     public class MdsConnectionListenerBLEConnectedEventArgs : EventArgs
     {

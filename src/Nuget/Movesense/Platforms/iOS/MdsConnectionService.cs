@@ -1,5 +1,6 @@
 ﻿#if __IOS__
 using Plugin.Movesense;
+using System;
 using System.Threading.Tasks;
 
 namespace MdsLibrary
@@ -10,7 +11,7 @@ namespace MdsLibrary
     public partial class MdsConnectionService : IMdsConnectionService
     {
         private MdsConnectionListener mListener;
-        private string mUuid;
+        private Guid mUuid;
         private TaskCompletionSource<IMovesenseDevice> connectiontcs;
         private TaskCompletionSource<object> disconnectTcs;
 
@@ -28,9 +29,9 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public Task<IMovesenseDevice> ConnectMdsAsync(string Uuid)
+        public Task<IMovesenseDevice> ConnectMdsAsync(Guid Uuid)
         {
-            mUuid = Uuid.ToUpper();
+            mUuid = Uuid;
             connectiontcs = new TaskCompletionSource<IMovesenseDevice>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
@@ -41,7 +42,7 @@ namespace MdsLibrary
             mListener.DeviceConnectionComplete += MListener_ConnectionComplete;
 
             // Start the device connection
-            ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).ConnectPeripheralWithUUID(new Foundation.NSUuid(Uuid));
+            ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).ConnectPeripheralWithUUID(new Foundation.NSUuid(mUuid.ToString()));
 
             return connectiontcs.Task;
         }
@@ -51,9 +52,9 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="Uuid">Uuid of the device</param>
         /// <returns></returns>
-        public Task<object> DisconnectMdsAsync(string Uuid)
+        public Task<object> DisconnectMdsAsync(Guid Uuid)
         {
-            mUuid = Uuid.ToUpper();
+            mUuid = Uuid;
             disconnectTcs = new TaskCompletionSource<object>();
             // Get the single instance of the connection listener
             mListener = MdsConnectionListener.Current;
@@ -62,7 +63,7 @@ namespace MdsLibrary
 
             mListener.DeviceDisconnected += MListener_Disconnect;
 
-            ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).DisconnectPeripheralWithUUID(new Foundation.NSUuid(Uuid));
+            ((Movesense.MDSWrapper)(CrossMovesense.Current.MdsInstance)).DisconnectPeripheralWithUUID(new Foundation.NSUuid(mUuid.ToString()));
 
             return disconnectTcs.Task;
         }
@@ -70,7 +71,7 @@ namespace MdsLibrary
         private void MListener_ConnectionComplete(object sender, MdsConnectionListenerEventArgs e)
         {
             var serial = string.Empty;
-            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
+            MdsConnectionListener.Current.UuidToSerialMapper.TryGetValue(mUuid, out serial);
             if (e.Serial.ToUpper() == serial)
             {
                 connectiontcs?.TrySetResult(new MdsMovesenseDevice(serial, mUuid));
@@ -81,7 +82,7 @@ namespace MdsLibrary
         private void MListener_Disconnect(object sender, MdsConnectionListenerEventArgs e)
         {
             var serial = string.Empty;
-            MdsConnectionListener.Current.MACAddressToSerialMapper.TryGetValue(mUuid, out serial);
+            MdsConnectionListener.Current.UuidToSerialMapper.TryGetValue(mUuid, out serial);
 
             if (e.Serial.ToUpper() == serial)
             {

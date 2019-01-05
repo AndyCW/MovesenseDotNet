@@ -18,9 +18,9 @@ namespace Plugin.Movesense
         string Serial { get; }
 
         /// <summary>
-        /// MAC address of the connected device (Android), Uuid (iOS)
+        /// Unique ID of the connected device
         /// </summary>
-        string UniqueIdentifier { get; }
+        Guid Uuid { get; }
 
         /// <summary>
         /// Disconnect the device from MdsLib

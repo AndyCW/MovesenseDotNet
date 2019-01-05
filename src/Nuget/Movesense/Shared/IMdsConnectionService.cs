@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Plugin.Movesense;
 
 namespace MdsLibrary
@@ -13,13 +14,13 @@ namespace MdsLibrary
         /// </summary>
         /// <param name="UniqueId">ID - MAC address on Android, UUid on iOS</param>
         /// <returns></returns>
-        Task<IMovesenseDevice> ConnectMdsAsync(string UniqueId);
+        Task<IMovesenseDevice> ConnectMdsAsync(Guid UniqueId);
 
         /// <summary>
         /// Disconnect a device from MdsLIb
         /// </summary>
         /// <param name="UniqueId">ID - MAC address on Android, UUid on iOS</param>
         /// <returns></returns>
-        Task<object> DisconnectMdsAsync(string UniqueId);
+        Task<object> DisconnectMdsAsync(Guid UniqueId);
     }
 }

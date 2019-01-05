@@ -29,9 +29,10 @@ namespace MdsLibrary
         public void OnConnectionComplete(string MACaddress, string serial)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnConnectionComplete callback called: MACaddress {MACaddress} Serial {serial}");
-            this.MACAddressToSerialMapper.TryAdd(MACaddress, serial);
+            var uuid = GetUuidFromMACAddress(MACaddress);
+            this.UuidToSerialMapper.TryAdd(uuid, serial);
 
-            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uuid));
         }
 
         /// <summary>
@@ -41,9 +42,10 @@ namespace MdsLibrary
         public void OnDisconnect(string MACaddress)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnDisconnect callback called: MACaddress {MACaddress}");
+            var uuid = GetUuidFromMACAddress(MACaddress);
             var serial = string.Empty;
-            this.MACAddressToSerialMapper.TryGetValue(MACaddress, out serial);
-            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+            this.UuidToSerialMapper.TryGetValue(uuid, out serial);
+            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uuid));
         }
 
         /// <summary>
@@ -57,11 +59,12 @@ namespace MdsLibrary
             {
                 var msgParts = e.Message.Split(" ");
                 string MACaddress = msgParts[msgParts.Length - 1];
+                var uuid = GetUuidFromMACAddress(MACaddress);
 
                 Debug.WriteLine($"DISCONNECT MdsConnectionListener OnError callback called for unintended disconnection: MACaddress {MACaddress}");
                 var serial = string.Empty;
-                this.MACAddressToSerialMapper.TryGetValue(MACaddress, out serial);
-                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                this.UuidToSerialMapper.TryGetValue(uuid, out serial);
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uuid));
             }
             else
             {
@@ -69,6 +72,19 @@ namespace MdsLibrary
                 Debug.WriteLine($"ERROR MdsConnectionListener OnError callback called for unexpected error: {e.ToString()}");
                 DeviceConnectionError?.Invoke(this, new MdsException("MdsConnectionListener unexpected error", e));
             }
+        }
+
+        /// <summary>
+        /// On Android, the MAC address is in the last part of the unique ID Guid. 
+        /// This function takes a MAC address and returns the corresponding Guid
+        /// </summary>
+        /// <param name="macAddress"></param>
+        /// <returns></returns>
+        private Guid GetUuidFromMACAddress(string macAddress)
+        {
+            var mac = macAddress.Replace(":", "");
+            var guid = $"00000000-0000-0000-0000-{mac}";
+            return new Guid(guid);
         }
     }
 }
