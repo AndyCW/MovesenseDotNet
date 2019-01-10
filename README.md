@@ -1,10 +1,10 @@
 # MovesenseDotNet
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-**NEW RELEASE Movesense.NET V2.0.1 10 January 2019** 
+**NEW RELEASE Movesense.NET V2.0.2 10 January 2019** 
   * Latest MDS Libraries supported. v1.28.1 of the Android and iOS libraries are wrapped by this plugin. Install Plugin.Movesense v2.0.1 from NuGet to get this update.
-  * NEW Movesense.NET API. V2.0 of Movesense.N ET introduces a slightly different API. You now get an IMovesenseDevice object back from a call to ConnectMdsAsync and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target, but this is not reliable as device names may change?
-  * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' warnings.
+  * NEW Movesense.NET API. V2.0 of Movesense.NET introduces a slightly different API. You now get an *IMovesenseDevice* object back from a call to *ConnectMdsAsync* and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target but proved unreliable as device names may change.
+  * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' compiler warnings.
 
 **IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1 and later**
 The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use Visual Studio 2019 (Preview) and a specific build of the Xamarin.Android SDK to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects for v1.7.2.1* instructions in the **Setup for Android projects** instructions below.
@@ -105,17 +105,17 @@ As you are using Bluetooth peripherals, you will need to add the following to yo
     var movesenseDevice = await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(sensor.Uuid);
     ```
 
-    and disconnect like this:
+    and disconnect using one of these options:
 
     ```C#
     // Disconnect from Mds - method #1
     await Plugin.Movesense.CrossMovesense.Current.DisconnectMdsAsync(sensor.Uuid);
     
-    // Disconnect from Mds - alternative method #2
+    // ALTERNATIVE: Disconnect from Mds
     await movesenseDevice.DisconnectMdsAsync();
     ```
 
-    **NOTE:** In the Movesense.NET V2 API, all Movesense APIs apart from *ConnectMdsAsync*, *ApiCallAsync* and *ApiSubscriptionAsync* are methods of the **IMovesenseDevice** object that you get back from a call to ConnectMdsAsync. In The V1.x API, all device-centric methods were available on the top-level Plugin.Movesense.Current (IMovesense) object and required that you pass the device **name** as the first argument, for example *Movesense 174430000051*. The V1.x API has been deprecated for the simple reason that device names can chnage so this is not a reliable way of addressing a device. The V1.x methods are still supported in V2.0 although are marked as *Deprecated* so you will get compiler warnings if you try to use them.
+    **NOTE:** In the Movesense.NET V2 API, all Movesense APIs apart from *ConnectMdsAsync*, *ApiCallAsync* and *ApiSubscriptionAsync* are methods of the **IMovesenseDevice** object that you get back from a call to **ConnectMdsAsync**. In The V1.x API, all device-centric methods were available on the top-level *IMovesense* object and required that you pass the device **name** as the first argument, for example *Movesense 174430000051*. The V1.x API has been deprecated for the simple reason that device names can chnage so this is not a reliable way of addressing a device. The V1.x methods are still supported in V2.0 although are marked as *Deprecated* so you will get compiler warnings if you try to use them.
     
     
 * The **ConnectMdsAsync** method returns an **IMovesenseDevice** object. Use this object to make calls to the device. 
@@ -133,10 +133,10 @@ As you are using Bluetooth peripherals, you will need to add the following to yo
 
     ```C#
     var subscription = await movesenseDevice.SubscribeAccelerometerAsync( (d) =>
-                                {
-                                    PlotData(d.Data.Timestamp, d.Data.AccData[0].X, d.Data.AccData[0].Y, d.Data.AccData[0].Z);
-                                },
-                                26);
+                        {
+                            PlotData(d.Data.Timestamp, d.Data.AccData[0].X, d.Data.AccData[0].Y, d.Data.AccData[0].Z);
+                        },
+                        26);
     ```
 
     To drop the subscription, simply call the Unsubscribe method of the subscription object:
