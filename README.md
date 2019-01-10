@@ -1,9 +1,12 @@
 # MovesenseDotNet
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-**UPDATED 5 December 2018 - Latest MDS Libraries now supported. v1.7.2 of the Android and iOS libraries are now wrapped by this plugin. Install Plugin.Movesense v1.7.2.1 from NuGet to get this update.**
+**NEW RELEASE Movesense.NET V2.0.1 10 January 2019** 
+  * Latest MDS Libraries supported. v1.28.1 of the Android and iOS libraries are wrapped by this plugin. Install Plugin.Movesense v2.0.1 from NuGet to get this update.
+  * NEW Movesense.NET API. V2.0 of Movesense.N ET introduces a slightly different API. You now get an IMovesenseDevice object back from a call to ConnectMdsAsync and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target, but this is not reliable as device names may change?
+  * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' warnings.
 
-**IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1**
+**IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1 and later**
 The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use Visual Studio 2019 (Preview) and a specific build of the Xamarin.Android SDK to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects for v1.7.2.1* instructions in the **Setup for Android projects** instructions below.
 
 ## Movesense Plugin Developer Guide
@@ -92,30 +95,35 @@ As you are using Bluetooth peripherals, you will need to add the following to yo
     var mds = Plugin.Movesense.CrossMovesense.Current;
     ```
 
-  * To connect to a Movesense device, you must first discover a Movesense device and find out its Uuid (unique identifier). You must add this code youself as Bluetooth device discovery is **not supported by the Movesense Plugin**, although once you have found a device, the Mdslib will make the Bluetooth connection when you call the *ConnectMdsAsync* method. See topic *Bluetooth Device Discovery* below for hints on how to do this.
+  * To connect to a Movesense device, you must first discover a Movesense device and find out its Uuid (unique identifier). You must add this code youself as Bluetooth device discovery is **not a feature provided by the Movesense Plugin**, although once you have found a device, the Mdslib will make the Bluetooth connection when you call the *ConnectMdsAsync* method. See topic *Bluetooth Device Discovery* below for hints on how to do this.
   * After you have discovered the Uuid of a Movesense device, you must connect to it using the MdsLib, passing the Uuid of the device. 
     
     Connect like this:
 
     ```C#
     // Make the Mds connection
-    await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(sensor.Uuid);
+    var movesenseDevice = await Plugin.Movesense.CrossMovesense.Current.ConnectMdsAsync(sensor.Uuid);
     ```
 
     and disconnect like this:
 
     ```C#
-    // Disconnect from Mds
+    // Disconnect from Mds - method #1
     await Plugin.Movesense.CrossMovesense.Current.DisconnectMdsAsync(sensor.Uuid);
+    
+    // Disconnect from Mds - alternative method #2
+    await movesenseDevice.DisconnectMdsAsync();
     ```
 
-* Now you can make calls to the device. 
-**Important:** All Movesense APIs apart from *ConnectMdsAsync* and *DisconnectMdsAsync* require that you pass the device **name**, not the Uuid, as the first argument, for example *Movesense 174430000051*. This is different from the connection and disconnection to Mds described above, which uses the Uuid.
+    **NOTE:** In the Movesense.NET V2 API, all Movesense APIs apart from *ConnectMdsAsync*, *ApiCallAsync* and *ApiSubscriptionAsync* are methods of the **IMovesenseDevice** object that you get back from a call to ConnectMdsAsync. In The V1.x API, all device-centric methods were available on the top-level Plugin.Movesense.Current (IMovesense) object and required that you pass the device **name** as the first argument, for example *Movesense 174430000051*. The V1.x API has been deprecated for the simple reason that device names can chnage so this is not a reliable way of addressing a device. The V1.x methods are still supported in V2.0 although are marked as *Deprecated* so you will get compiler warnings if you try to use them.
     
+    
+* The **ConnectMdsAsync** method returns an **IMovesenseDevice** object. Use this object to make calls to the device. 
+
     For example, to get device info:
 
     ```C#
-    var info = await Plugin.Movesense.CrossMovesense.Current.GetDeviceInfoAsync(sensor.Name);
+    var info = await movesenseDevice.GetDeviceInfoAsync();
     await DisplayAlert("Success", $"Communicated with device {sensor.Name}, firmware version is: {info.DeviceInfo.Sw}", "OK");
     ```
 
@@ -124,9 +132,7 @@ As you are using Bluetooth peripherals, you will need to add the following to yo
     For example, to subscribe to Accelerometer readings:
 
     ```C#
-    var subscription = await Plugin.Movesense.CrossMovesense.Current.SubscribeAccelerometerAsync(
-                                MovesenseDevice.Name, 
-                                (d) =>
+    var subscription = await movesenseDevice.SubscribeAccelerometerAsync( (d) =>
                                 {
                                     PlotData(d.Data.Timestamp, d.Data.AccData[0].X, d.Data.AccData[0].Y, d.Data.AccData[0].Z);
                                 },
@@ -139,6 +145,25 @@ As you are using Bluetooth peripherals, you will need to add the following to yo
     subscription.Unsubscribe();
     ```
 
+* To get Device connection and disconnection events, subscribe to these events on the **ConnectionLIstener** object:
+  * DeviceConnected - Bluetooth LE connection has succeeded
+  * DeviceConnectionComplete - connection to the Movesense Mdslib Whiteboard is complete and the device is ready for use
+  * Device disconnected - device has disconnected
+
+  Example:
+  ```C#
+    Plugin.Movesense.CrossMovesense.Current.ConnectionListener.DeviceDisconnected += async (s, a) =>
+        {
+            await DisplayAlert("Disconnection", $"Device {a.Serial} disconnected", "OK");
+        };
+  ```
+
+  Note: 
+  * You will receive events for all devices, so if your application connects to multiple sensors, you must examine the *MdsConnectionListenerEventArgs* to determine which device is affected. 
+  * When a device disconnects, you may receive multiple **DeviceDisconnected** events.
+  * If you try to use an IMovesenseDevice object when the device is disconnected, the call will return an exception.
+  * After a device disconnects, MdsLib will continuously try to reconnect. If the connection is remade, you will get a **DeviceConnectionComplete** event. It is the responsibility of the application code to resubscribe to any sensor subscriptions after the device is reconnected.
+
 ### Documentation
 The Movesense.NET API offers a higher level abstraction above the [REST API implemented in the native MDS libraries](https://bitbucket.org/suunto/movesense-device-lib/src/master/MovesenseCoreLib/resources/movesense-api/). It hides much of the low-level coding required to make direct REST-style API calls and offers simple to program methods to interact with most of the REST API.
 
@@ -146,37 +171,39 @@ The Movesense.NET API offers a higher level abstraction above the [REST API impl
 
 The Movesense API implements methods for most of the commonly used function in the Movesense API, as shown in the table below. If you need additional functions wrapping, contact us and we will implement in the next release. Alternatively, it is very easy to call functions not already implemented - see the [Custom Service Sample](https://github.com/AndyCW/MovesenseDotNet/tree/master/src/Samples/CustomServiceSample)] which shows how to call an endpoint on the Movesense Whiteboard. The sample shows how to call the *Hello World* custom resource, but the same logic applies to any of the core Movesense resources.
 
-**Note** In the API calls listed below, the majority of methods take a string as the first parameter. This is the device name, e.g. *Movesense 174430000051*.
 
 | Movesense .NET Method          |  Native Movesense API          | Description              |
 | -------------------------------|--------------------------------|--------------------------|
+|**IMovesense methods:**|||
 | ConnectMdsAsync(System.Guid)   |                                | Connect to a Movesense device |
-| CreateLogEntry(string)         | [POST /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-138)  | Create a new log entry resource |
-| DeleteLogEntries(string)       | [DELETE /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-148) | Deletes the content of the whole Logbook |
 | DisconnectMdsAsync(System.Guid) |                                | Disconnect from a Movesense device |
-| GetAccInfoAsync(string)        | [GET /Meas/Acc/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/acc.yaml#lines-14)  | Get supported sample rates and ranges |
-| GetAppInfoAsync(string)        | [GET /Info/App](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/info.yaml#lines-23) | Query for app information |
-| GetBatteryLevelAsync(string)   | [GET /System/Energy/Level](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/system/energy.yaml#lines-14) | Get estimated battery charge level |
-| GetDeviceInfoAsync(string)     |  [GET /Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/info.yaml#lines-13)  | Query for device information |
-| GetGyroInfoAsync(string)       | [GET /Meas/Gyro/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/gyro.yaml#lines-14)  | Get supported sample rates and ranges |
-| GetIMUInfoAsync(string)        | [GET /Meas/IMU/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-14)  | Get supported sample rates and ranges |
-| GetLedsStateAsync(string)      | [GET /Component/Leds](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-29) | Get leds in the system and their state (on/off & possible color) |
-| GetLedStateAsync(string, int)  |  [GET /Component/Leds/{LedIndex}](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-43)  | Get state of the specific led (on/off & possible color) |
-| GetLogbookDataAsync(string, int) | [GET /Mem/Logbook/byId/{LogId}/Data](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-186)  | Read SBEM data from a log entry and stream it |
-| GetLogbookDescriptorsAsync(string, int) | [GET /Mem/Logbook/byId/{LogId}/Descriptors](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-156)  | Read training log descriptors and stream the descriptor file |
-| GetLogEntriesAsync(string)     | [GET /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-111) | List Log contents |
-| GetLoggerStatusAsync(string)   | [GET /Mem/DataLogger/State](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-41)  | Reads current DataLogger state |
-| GetMagInfoAsync(string)        | [GET /Meas/Magn/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/magn.yaml#lines-14) | Get info about the magnetometer |
-| GetTimeAsync(string)           | [GET /Time](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/time.yaml#lines-13)      | Gets current time in number of microseconds since epoch 1.1.1970 (UTC) |
-| SetLedStateAsync(string, int, bool, LedColor)   | [PUT /Component/Leds/{LedIndex}](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-51) | Write new state (on/off & color) for specific led |
-| SetLoggerStatusAsync(string, int) |  [PUT /Mem/DataLogger/State](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-49) | Changes DataLogger to a new state |
-| SetTimeAsync(string)           | [PUT /Time](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/time.yaml#lines-23) | Sets current time in number of microseconds since epoch 1.1.1970 (UTC) |
-| SetupLoggerAsync(string)       | [PUT /Mem/DataLogger/Config](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-24)   | Writes new DataLogger config to device |
-| SubscribeAccelerometerAsync(string, Action<AccData>, int)   | [POST /Meas/Acc/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/acc.yaml#lines-57) | Subscribe to periodic linear acceleration measurements |
-| SubscribeGyrometerAsync(string, Action<GyroData>, int)   | [POST /Meas/Gyro/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/gyro.yaml#lines-53) | Subscribe to periodic gyroscope measurements |
-| SubscribeIMU6Async(string, Action<IMU6Data>, int)   | [POST /Meas/IMU6/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-66) | Subscribe to periodic 6-axis IMU measurements (Acc + Gyro) |
-| SubscribeIMU9Async(string, Action<IMU9Data>, int)   | [POST /Meas/IMU9/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-40)   | Subscribe to periodic 9-axis IMU measurements |
-| SubscribeMagnetometerAsync(string, Action<MagnData>, int)   | [POST /Meas/Magn/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/magn.yaml#lines-52) | Subscribe to periodic magnetometer measurements |
+|**IMovesenseDevice methods:**|||
+| CreateLogEntry()         | [POST /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-138)  | Create a new log entry resource |
+| DeleteLogEntries()       | [DELETE /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-148) | Deletes the content of the whole Logbook |
+| DisconnectMdsAsync()||Disconnect from the Movesense device (alternative to IMovesense.DisconnectMdsAsync(System.Guid)|
+| GetAccInfoAsync()        | [GET /Meas/Acc/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/acc.yaml#lines-14)  | Get supported sample rates and ranges |
+| GetAppInfoAsync()        | [GET /Info/App](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/info.yaml#lines-23) | Query for app information |
+| GetBatteryLevelAsync()   | [GET /System/Energy/Level](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/system/energy.yaml#lines-14) | Get estimated battery charge level |
+| GetDeviceInfoAsync()     |  [GET /Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/info.yaml#lines-13)  | Query for device information |
+| GetGyroInfoAsync()       | [GET /Meas/Gyro/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/gyro.yaml#lines-14)  | Get supported sample rates and ranges |
+| GetIMUInfoAsync()        | [GET /Meas/IMU/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-14)  | Get supported sample rates and ranges |
+| GetLedsStateAsync()      | [GET /Component/Leds](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-29) | Get leds in the system and their state (on/off & possible color) |
+| GetLedStateAsync(int)  |  [GET /Component/Leds/{LedIndex}](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-43)  | Get state of the specific led (on/off & possible color) |
+| GetLogbookDataAsync(int) | [GET /Mem/Logbook/byId/{LogId}/Data](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-186)  | Read SBEM data from a log entry and stream it |
+| GetLogbookDescriptorsAsync(int) | [GET /Mem/Logbook/byId/{LogId}/Descriptors](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-156)  | Read training log descriptors and stream the descriptor file |
+| GetLogEntriesAsync()     | [GET /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-111) | List Log contents |
+| GetLoggerStatusAsync()   | [GET /Mem/DataLogger/State](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-41)  | Reads current DataLogger state |
+| GetMagInfoAsync()        | [GET /Meas/Magn/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/magn.yaml#lines-14) | Get info about the magnetometer |
+| GetTimeAsync()           | [GET /Time](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/time.yaml#lines-13)      | Gets current time in number of microseconds since epoch 1.1.1970 (UTC) |
+| SetLedStateAsync(int, bool, LedColor)   | [PUT /Component/Leds/{LedIndex}](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-51) | Write new state (on/off & color) for specific led |
+| SetLoggerStatusAsync(int) |  [PUT /Mem/DataLogger/State](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-49) | Changes DataLogger to a new state |
+| SetTimeAsync()           | [PUT /Time](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/time.yaml#lines-23) | Sets current time in number of microseconds since epoch 1.1.1970 (UTC) |
+| SetupLoggerAsync()       | [PUT /Mem/DataLogger/Config](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-24)   | Writes new DataLogger config to device |
+| SubscribeAccelerometerAsync(Action<AccData>, int)   | [POST /Meas/Acc/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/acc.yaml#lines-57) | Subscribe to periodic linear acceleration measurements |
+| SubscribeGyrometerAsync(Action<GyroData>, int)   | [POST /Meas/Gyro/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/gyro.yaml#lines-53) | Subscribe to periodic gyroscope measurements |
+| SubscribeIMU6Async(Action<IMU6Data>, int)   | [POST /Meas/IMU6/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-66) | Subscribe to periodic 6-axis IMU measurements (Acc + Gyro) |
+| SubscribeIMU9Async(Action<IMU9Data>, int)   | [POST /Meas/IMU9/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-40)   | Subscribe to periodic 9-axis IMU measurements |
+| SubscribeMagnetometerAsync(Action<MagnData>, int)   | [POST /Meas/Magn/{SampleRate}/Subscription](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/magn.yaml#lines-52) | Subscribe to periodic magnetometer measurements |
 
 
 
@@ -184,20 +211,20 @@ The Movesense API implements methods for most of the commonly used function in t
 See [Movesense.NET Documentation](https://github.com/AndyCW/MovesenseDotNet/tree/master/Docs) for full details of the Movesense.NET API.
 
 ### Samples
-See [Samples](https://github.com/AndyCW/MovesenseDotNet/src/Samples) for sample applications using Movesense.NET.
+See [Samples](https://github.com/AndyCW/MovesenseDotNet/Samples) for sample applications using Movesense.NET.
 
 ### Calling custom app resources, or REST endpoints not mapped to Movesense.NET methods
-If you need to call a custom resource that is exposed by your own app running on a Movesense device, such as the **Hello World** sample included in the [Movesense mobile-device-lib samples](https://bitbucket.org/suunto/movesense-device-lib/src/master/samples/hello_world_app/) this is easily achieved. Simply call the **ApiCallAsync<T>** method in the Plugin.Movesense API, where T is the return type of the resource (use *string* to just return the JSON response, or define the return type in your app and pass that whereupon ApiCallAsync<T> will deserialize the JSON for you). The parameters you pass in the call to ApiCallAsync are the device name, the type of operation (GET, POST, PUT, DELETE) and the path to the resource. You can use the same technique for REST endpoints not currently mapped to Movesense.NET API methods.
+If you need to call a custom resource that is exposed by your own app running on a Movesense device, such as the **Hello World** sample included in the [Movesense mobile-device-lib samples](https://bitbucket.org/suunto/movesense-device-lib/src/master/samples/hello_world_app/) this is easily achieved. Simply call the **ApiCallAsync<T>** method in the Plugin.Movesense API, where T is the return type of the resource (use *string* to just return the JSON response, or define the return type in your app and pass that whereupon ApiCallAsync<T> will deserialize the JSON for you). The parameters you pass in the call to ApiCallAsync are the *IMovesenseDevice* object for the device, the type of operation (GET, POST, PUT, DELETE) and the path to the resource. You can use the same technique for REST endpoints not currently mapped to Movesense.NET API methods.
 
 For example for a GET of the Hello World resource:
 
 ```C#
-var helloWorldResponse = await Plugin.Movesense.CrossMovesense.Current.ApiCallAsync<string>(mSelectedDevice.Name, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
+var helloWorldResponse = await Plugin.Movesense.CrossMovesense.Current.ApiCallAsync<string>(movesenseDevice, Plugin.Movesense.Api.MdsOp.GET, "/Sample/HelloWorld");
 ```
 
 You can also use the **ApiCallAsync** method for operations that do not return a response, and you can use **ApiSubscriptionAsync<T>** for subscriptions.
 
-See the sample [CustomServiceSample](https://github.com/AndyCW/MovesenseDotNet/src/Samples/CustomServiceSample) for an example.
+See the sample [CustomServiceSample](https://github.com/AndyCW/MovesenseDotNet/Samples/CustomServiceSample) for an example.
 
 
 

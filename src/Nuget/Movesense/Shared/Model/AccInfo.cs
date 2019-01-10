@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace MdsLibrary.Model
 {
+    /// <summary>
+    /// Class representation of the JSON returned by a Get of Accelerometer configuration
+    /// </summary>
     public class AccInfo
     {
         /// <summary>

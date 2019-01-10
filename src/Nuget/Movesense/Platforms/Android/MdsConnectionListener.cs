@@ -1,66 +1,15 @@
-﻿using System;
+﻿#if __ANDROID__
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace MdsLibrary
 {
     /// <summary>
     /// Listener for callbacks from MdsLib for device connections and disconnections
     /// </summary>
-    public sealed class MdsConnectionListener : Java.Lang.Object, Com.Movesense.Mds.IMdsConnectionListener
+    public sealed partial class MdsConnectionListener : Java.Lang.Object, Com.Movesense.Mds.IMdsConnectionListener
     {
-        /// <summary>
-        /// Event fires when a device connects to BLE
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerBLEConnectedEventArgs> DeviceConnected;
-
-        /// <summary>
-        /// Event fires when connection has completed to WhiteBoard for a device to MdsLib
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnectionComplete;
-
-        /// <summary>
-        /// Event fires when a device disconnects from MdsLib
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> DeviceDisconnected;
-
-        /// <summary>
-        /// Event fires when MdsLib reports unexpected connection error
-        /// </summary>
-        public event EventHandler<MdsException> DeviceConnectionError;
-
-        private static MdsConnectionListener instance = null;
-
-        private static readonly object padlock = new object();
-
-        /// <summary>
-        /// Lookup of device serial number to UUID
-        /// </summary>
-        public Dictionary<string, string> MACAddressToSerialMapper;
-
-        private MdsConnectionListener()
-        {
-            MACAddressToSerialMapper = new Dictionary<string, string>();
-        }
-
-        /// <summary>
-        /// Gets the current singleton MdsConnectionListener instance
-        /// </summary>
-        public static MdsConnectionListener Current
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new MdsConnectionListener();
-                    }
-                    return instance;
-                }
-            }
-        }
 
         /// <summary>
         /// Callback method that MdsLib calls when a device connects
@@ -80,9 +29,10 @@ namespace MdsLibrary
         public void OnConnectionComplete(string MACaddress, string serial)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnConnectionComplete callback called: MACaddress {MACaddress} Serial {serial}");
-            this.MACAddressToSerialMapper.TryAdd(MACaddress, serial);
+            var uuid = GetUuidFromMACAddress(MACaddress);
+            this.UuidToSerialMapper.TryAdd(uuid, serial);
 
-            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+            DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uuid));
         }
 
         /// <summary>
@@ -92,9 +42,10 @@ namespace MdsLibrary
         public void OnDisconnect(string MACaddress)
         {
             Debug.WriteLine($"SUCCESS MdsConnectionListener OnDisconnect callback called: MACaddress {MACaddress}");
+            var uuid = GetUuidFromMACAddress(MACaddress);
             var serial = string.Empty;
-            this.MACAddressToSerialMapper.TryGetValue(MACaddress, out serial);
-            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+            this.UuidToSerialMapper.TryGetValue(uuid, out serial);
+            DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uuid));
         }
 
         /// <summary>
@@ -108,11 +59,12 @@ namespace MdsLibrary
             {
                 var msgParts = e.Message.Split(" ");
                 string MACaddress = msgParts[msgParts.Length - 1];
+                var uuid = GetUuidFromMACAddress(MACaddress);
 
                 Debug.WriteLine($"DISCONNECT MdsConnectionListener OnError callback called for unintended disconnection: MACaddress {MACaddress}");
                 var serial = string.Empty;
-                this.MACAddressToSerialMapper.TryGetValue(MACaddress, out serial);
-                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                this.UuidToSerialMapper.TryGetValue(uuid, out serial);
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uuid));
             }
             else
             {
@@ -121,5 +73,19 @@ namespace MdsLibrary
                 DeviceConnectionError?.Invoke(this, new MdsException("MdsConnectionListener unexpected error", e));
             }
         }
+
+        /// <summary>
+        /// On Android, the MAC address is in the last part of the unique ID Guid. 
+        /// This function takes a MAC address and returns the corresponding Guid
+        /// </summary>
+        /// <param name="macAddress"></param>
+        /// <returns></returns>
+        private Guid GetUuidFromMACAddress(string macAddress)
+        {
+            var mac = macAddress.Replace(":", "");
+            var guid = $"00000000-0000-0000-0000-{mac}";
+            return new Guid(guid);
+        }
     }
 }
+#endif

@@ -46,10 +46,13 @@ namespace MdsLibrary.Model
             }
         }
 
+        /// <summary>
+        /// Class container for an array of DataEntry objects.
+        /// </summary>
         public class DataEntries
         {
             /// <summary>
-            /// Class container for an array of DataEntry objects.
+            /// Array of DataEntry objects.
             /// </summary>
             [JsonProperty(PropertyName = "dataEntry")]
             public DataEntry[] DataEntry;
@@ -64,7 +67,9 @@ namespace MdsLibrary.Model
             }
         }
 
-
+        /// <summary>
+        /// Describes a data logger subscription 
+        /// </summary>
         public class DataEntry
         {
             /// <summary>
@@ -83,6 +88,10 @@ namespace MdsLibrary.Model
             }
         }
 
+        /// <summary>
+        /// Provides a string representation of the DataEntries
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

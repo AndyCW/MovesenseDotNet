@@ -1,75 +1,24 @@
-﻿using Foundation;
+﻿#if __IOS__
+using Foundation;
 using Movesense;
 using Plugin.Movesense;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MdsLibrary
 {
     /// <summary>
     /// Listener for callbacks from MdsLib for device connections and disconnections
     /// </summary>
-    public sealed class MdsConnectionListener
+
+    public sealed partial class MdsConnectionListener
     {
-        /// <summary>
-        /// Event fires when a device connects to BLE
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerBLEConnectedEventArgs> DeviceConnected;
-
-        /// <summary>
-        /// Event fires when connection has completed to WhiteBoard for a device to MdsLib
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> DeviceConnectionComplete;
-
-        /// <summary>
-        /// Event fires when a device disconnects from MdsLib
-        /// </summary>
-        public event EventHandler<MdsConnectionListenerEventArgs> DeviceDisconnected;
-
-        /// <summary>
-        /// Event fires when MdsLib reports unexpected connection error
-        /// </summary>
-        public event EventHandler<MdsException> DeviceConnectionError;
-
-        private static MdsConnectionListener instance = null;
-
-        private static readonly object padlock = new object();
 
         private static bool mIsListening = false;
 
         private TaskCompletionSource<bool> setuplistenertcs;
-
-
-        /// <summary>
-        /// Lookup of device serial number to UUID
-        /// </summary>
-        public Dictionary<string, string> MACAddressToSerialMapper;
-
-        private MdsConnectionListener()
-        {
-            MACAddressToSerialMapper = new Dictionary<string, string>();
-        }
-
-        /// <summary>
-        /// Gets the current singleton MdsConnectionListener instance
-        /// </summary>
-        public static MdsConnectionListener Current
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new MdsConnectionListener();
-                    }
-                    return instance;
-                }
-            }
-        }
 
         /// <summary>
         /// Setup the (Dis)Connection listener for iOS devices
@@ -126,10 +75,12 @@ namespace MdsLibrary
                 var connDict = (NSDictionary)bodyDict.ValueForKey(new NSString("Connection"));
                 var uuid = ((NSString)connDict.ValueForKey(new NSString("UUID"))).ToString();
 
-                this.MACAddressToSerialMapper.TryAdd(uuid, serial);
+                var uniqueIDGuid = new Guid(uuid);
+                this.UuidToSerialMapper.TryAdd(uniqueIDGuid, serial);
+
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent CONNECTED: Serial {serial}");
                 DeviceConnected?.Invoke(this, new MdsConnectionListenerBLEConnectedEventArgs(uuid));
-                DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                DeviceConnectionComplete?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uniqueIDGuid));
             }
             else if (method == new NSString("DEL"))
             {
@@ -137,8 +88,11 @@ namespace MdsLibrary
                 var bodyDict = (NSDictionary)mdsevent.BodyDictionary.ValueForKey(new NSString("Body"));
                 var serial = ((NSString)bodyDict.ValueForKey(new NSString("Serial"))).ToString();
 
+                // Get the matching Uuid
+                var uniqueIDGuid = this.UuidToSerialMapper.First(kv => kv.Value == serial).Key;
+
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent DISCONNECTED: Serial {serial}");
-                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial));
+                DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uniqueIDGuid));
             }
             else
             {
@@ -147,3 +101,4 @@ namespace MdsLibrary
         }
     }
 }
+#endif

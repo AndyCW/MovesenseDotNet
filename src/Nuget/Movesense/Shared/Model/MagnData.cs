@@ -89,9 +89,16 @@ namespace MdsLibrary.Model
         /// </summary>
         public class Headers
         {
+            /// <summary>
+            /// parameter
+            /// </summary>
             [JsonProperty("Param0")]
             public int Param0;
 
+            /// <summary>
+            /// constructor
+            /// </summary>
+            /// <param name="param0"></param>
             public Headers(int param0)
             {
                 this.Param0 = param0;

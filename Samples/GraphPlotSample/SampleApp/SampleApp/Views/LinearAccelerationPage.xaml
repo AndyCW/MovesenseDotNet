@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleApp.Views.LinearAccelerationPage"
+             xmlns:behaviors="clr-namespace:EventToCommandBehavior"
+             xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+             Title="Subscribe Linear Acceleration"
+             x:Name="LinearAccelerationTestPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Horizontal" Margin="10,20,0,0">
+                <Button x:Name="SelectDeviceButton" Margin="0,-15,0,0" Text="Select" Clicked="SelectDeviceButton_Clicked"/>
+                <Label Text="Selected Device: "
+                       VerticalOptions="Start" 
+                       FontSize="Small"/>
+                <Label Text="{Binding MovesenseDeviceVM.Name}" FontSize="Small"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" HorizontalOptions="Start" Margin="10,10,0,0">
+                <Label Text="Subscribe" FontSize="Medium"/>
+                <StackLayout Orientation="Horizontal">
+                    <Switch Grid.Row="1" Grid.Column="2" x:Name="StopSwitch"
+                            IsToggled="{Binding IsSubscribeSwitchOn}"
+                            IsEnabled="{Binding Sensor, Converter={StaticResource nulltobooleanconverter}}">
+                        <Switch.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="Toggled" Command="{Binding ToggleSubscribeSwitchCommand}" />
+                        </Switch.Behaviors>
+                    </Switch>
+                    <Label x:Name="statusLabel" Text="{Binding ConnectionStatusText}" Margin="20,3,0,0" FontSize="Small"/>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+
+        <oxy:PlotView Grid.Row="1" x:Name="plotView" Model="{Binding Model}" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" 
+                      />
+    </Grid>
+</ContentPage>

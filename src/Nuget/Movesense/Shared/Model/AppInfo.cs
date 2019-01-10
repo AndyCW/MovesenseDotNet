@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace MdsLibrary.Model
 {
+    /// <summary>
+    /// Class representation of the JSON returned by a Get of Application info
+    /// </summary>
     public class AppInfo
     {
         /// <summary>
@@ -55,6 +58,9 @@ namespace MdsLibrary.Model
             public ModuleStatus[] ModulesStatus;
         }
 
+        /// <summary>
+        /// Status of an installed module
+        /// </summary>
         public class ModuleStatus
         {
             /// <summary>
