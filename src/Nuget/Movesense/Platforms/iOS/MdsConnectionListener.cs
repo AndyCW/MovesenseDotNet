@@ -5,6 +5,7 @@ using Plugin.Movesense;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MdsLibrary
 {
@@ -86,10 +87,9 @@ namespace MdsLibrary
                 // Device disconnected
                 var bodyDict = (NSDictionary)mdsevent.BodyDictionary.ValueForKey(new NSString("Body"));
                 var serial = ((NSString)bodyDict.ValueForKey(new NSString("Serial"))).ToString();
-                var connDict = (NSDictionary)bodyDict.ValueForKey(new NSString("Connection"));
-                var uuid = ((NSString)connDict.ValueForKey(new NSString("UUID"))).ToString();
 
-                var uniqueIDGuid = new Guid(uuid);
+                // Get the matching Uuid
+                var uniqueIDGuid = this.UuidToSerialMapper.First(kv => kv.Value == serial).Key;
 
                 Debug.WriteLine($"MdsConnectionListener OnDeviceConnectionEvent DISCONNECTED: Serial {serial}");
                 DeviceDisconnected?.Invoke(this, new MdsConnectionListenerEventArgs(serial, uniqueIDGuid));
