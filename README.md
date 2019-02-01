@@ -7,7 +7,7 @@ Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported 
   * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' compiler warnings.
 
 **IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1 and later**
-The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use Visual Studio 2019 (Preview) and a specific build of the Xamarin.Android SDK to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects for v1.7.2.1* instructions in the **Setup for Android projects** instructions below.
+The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use Visual Studio 2019 (Preview 2) and make edits to the Xamarin.Android project file to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects* instructions in the **Setup for Android projects** instructions below.
 
 ## Movesense Plugin Developer Guide
 The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. If you search in NuGet Package manager for *Movesense*, you will see three packages available:
@@ -55,12 +55,11 @@ To use the Movesense Plugin in your own app:
     }
 ```
 
-#### Building Android Projects for v1.7.2.1 or later
-Plugin.Movesense v1.7.2.1 wraps the native Mdslib.aar v1.7.2 library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
+#### Building Android Projects
+Plugin.Movesense v1.7.2 and later wraps the native Mdslib.aar v1.28.1 library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
 
-To build your Xamarin Android project successfully using Plugin.Movesense v1.7.2.1, you must:
-  * Install [Visual Studio 2019 Preview 1](https://visualstudio.microsoft.com/vs/preview/) or later
-  * You must install [Xamarin.Android.Sdk.9.1.199.31.vsix](https://jenkins.mono-project.com/view/Xamarin.Android/job/xamarin-android-builds-master/) or later to add support for the Android D8 compiler
+To build your Xamarin Android project successfully using Plugin.Movesense v1.7.2 or later, you must:
+  * Install [Visual Studio 2019 Preview 2](https://visualstudio.microsoft.com/vs/preview/) or later and use this to develop your app.
   * You must edit your project csproj file for your Android client project and add the following to enable the Android D8 compiler for the native code generation step:
   ```xml
   <PropertyGroup> 
