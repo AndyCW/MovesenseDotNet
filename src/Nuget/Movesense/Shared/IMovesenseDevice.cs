@@ -55,6 +55,12 @@ namespace Plugin.Movesense
         Task<BatteryResult> GetBatteryLevelAsync();
 
         /// <summary>
+        /// Gets all current time related info in one go. This enables knowledge of RelativeTime 
+        /// and UTC time at the same instance, which is needed in multisensor use cases.
+        /// </summary>
+        Task<DetailedTime> GetDetailedTimeAsync();
+
+        /// <summary>
         /// Get device info
         /// </summary>
         Task<DeviceInfoResult> GetDeviceInfoAsync();
