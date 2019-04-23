@@ -1,13 +1,14 @@
 # MovesenseDotNet
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-**NEW RELEASE Movesense.NET V2.0.2 10 January 2019** 
-  * Latest MDS Libraries supported. v1.28.1 of the Android and iOS libraries are wrapped by this plugin. Install Plugin.Movesense v2.0.1 from NuGet to get this update.
-  * NEW Movesense.NET API. V2.0 of Movesense.NET introduces a slightly different API. You now get an *IMovesenseDevice* object back from a call to *ConnectMdsAsync* and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target but proved unreliable as device names may change.
+**NEW RELEASE Movesense.NET V2.0.5 23 April 2019** 
+  * Adds new method GetDetailedTimeAsync. Fixes issues with SetTime and modificationTimestamp in GetLogEntries.
+  * Current MDS Libraries supported. v1.28.1 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.0.5 from NuGet to get this update.
+  * **NEW Movesense.NET V2.0 API**. V2.0 of Movesense.NET introduces a slightly different API. You now get an *IMovesenseDevice* object back from a call to *ConnectMdsAsync* and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target but which proved unreliable as device names may change.
   * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' compiler warnings.
 
 **IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1 and later**
-The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use Visual Studio 2019 (Preview 2) and make edits to the Xamarin.Android project file to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects* instructions in the **Setup for Android projects** instructions below.
+The latest version of the Android Mds library requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. You must use **Visual Studio 2019** and make edits to the Xamarin.Android project file to successfully build your Xamarin Android project with this version of Plugin.Movesense. See the *Building Android Projects* instructions in the **Setup for Android projects** instructions below.
 
 ## Movesense Plugin Developer Guide
 The Xamarin .NET API for Movesense is available on **NuGet** as a Plugin. If you search in NuGet Package manager for *Movesense*, you will see three packages available:
@@ -59,7 +60,7 @@ To use the Movesense Plugin in your own app:
 Plugin.Movesense v1.7.2 and later wraps the native Mdslib.aar v1.28.1 library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
 
 To build your Xamarin Android project successfully using Plugin.Movesense v1.7.2 or later, you must:
-  * Install [Visual Studio 2019 Preview 2](https://visualstudio.microsoft.com/vs/preview/) or later and use this to develop your app.
+  * Install [Visual Studio 2019](https://visualstudio.microsoft.com/vs) and use this to develop your app.
   * You must edit your project csproj file for your Android client project and add the following to enable the Android D8 compiler for the native code generation step:
   ```xml
   <PropertyGroup> 
@@ -184,6 +185,7 @@ The Movesense API implements methods for most of the commonly used function in t
 | GetAppInfoAsync()        | [GET /Info/App](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/info.yaml#lines-23) | Query for app information |
 | GetBatteryLevelAsync()   | [GET /System/Energy/Level](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/system/energy.yaml#lines-14) | Get estimated battery charge level |
 | GetDeviceInfoAsync()     |  [GET /Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/info.yaml#lines-13)  | Query for device information |
+| GetDetailedTimeAsync()   |  [GET /Time/Detailed](https://bitbucket.org/suunto/movesense-device-lib/src/1b5e0d566e9ad3f4cbc67e980d8d10fd7d7b751f/MovesenseCoreLib/resources/movesense-api/time.yaml#lines-57)  | Gets all current time related info in one go. This enables knowledge of RelativeTime and UTC time at the same instance, which is needed in multisensor use cases. |
 | GetGyroInfoAsync()       | [GET /Meas/Gyro/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/gyro.yaml#lines-14)  | Get supported sample rates and ranges |
 | GetIMUInfoAsync()        | [GET /Meas/IMU/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-14)  | Get supported sample rates and ranges |
 | GetLedsStateAsync()      | [GET /Component/Leds](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-29) | Get leds in the system and their state (on/off & possible color) |

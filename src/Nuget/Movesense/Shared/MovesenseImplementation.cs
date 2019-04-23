@@ -420,7 +420,7 @@ namespace Plugin.Movesense
             long timems = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             string time = $"{{\"value\":{timems * 1000}}}";
             Debug.WriteLine($"INFO SetTime TIME {time}");
-            var op = new ApiCallAsync<TimeResult>(deviceName, MdsOp.POST, TIME_PATH, time);
+            var op = new ApiCallAsync<TimeResult>(deviceName, MdsOp.PUT, TIME_PATH, time);
             await op.CallAsync();
         }
 

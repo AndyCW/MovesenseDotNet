@@ -32,7 +32,7 @@ namespace MdsLibrary.Model
             /// Timestamp of last modification to entry in seconds after 0:00 Jan 1st 1970 (UTC) without leap seconds.
             /// </summary>
             [JsonProperty("ModificationTimestamp")]
-            public int ModificationTimestamp;
+            public uint ModificationTimestamp;
         }
     }
 }

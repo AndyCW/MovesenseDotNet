@@ -21,6 +21,7 @@ namespace Plugin.Movesense
         private static readonly string ACC_INFO_PATH = "/Meas/Acc/Info";
         private static readonly string APP_INFO_PATH = "/Info/App";
         private static readonly string BATTERY_PATH = "/System/Energy/Level";
+        private static readonly string DETAILED_TIME_PATH = "/Time/Detailed";
         private static readonly string LOGBOOK_DATA_PATH = "/Mem/Logbook/byId/{0}/Data";
         private static readonly string MDS_LOGBOOK_PREFIX = "MDS/Logbook/";
         private static readonly string MDS_LOGBOOK_DATA_PATH = "/byId/{0}/Data";
@@ -189,6 +190,15 @@ namespace Plugin.Movesense
         /// <summary>
         /// Get device info
         /// </summary>
+        public async Task<DetailedTime> GetDetailedTimeAsync()
+        {
+            var op = new ApiCallAsync<DetailedTime>(this, MdsOp.GET, DETAILED_TIME_PATH);
+            return await op.CallAsync();
+        }
+
+        /// <summary>
+        /// Get device info
+        /// </summary>
         public async Task<DeviceInfoResult> GetDeviceInfoAsync()
         {
             var op = new ApiCallAsync<DeviceInfoResult>(this, MdsOp.GET, INFO_PATH);
@@ -318,9 +328,9 @@ namespace Plugin.Movesense
         public async Task SetTimeAsync()
         {
             long timems = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
-            string time = $"{{\"value\":{timems * 1000}}}";
-            Debug.WriteLine($"INFO SetTime TIME {time}");
-            var op = new ApiCallAsync<TimeResult>(this, MdsOp.POST, TIME_PATH, time);
+            string requestBody = $"{{\"value\":{timems * 1000}}}";
+            Debug.WriteLine($"INFO SetTimeAsync TIME {requestBody}");
+            var op = new ApiCallAsync<TimeResult>(this, MdsOp.PUT, TIME_PATH, requestBody);
             await op.CallAsync();
         }
 
