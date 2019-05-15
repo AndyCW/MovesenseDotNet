@@ -10,7 +10,7 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>1.0.0</Version>
-    <PackageVersion>2.0.5</PackageVersion>
+    <PackageVersion>2.1-beta</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -23,7 +23,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/AndyCW/MovesenseDotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
-    <PackageReleaseNotes>Beta of V2 API, new IMovesenseDevice returned by MdsConnectAsync, used for all device operations. V2.1.1 includes the Uuid in the MdsConnectionListenerEventArgs.</PackageReleaseNotes>
+    <PackageReleaseNotes>V2.1 beta wraps the v1.34.1 mdslib native libraries</PackageReleaseNotes>
     <PackageIconUrl>https://github.com/AndyCW/MovesenseDotNet/raw/Nuget/src/Nuget/Movesense/icon.png</PackageIconUrl>
     <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Movesense</PackageTags>
     
@@ -33,7 +33,7 @@
 
     <Owners>Andy Wigley</Owners>
     <Authors>Andy Wigley</Authors>
-    <Copyright>Copyright 2018</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <Company>Microsoft Corp.</Company>
     <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
@@ -49,12 +49,12 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
-    <PackageReference Include="MovesenseBindingAndroid" Version="1.28.1.1" />
+    <PackageReference Include="MovesenseBindingAndroid" Version="1.34.1.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-    <PackageReference Include="MovesenseBindingiOS" Version="1.28.1.1" />
+    <PackageReference Include="MovesenseBindingiOS" Version="1.34.1.1" />
   </ItemGroup>
 
 
