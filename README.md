@@ -1,10 +1,11 @@
 # MovesenseDotNet
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-**NEW RELEASE Movesense.NET V2.0.5 23 April 2019** 
-  * Adds new method GetDetailedTimeAsync. Fixes issues with SetTime and modificationTimestamp in GetLogEntries.
-  * Current MDS Libraries supported. v1.28.1 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.0.5 from NuGet to get this update.
-  * **NEW Movesense.NET V2.0 API**. V2.0 of Movesense.NET introduces a slightly different API. You now get an *IMovesenseDevice* object back from a call to *ConnectMdsAsync* and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target but which proved unreliable as device names may change.
+**NEW RELEASE Movesense.NET V2.1 June 2019** 
+  * Latest MDS Libraries supported in this release. v1.34.1 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.1 or later from NuGet to get this update.
+  * 64 bit targets fully supported.
+  * [v2.0.5] Adds new method GetDetailedTimeAsync. Fixes issues with SetTime and modificationTimestamp in GetLogEntries.
+  * **Movesense.NET V2.0 API**. V2.0 of Movesense.NET introduces a slightly different API. You now get an *IMovesenseDevice* object back from a call to *ConnectMdsAsync* and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target but which proved unreliable as device names may change.
   * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' compiler warnings.
 
 **IMPORTANT SETUP FOR ANDROID PROJECTS for Plugin.Movesense v1.7.2.1 and later**
@@ -26,11 +27,6 @@ To use the Movesense Plugin in your own app:
   * Add reference to the **Plugin.Movesense** NuGet package to your Xamarin Android and Xamarin iOS projects and - if you are using Xamarin Forms configured with common code in a class library - to your .NET Standard class library contining your shared code.
 
 ### Setup for Android projects
-
-  * **IMPORTANT:** the native MdsLib.aar library that is included in the Movesense Plugin does not support 64 bit targets. Therefore, you *must* change the supported architectures of your Xamarin Android project. To set this, go to Project Properties - Android Options, scroll down to the bottom and then click Advanced. In the Advanced Android Options window, click Supported Architectures and deselect **x86_64** and **arm64-v8a**. [If shown, also deselect **armeabi** as this architecture is no longer supported by the Xamarin tools]
-  * Also on the Advanced Android Options page, you may need to increase the **Java Max Heap Size** value. Suggest you set this to **1G**. If you do not set this, your compilation may fail with Memory Exceeded error.
-
-    ![Image of Advanced Android Options](Images/AndroidOptions.PNG)
 
   * For bluetooth connectivity, you will need to request the ACCESS_COARSE_LOCATION, BLUETOOTH and BLUETOOTH_ADMIN permissions. Check these on the Project Properties - Android manifest settings page. You will also need to request permissions from the user - see topic *Bluetooth Connections* below for information on programming connectivity to devices.
 
@@ -57,7 +53,7 @@ To use the Movesense Plugin in your own app:
 ```
 
 #### Building Android Projects
-Plugin.Movesense v1.7.2 and later wraps the native Mdslib.aar v1.28.1 library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
+Plugin.Movesense v1.7.2 and later wraps the native Mdslib.aar v1.28.1 (or later) library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
 
 To build your Xamarin Android project successfully using Plugin.Movesense v1.7.2 or later, you must:
   * Install [Visual Studio 2019](https://visualstudio.microsoft.com/vs) and use this to develop your app.
