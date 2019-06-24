@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -54,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Plugin.BluetoothLE">
-      <Version>6.2.3</Version>
+      <Version>6.2.5</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Movesense">
       <Version>2.1.0</Version>

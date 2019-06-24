@@ -150,7 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Plugin.BluetoothLE">
-      <Version>6.2.3</Version>
+      <Version>6.2.5</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Movesense">
       <Version>2.1.0</Version>
