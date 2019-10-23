@@ -11,7 +11,7 @@
     <iconUrl>http://www.movesense.com</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET binding for Movesense Android mdslib</description>
-    <releaseNotes>Movesense mdslib 1.34.1 binding for Xamarin Android.</releaseNotes>
+    <releaseNotes>Movesense mdslib 1.37.3 binding for Xamarin Android.</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Xamarin Plugin Movesense</tags>
   </metadata>

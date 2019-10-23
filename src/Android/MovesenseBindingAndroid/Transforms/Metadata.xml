@@ -11,8 +11,10 @@
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsRegisterOperation']" />
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsUnregisterOperation']" />
 
+  <remove-node path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']" />
+  <remove-node path="/api/package[@name='com.polidea.rxandroidble2.scan']/class[@name='ScanSettings.Builder']" />
 
-  
+
   <!-- Correct clash in EventArgs caused by two Listeners having same named event-->
   <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsNotificationListener']/method[@name='onError']"
         name="argsType">NotificationListenerErrorEventArgs</attr>
@@ -36,4 +38,7 @@
       name="managedName">Devices</attr>
   <attr path="/api/package[@name='com.movesense.mds']/class[@name='BLEWrapper.WbAddress']/field[@name='wbAddress']"
         name="managedName">Address</attr>
+
+  <attr path="/api/package[@name='com.polidea.rxandroidble2']/class[@name='Timeout']/field[@name='timeout']"
+      name="managedName">TimeoutValue</attr>
 </metadata>
