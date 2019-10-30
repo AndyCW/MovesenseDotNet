@@ -12,7 +12,20 @@
   <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsUnregisterOperation']" />
 
   <remove-node path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']" />
-  <remove-node path="/api/package[@name='com.polidea.rxandroidble2.scan']/class[@name='ScanSettings.Builder']" />
+
+
+
+  <!-- Correct the return type of the SetShouldCheckLocationServicesState method so that we don't get erroneous 'Interface not implemented' error -->-->
+  <attr path="/api/package[@name='com.polidea.rxandroidble2.scan']/class[@name='ScanSettings.Builder']/method[@name='setShouldCheckLocationServicesState' and count(parameter)=1 and parameter[1][@type='boolean']]"
+        name="managedReturn">Java.Lang.Object</attr>
+
+  
+  <!--<attr path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']/method[@name='keySet' and count(parameter)=0]"
+        name="managedReturn">System.Collections.ICollection</attr>
+  <attr path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']/method[@name='entrySet' and count(parameter)=0]"
+        name="managedReturn">System.Collections.ICollection</attr>-->
+
+
 
 
   <!-- Correct clash in EventArgs caused by two Listeners having same named event-->
