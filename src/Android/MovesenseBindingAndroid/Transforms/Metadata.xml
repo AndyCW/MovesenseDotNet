@@ -19,12 +19,6 @@
   <attr path="/api/package[@name='com.polidea.rxandroidble2.scan']/class[@name='ScanSettings.Builder']/method[@name='setShouldCheckLocationServicesState' and count(parameter)=1 and parameter[1][@type='boolean']]"
         name="managedReturn">Java.Lang.Object</attr>
 
-  
-  <!--<attr path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']/method[@name='keySet' and count(parameter)=0]"
-        name="managedReturn">System.Collections.ICollection</attr>
-  <attr path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']/method[@name='entrySet' and count(parameter)=0]"
-        name="managedReturn">System.Collections.ICollection</attr>-->
-
 
 
 
