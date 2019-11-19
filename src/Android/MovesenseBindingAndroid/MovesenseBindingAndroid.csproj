@@ -13,7 +13,7 @@
     <AssemblyName>MovesenseBindingAndroid</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <AndroidCodegenTarget>XAJavaInterop1</AndroidCodegenTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -54,19 +54,22 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedReferenceJar Include="Jars\rxjava-1.3.3.jar" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedReferenceJar Include="Jars\RxAndroidBLE.jar" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedReferenceJar Include="Jars\dagger-2.13.jar" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedReferenceJar Include="Jars\javax.inject-1.jar" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedReferenceJar Include="Jars\rxrelay-1.2.0.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedReferenceJar Include="Jars\rxjava-1.3.2.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedReferenceJar Include="Jars\dagger-2.8.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedReferenceJar Include="Jars\RxAndroidBLE-1.4.3.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedReferenceJar Include="Jars\rxandroid-1.2.1.jar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <PropertyGroup>
