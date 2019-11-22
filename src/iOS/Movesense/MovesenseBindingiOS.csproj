@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +12,11 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>MovesenseBindingiOS</PackageId>
-    <PackageVersion>1.34.1.1</PackageVersion>
+    <PackageVersion>1.38.0.2</PackageVersion>
+    <PackageReleaseNotes>Movesense mdslib v1.38.0 binding for Xamarin iOS.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>http://www.movesense.com</PackageIconUrl>
     <Authors>Anze Vodovnik, Andy Wigley</Authors>
     <Description>.NET binding for Movesense iOS mdslib</Description>
   </PropertyGroup>
@@ -61,5 +65,5 @@
     <BundleResource Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
-  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets')" />
 </Project>

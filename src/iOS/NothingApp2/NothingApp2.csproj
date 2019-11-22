@@ -98,8 +98,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Movesense">
-      <HintPath>..\packages\MovesenseBindingiOS.0.2.0-alpha\lib\xamarinios10\Movesense.dll</HintPath>
+    <Reference Include="MovesenseBindingiOS">
+      <HintPath>..\packages\MovesenseBindingiOS.1.34.1.1\lib\xamarinios10\MovesenseBindingiOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

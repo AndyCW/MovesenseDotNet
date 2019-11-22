@@ -1,9 +1,10 @@
 # MovesenseDotNet
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-**NEW RELEASE Movesense.NET V2.1 June 2019** 
-  * Latest MDS Libraries supported in this release. v1.34.1 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.1 or later from NuGet to get this update.
-  * 64 bit targets fully supported.
+**NEW RELEASE Movesense.NET V2.2 November 2019** 
+  * Latest MDS Libraries supported in this release. v1.38.0 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.2.3 or later from NuGet to get this update.
+  * [v2.2.3] Mdslib 1.38.0 libraries
+  * [v2.0.5] 64 bit targets fully supported.
   * [v2.0.5] Adds new method GetDetailedTimeAsync. Fixes issues with SetTime and modificationTimestamp in GetLogEntries.
   * **Movesense.NET V2.0 API**. V2.0 of Movesense.NET introduces a slightly different API. You now get an *IMovesenseDevice* object back from a call to *ConnectMdsAsync* and you use this object thereafter to invoke other Movsense.NET operations. The old API has been deprecated, as it relied on the device name to identify the target but which proved unreliable as device names may change.
   * V1.x Movesense.NET API is still supported and still fully operational, although code that calls to V1.x methods are flagged with 'Deprecated' compiler warnings.
@@ -53,7 +54,7 @@ To use the Movesense Plugin in your own app:
 ```
 
 #### Building Android Projects
-Plugin.Movesense v1.7.2 and later wraps the native Mdslib.aar v1.28.1 (or later) library for Android which requires java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
+Plugin.Movesense v1.7.2 and later wraps versions of the native Mdslib.aar library for Android which require java8 features that are not supported by Xamarin tools in Visual Studio 2017. 
 
 To build your Xamarin Android project successfully using Plugin.Movesense v1.7.2 or later, you must:
   * Install [Visual Studio 2019](https://visualstudio.microsoft.com/vs) and use this to develop your app.
