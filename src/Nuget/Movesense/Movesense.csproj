@@ -10,7 +10,7 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>1.0.0</Version>
-    <PackageVersion>2.2.3.1</PackageVersion>
+    <PackageVersion>2.2.3.2</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -25,6 +25,7 @@
     <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
     <PackageReleaseNotes>V2.2.3 wraps the v1.38.0 mdslib native libraries</PackageReleaseNotes>
     <PackageIconUrl>https://github.com/AndyCW/MovesenseDotNet/raw/Nuget/src/Nuget/Movesense/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Movesense</PackageTags>
     
     <Title>Movesense Plugin for Xamarin</Title>
@@ -37,6 +38,10 @@
     <Company>Microsoft Corp.</Company>
     <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -53,7 +58,7 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-    <PackageReference Include="MovesenseBindingiOS" Version="1.38.0.1" />
+    <PackageReference Include="MovesenseBindingiOS" Version="1.38.0.2" />
   </ItemGroup>
 
 
