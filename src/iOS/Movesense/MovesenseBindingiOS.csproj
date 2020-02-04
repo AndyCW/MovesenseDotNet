@@ -12,9 +12,8 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>MovesenseBindingiOS</PackageId>
-    <PackageVersion>1.38.0.2</PackageVersion>
+    <PackageVersion>1.39.0</PackageVersion>
     <PackageReleaseNotes>Movesense mdslib v1.38.0 binding for Xamarin iOS.</PackageReleaseNotes>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>http://www.movesense.com</PackageIconUrl>
     <Authors>Anze Vodovnik, Andy Wigley</Authors>
