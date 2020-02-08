@@ -10,7 +10,7 @@
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
     <Version>1.0.0</Version>
-    <PackageVersion>2.2.3.2</PackageVersion>
+    <PackageVersion>2.3.1-beta</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -34,7 +34,7 @@
 
     <Owners>Andy Wigley</Owners>
     <Authors>Andy Wigley</Authors>
-    <Copyright>Copyright 2019</Copyright>
+    <Copyright>Copyright 2020</Copyright>
     <Company>Microsoft Corp.</Company>
     <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
@@ -53,12 +53,12 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
-    <PackageReference Include="MovesenseBindingAndroid" Version="1.38.0.1" />
+    <PackageReference Include="MovesenseBindingAndroid" Version="1.39.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-    <PackageReference Include="MovesenseBindingiOS" Version="1.38.0.2" />
+    <PackageReference Include="MovesenseBindingiOS" Version="1.39.0" />
   </ItemGroup>
 
 
