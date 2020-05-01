@@ -82,15 +82,15 @@ namespace MdsLibrary.Api
             // This just retries 2 times, regardless of the exception thrown
             // The user may provide their own implementation of the Retry function to override this behavior
             RetryFunction = new Func<Exception, bool?>((Exception ex) =>
-            {
-                bool? cancel = false;
-                if (++retries > MAX_RETRY_COUNT)
                 {
-                    cancel = true;
+                    bool? cancel = false;
+                    if (++retries > MAX_RETRY_COUNT)
+                    {
+                        cancel = true;
+                    }
+                    return cancel;
                 }
-                return cancel;
-            }
-        );
+            );
         }
 
         /// <summary>

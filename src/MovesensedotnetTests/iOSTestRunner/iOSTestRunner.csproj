@@ -46,9 +46,13 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignEntitlements>
+    </CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
+    <CodesignProvision />
+    <CodesignExtraArgs />
+    <CodesignResourceRules />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -64,6 +68,9 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -73,7 +80,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="xunit">
       <Version>2.4.1</Version>
     </PackageReference>
@@ -140,6 +147,10 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MovesensedotNetConnectionTests\MovesensedotNetConnectionTests.csproj">
+      <Project>{efdcb556-73c2-4e1a-a451-2a61587092ff}</Project>
+      <Name>MovesensedotNetConnectionTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MovesensedotNetTests\MovesensedotNetTests.csproj">
       <Project>{5623bf1d-2312-4286-8932-843302a1d8b1}</Project>
       <Name>MovesensedotNetTests</Name>

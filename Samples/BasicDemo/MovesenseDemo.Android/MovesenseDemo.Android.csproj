@@ -15,7 +15,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -56,15 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Plugin.BluetoothLE">
-      <Version>6.2.6</Version>
+      <Version>6.3.0.19</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Movesense">
-      <Version>2.2.3.2</Version>
+      <Version>2.3.2-beta</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
-      <Version>3.0.0.12</Version>
+      <Version>6.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1029999" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />

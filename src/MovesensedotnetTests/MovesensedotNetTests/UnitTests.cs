@@ -1,13 +1,9 @@
-﻿using MdsLibrary.Api;
-using MdsLibrary.Model;
-using Plugin.BluetoothLE;
+﻿using MdsLibrary.Model;
 using Plugin.Movesense;
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Sdk;
 
 namespace MovesensedotNetTests
 {

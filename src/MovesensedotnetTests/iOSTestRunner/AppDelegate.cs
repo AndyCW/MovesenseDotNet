@@ -31,6 +31,7 @@ namespace iOSTestRunner
             // otherwise you need to ensure that the test assemblies will 
             // become part of the app bundle
             AddTestAssembly(typeof(MovesensedotNetTests.UnitTests).Assembly);
+            AddTestAssembly(typeof(MovesensedotNetConnectionTests.ConnectionUnitTests).Assembly);
 
 #if false
 			// you can use the default or set your own custom writer (e.g. save to web site and tweet it ;-)

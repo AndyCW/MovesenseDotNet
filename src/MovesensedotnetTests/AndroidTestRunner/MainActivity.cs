@@ -33,8 +33,9 @@ namespace App1
 
             AddExecutionAssembly(typeof(ExtensibilityPointFactory).Assembly);
             // or in any reference assemblies			
+            AddTestAssembly(typeof(MovesensedotNetTests.UnitTests).Assembly); 
+            AddTestAssembly(typeof(MovesensedotNetConnectionTests.ConnectionUnitTests).Assembly);
 
-            AddTestAssembly(typeof(MovesensedotNetTests.UnitTests).Assembly);
             // or in any assembly that you load (since JIT is available)
 
 #if false

@@ -21,6 +21,15 @@ namespace MovesenseDemo
 
         private void OnClicked(object sender, EventArgs e)
         {
+            try
+            {
+                var stat = CrossBleAdapter.Current.Status;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             if (BleAdapter.Status == AdapterStatus.PoweredOn)
             {
                 DoScan();
