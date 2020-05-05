@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidTestRunner", "Androi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSTestRunner", "iOSTestRunner\iOSTestRunner.csproj", "{A941DF66-84A5-4F89-940F-E15110C84FE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovesensedotNetConnectionTests", "MovesensedotNetConnectionTests\MovesensedotNetConnectionTests.csproj", "{EFDCB556-73C2-4E1A-A451-2A61587092FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovesensedotNetConnectionTests", "MovesensedotNetConnectionTests\MovesensedotNetConnectionTests.csproj", "{EFDCB556-73C2-4E1A-A451-2A61587092FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +54,7 @@ Global
 		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Debug|Any CPU.ActiveCfg = Debug|iPhone
 		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Debug|iPhone.Build.0 = Debug|iPhone
+		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Debug|iPhone.Deploy.0 = Debug|iPhone
 		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
 		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{A941DF66-84A5-4F89-940F-E15110C84FE3}.Release|Any CPU.ActiveCfg = Release|iPhone

@@ -24,14 +24,11 @@ The output from this solution is packaged in a NuGet package **MovesenseBindingi
    * If you just get warnings, then you're probably OK.
    * If you get errors, then more significant surgery is required.
 
-1. If you get errors, then the Binding project needs some more work. Read [Binding an .AAR"](https://docs.microsoft.com/xamarin/android/platform/binding-java-library/binding-an-aar) in the Xamarin documentation for more information.
-   * You might need to add or update dependencies, such as *rxandroid-2.1.1.jar* or a new version of mdslib may intrioduce a new native Android library dependency. You can ask Movesense developer support for information on this. Whichever libraries are required, you have to get the jar file version. One of the best sources for jar files is the [Maven Central Repository](https://search.maven.org/).
-   * You might also need to edit the **/Transforms/Metadata.xml** file, but only do this if you know what you are doing. Sometimes if you are getting a Build error for the binding project, you can just exclude the problematic methods if you think that they are not going to be called from the Movesense.net library - a fair bet since the public methods on the binding assembly are well known by now and unlikely to change.
-   * Anyway - good luck!
+1. If you get errors, then the Binding project needs some more work. Read [Binding iOS Swift Libraries](https://devblogs.microsoft.com/xamarin/binding-ios-swift-libraries/) for more information.
 
-1. Assuming it builds OK, this will create **
+1. After it builds OK, this will create the new .nupkg in the *MovesenseDotNet\src\iOS\Movesense\bin\Release* folder.
 
-1. The official version will get pushed to nuget.org at this point, but you can save the NuGet in a local folder for building your own custom version of Movesense.NET.
+1. The official version will get published to nuget.org at this point, but you can save the NuGet in a local folder for building your own custom version of Movesense.NET.
 
 1. **Next Steps:**
    1. Build the [Android binding](../../Android/) project

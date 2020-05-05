@@ -9,6 +9,7 @@
     <RootNamespace>NothingApp2</RootNamespace>
     <AssemblyName>NothingApp2</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <ProvisioningType>automatic</ProvisioningType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,7 +46,7 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>Apple Development: Andy Wigley (TR9S659DAX)</CodesignKey>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -53,6 +54,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchVerbosity>
     </MtouchVerbosity>
+    <CodesignProvision>iOS Team Provisioning Profile: *</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
@@ -80,7 +82,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>Apple Development: Andy Wigley (TR9S659DAX)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFloat32>true</MtouchFloat32>
@@ -91,7 +93,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchVerbosity>
     </MtouchVerbosity>
-    <CodesignProvision>iOS Team Provisioning Profile: com.vodovnik.NothingApp2</CodesignProvision>
+    <CodesignProvision>iOS Team Provisioning Profile: *</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

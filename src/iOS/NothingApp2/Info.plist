@@ -5,7 +5,7 @@
 	<key>CFBundleName</key>
 	<string>NothingApp2</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.vodovnik.NothingApp2</string>
+	<string>com.andywigley.NothingApp2</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
