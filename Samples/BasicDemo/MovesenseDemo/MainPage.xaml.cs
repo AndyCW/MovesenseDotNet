@@ -21,15 +21,6 @@ namespace MovesenseDemo
 
         private void OnClicked(object sender, EventArgs e)
         {
-            try
-            {
-                var stat = CrossBleAdapter.Current.Status;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
             if (BleAdapter.Status == AdapterStatus.PoweredOn)
             {
                 DoScan();
@@ -49,8 +40,7 @@ namespace MovesenseDemo
         private void DoScan()
         {
             StatusLabel.Text = "Scanning for devices...";
-            scan = this.BleAdapter.Scan()
-            .Subscribe(this.OnScanResult);
+            scan = this.BleAdapter.Scan().Subscribe(this.OnScanResult);
         }
 
         public void StopScanning()

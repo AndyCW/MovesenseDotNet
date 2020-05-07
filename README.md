@@ -2,10 +2,10 @@
 
 Movesense .NET SDK for Xamarin Android and Xamarin iOS. Xamarin Forms supported for both shared project and shared library configurations.
 
-## NEW RELEASE Movesense[]().Net V2.3 February 2020
+## NEW RELEASE Movesense[]().Net V2.44 May 2020
 
-* Latest MDS Libraries supported in this release. v1.39.0 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.3 or later from NuGet to get this update.
-* [v2.3] Mdslib 1.39.0 libraries
+* Latest MDS Libraries supported in this release. v1.44.0 of the Android and iOS MDS Libraries are wrapped by this plugin. Install Plugin.Movesense v2.44.0 or later from NuGet to get this update.
+* [v2.44.0] Mdslib 1.44.0 libraries
 * [v2.0.5] 64 bit targets fully supported.
 * [v2.0.5] Adds new method GetDetailedTimeAsync. Fixes issues with SetTime and modificationTimestamp in GetLogEntries.
 
@@ -233,7 +233,7 @@ See the sample [CustomServiceSample](https://github.com/AndyCW/MovesenseDotNet/S
 
 ## Bluetooth device discovery
 
-The **Movesense Plugin** does not manage Bluetooth discovery of Movesense devices. You must implement device discovery yourself. There are a number of different open source packages available to help with this. The samples in this repo use the [Plugin.BluetoothLe](https://www.nuget.org/packages/Plugin.BluetoothLE) NuGet package.
+The **Movesense Plugin** does not manage Bluetooth discovery of Movesense devices. You must implement device discovery yourself. There are a number of different open source packages available to help with this. The samples in this repo use the [Plugin.BluetoothLe](https://www.nuget.org/packages/Plugin.BluetoothLE) NuGet package. Read the documentation and look carefully at the sample apps to learn how to integrate this package into your apps.
 
 To scan for Movesense devices using *BluetoothLe*, use:
 
@@ -267,7 +267,3 @@ Handle discovered devices in your Subscribe callback:
 ```
 
 Once you have discovered a device, you can make the MdsLib connection and then communicate with the device, as described in the previous section.
-
-## Troubleshooting
-
-If your app fails to start and does not report an exception, check that you have set the target architectures for your Android app to exclude 64 bit targets, as described at the beginning of section *Setup for Android projects* above.
