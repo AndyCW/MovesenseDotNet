@@ -93,7 +93,7 @@ namespace Plugin.Movesense
         public async Task<LogEntriesResult> GetLogEntriesAsync()
         {
             var op = new ApiCallAsync<LogEntriesResult>(this, MdsOp.GET, LOGBOOK_ENTRIES_PATH);
-            return await op.CallAsync().ConfigureAwait(false)
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
