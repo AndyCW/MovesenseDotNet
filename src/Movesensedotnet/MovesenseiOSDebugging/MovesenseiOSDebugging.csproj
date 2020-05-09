@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{95D501A4-AF71-4576-9E4F-A3172D700CF4}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{a52b8a63-bc84-4b47-910d-692533484892}</TemplateGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MovesenseiOSDebugging</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>MovesenseiOSDebugging</AssemblyName>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;__IOS__</DefineConstants>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;__IOS__</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Movesense\Platforms\iOS\MdsConnectionListener.cs" Link="Platforms\iOS\MdsConnectionListener.cs" />
+    <Compile Include="..\Movesense\Platforms\iOS\MdsConnectionService.cs" Link="Platforms\iOS\MdsConnectionService.cs" />
+    <Compile Include="..\Movesense\Platforms\iOS\MovesenseImplementation.cs" Link="Platforms\iOS\MovesenseImplementation.cs" />
+    <Compile Include="..\Movesense\Shared\Api\ApiCallAsync.cs" Link="Shared\Api\ApiCallAsync.cs" />
+    <Compile Include="..\Movesense\Shared\Api\ApiCallAsyncOfT.cs" Link="Shared\Api\ApiCallAsyncOfT.cs" />
+    <Compile Include="..\Movesense\Shared\Api\ApiSubscription.cs" Link="Shared\Api\ApiSubscription.cs" />
+    <Compile Include="..\Movesense\Shared\Api\HttpEnum.cs" Link="Shared\Api\HttpEnum.cs" />
+    <Compile Include="..\Movesense\Shared\Api\IApiSubscription.cs" Link="Shared\Api\IApiSubscription.cs" />
+    <Compile Include="..\Movesense\Shared\Api\IMdsSubscription.cs" Link="Shared\Api\IMdsSubscription.cs" />
+    <Compile Include="..\Movesense\Shared\Api\LedColorEnum.cs" Link="Shared\Api\LedColorEnum.cs" />
+    <Compile Include="..\Movesense\Shared\Api\MdsException.cs" Link="Shared\Api\MdsException.cs" />
+    <Compile Include="..\Movesense\Shared\Api\MdsSubscription.cs" Link="Shared\Api\MdsSubscription.cs" />
+    <Compile Include="..\Movesense\Shared\CrossMovesense.cs" Link="Shared\CrossMovesense.cs" />
+    <Compile Include="..\Movesense\Shared\Helpers\Util.cs" Link="Shared\Helpers\Util.cs" />
+    <Compile Include="..\Movesense\Shared\IMdsConnectionService.cs" Link="Shared\IMdsConnectionService.cs" />
+    <Compile Include="..\Movesense\Shared\IMovesense.cs" Link="Shared\IMovesense.cs" />
+    <Compile Include="..\Movesense\Shared\IMovesenseDevice.cs" Link="Shared\IMovesenseDevice.cs" />
+    <Compile Include="..\Movesense\Shared\MdsConnectionLIstener.cs" Link="Shared\MdsConnectionLIstener.cs" />
+    <Compile Include="..\Movesense\Shared\MdsConnectionListenerBLEConnectedEventArgs.cs" Link="Shared\MdsConnectionListenerBLEConnectedEventArgs.cs" />
+    <Compile Include="..\Movesense\Shared\MdsConnectionListenerEventArgs.cs" Link="Shared\MdsConnectionListenerEventArgs.cs" />
+    <Compile Include="..\Movesense\Shared\MdsConnectionService.cs" Link="Shared\MdsConnectionService.cs" />
+    <Compile Include="..\Movesense\Shared\MdsMovesenseDevice.cs" Link="Shared\MdsMovesenseDevice.cs" />
+    <Compile Include="..\Movesense\Shared\Model\AccData.cs" Link="Shared\Model\AccData.cs" />
+    <Compile Include="..\Movesense\Shared\Model\AccInfo.cs" Link="Shared\Model\AccInfo.cs" />
+    <Compile Include="..\Movesense\Shared\Model\AppInfo.cs" Link="Shared\Model\AppInfo.cs" />
+    <Compile Include="..\Movesense\Shared\Model\BaseResult.cs" Link="Shared\Model\BaseResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\BatteryResult.cs" Link="Shared\Model\BatteryResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\CreateLogResult.cs" Link="Shared\Model\CreateLogResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\DataLoggerConfig.cs" Link="Shared\Model\DataLoggerConfig.cs" />
+    <Compile Include="..\Movesense\Shared\Model\DetailedTime.cs" Link="Shared\Model\DetailedTime.cs" />
+    <Compile Include="..\Movesense\Shared\Model\DeviceInfoResult.cs" Link="Shared\Model\DeviceInfoResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\GyroData.cs" Link="Shared\Model\GyroData.cs" />
+    <Compile Include="..\Movesense\Shared\Model\GyroInfo.cs" Link="Shared\Model\GyroInfo.cs" />
+    <Compile Include="..\Movesense\Shared\Model\IMU6Data.cs" Link="Shared\Model\IMU6Data.cs" />
+    <Compile Include="..\Movesense\Shared\Model\IMU9Data.cs" Link="Shared\Model\IMU9Data.cs" />
+    <Compile Include="..\Movesense\Shared\Model\IMUInfo.cs" Link="Shared\Model\IMUInfo.cs" />
+    <Compile Include="..\Movesense\Shared\Model\LedsResult.cs" Link="Shared\Model\LedsResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\LogEntriesMDSResult.cs" Link="Shared\Model\LogEntriesMDSResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\LogEntriesResult.cs" Link="Shared\Model\LogEntriesResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\LogStatusResult.cs" Link="Shared\Model\LogStatusResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\MagnData.cs" Link="Shared\Model\MagnData.cs" />
+    <Compile Include="..\Movesense\Shared\Model\MagnInfo.cs" Link="Shared\Model\MagnInfo.cs" />
+    <Compile Include="..\Movesense\Shared\Model\TimeResult.cs" Link="Shared\Model\TimeResult.cs" />
+    <Compile Include="..\Movesense\Shared\Model\TimeSubscriptionResult.cs" Link="Shared\Model\TimeSubscriptionResult.cs" />
+    <Compile Include="..\Movesense\Shared\MovesenseImplementation.cs" Link="Shared\MovesenseImplementation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Platforms\iOS\" />
+    <Folder Include="Shared\Api\" />
+    <Folder Include="Shared\Helpers\" />
+    <Folder Include="Shared\Model\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

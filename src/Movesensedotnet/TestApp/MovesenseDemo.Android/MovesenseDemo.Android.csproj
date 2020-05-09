@@ -61,9 +61,6 @@
     <PackageReference Include="Plugin.CurrentActivity">
       <Version>2.1.0.4</Version>
     </PackageReference>
-    <PackageReference Include="Plugin.Movesense">
-      <Version>2.44.0.3-beta</Version>
-    </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
@@ -109,6 +106,12 @@
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
     <Folder Include="Resources\drawable\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MovesenseTestingAndroid\MovesenseTestingAndroid.csproj">
+      <Project>{5eb1c72e-968c-496c-bcec-e8b70440892b}</Project>
+      <Name>MovesenseTestingAndroid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\MovesenseDemo\MovesenseDemo.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

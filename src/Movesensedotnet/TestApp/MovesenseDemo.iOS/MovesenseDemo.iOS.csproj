@@ -160,9 +160,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Plugin.Movesense">
-      <Version>2.44.0.3-beta</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
     <PackageReference Include="Plugin.BluetoothLE">
       <Version>6.3.0.19</Version>
@@ -170,6 +167,12 @@
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MovesenseTestingiOS\MovesenseTestingiOS.csproj">
+      <Project>{fdd2d6c3-599e-4549-8f11-2079946b7518}</Project>
+      <Name>MovesenseTestingiOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\MovesenseDemo\MovesenseDemo.projitems" Label="Shared" />
