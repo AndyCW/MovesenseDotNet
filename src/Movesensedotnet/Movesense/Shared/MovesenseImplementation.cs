@@ -103,7 +103,7 @@ namespace Plugin.Movesense
         [Obsolete("Methods specifying target device by deviceName are deprecated, please use ApiCallAsync(MdsMovesenseDevice, ...) instead.")]
         public async Task ApiCallAsync(string deviceName, MdsOp restOp, string path, string body = null, string prefixPath = "")
         {
-            await new ApiCallAsync(deviceName, restOp, path, body, prefixPath).CallAsync();
+            await new ApiCallAsync(deviceName, restOp, path, body, prefixPath).CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Plugin.Movesense
         [Obsolete("Methods specifying target device by deviceName are deprecated, please use ApiCallAsync<T>(MdsMovesenseDevice, ...) instead.")]
         public async Task<T> ApiCallAsync<T>(string deviceName, MdsOp restOp, string path, string body = null, string prefixPath = "")
         {
-            return await new ApiCallAsync<T>(deviceName, restOp, path, body, prefixPath).CallAsync();
+            return await new ApiCallAsync<T>(deviceName, restOp, path, body, prefixPath).CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Plugin.Movesense
         [Obsolete("Methods specifying target device by deviceName are deprecated, please use ApiSubscriptionAsync<T>(MdsMovesenseDevice, ...) instead.")]
         public async Task<IMdsSubscription> ApiSubscriptionAsync<T>(string deviceName, string path, Action<T> notificationCallback)
         {
-            return await new ApiSubscription<T>(deviceName, path).SubscribeAsync(notificationCallback);
+            return await new ApiSubscription<T>(deviceName, path).SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
 
@@ -141,7 +141,7 @@ namespace Plugin.Movesense
         public async Task<CreateLogResult> CreateLogEntryAsync(string deviceName)
         {
             var op = new ApiCallAsync<CreateLogResult>(deviceName, MdsOp.POST, LOGBOOK_ENTRIES_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Plugin.Movesense
         public async Task<LogEntriesResult> GetLogEntriesAsync(string deviceName)
         {
             var op = new ApiCallAsync<LogEntriesResult>(deviceName, MdsOp.GET, LOGBOOK_ENTRIES_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace Plugin.Movesense
         public async Task<LogEntriesMDSResult> GetLogEntriesJsonAsync(string deviceName)
         {
             var op = new ApiCallAsync<LogEntriesMDSResult>(deviceName, MdsOp.GET, MDS_LOGBOOK_ENTRIES_PATH, null, MDS_LOGBOOK_PREFIX);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Plugin.Movesense
         public async Task DeleteLogEntriesAsync(string deviceName)
         {
             var op = new ApiCallAsync(deviceName, MdsOp.DELETE, LOGBOOK_ENTRIES_PATH);
-            await op.CallAsync();
+            await op.CallAsync().ConfigureAwait(false);
         }
 
 
@@ -187,7 +187,7 @@ namespace Plugin.Movesense
         public async Task<AccInfo> GetAccInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<AccInfo>(deviceName, MdsOp.GET, ACC_INFO_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Plugin.Movesense
         public async Task<MagnInfo> GetMagInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<MagnInfo>(deviceName, MdsOp.GET, MAG_INFO_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
 
@@ -210,7 +210,7 @@ namespace Plugin.Movesense
         public async Task<BatteryResult> GetBatteryLevelAsync(string deviceName)
         {
             var op = new ApiCallAsync<BatteryResult>(deviceName, MdsOp.GET, BATTERY_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(LOGBOOK_DATA_PATH, logId);
             var op = new ApiCallAsync<string>(deviceName, MdsOp.GET, datapath);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(MDS_LOGBOOK_DATA_PATH, logId);
             var op = new ApiCallAsync<string>(deviceName, MdsOp.GET, datapath, null, MDS_LOGBOOK_PREFIX);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(LOGBOOK_DATA, logId);
             var op = new ApiCallAsync<BaseResult>(deviceName, MdsOp.GET, datapath);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Plugin.Movesense
         public async Task<AppInfo> GetAppInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<AppInfo>(deviceName, MdsOp.GET, APP_INFO_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
         /// <summary>
         /// Get device info
@@ -271,7 +271,7 @@ namespace Plugin.Movesense
         public async Task<DeviceInfoResult> GetDeviceInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<DeviceInfoResult>(deviceName, MdsOp.GET, INFO_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace Plugin.Movesense
         public async Task<GyroInfo> GetGyroInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<GyroInfo>(deviceName, MdsOp.GET, GYRO_INFO_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace Plugin.Movesense
         public async Task<IMUInfo> GetIMUInfoAsync(string deviceName)
         {
             var op = new ApiCallAsync<IMUInfo>(deviceName, MdsOp.GET, IMU_INFO_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(LED_PATH, ledIndex);
             var op = new ApiCallAsync<LedState>(deviceName, MdsOp.GET, datapath);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace Plugin.Movesense
             string led_On_Body = $"{{ \"LedState\": {{ \"IsOn\": true, \"LedColor\": {(int)ledColor}}} }}";
             string led_Off_Body = @"{ ""LedState"": { ""IsOn"": false, ""LedColor"": 0} }";
             var op = new ApiCallAsync<LedState>(deviceName, MdsOp.PUT, datapath, ledOn ? led_On_Body : led_Off_Body);
-            await op.CallAsync();
+            await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace Plugin.Movesense
         public async Task<LedsResult> GetLedsStateAsync(string deviceName)
         {
             var op = new ApiCallAsync<LedsResult>(deviceName, MdsOp.GET, LEDS_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace Plugin.Movesense
         public async Task<LogStatusResult> GetLoggerStatusAsync(string deviceName)
         {
             var op = new ApiCallAsync<LogStatusResult>(deviceName, MdsOp.GET, DATALOGGER_STATE_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -359,7 +359,7 @@ namespace Plugin.Movesense
             string LOG_ON = "{\"newState\":3}";
             string LOG_OFF = "{\"newState\":2}";
             var op = new ApiCallAsync(deviceName, MdsOp.PUT, DATALOGGER_STATE_PATH, start ? LOG_ON : LOG_OFF);
-            await op.CallAsync();
+            await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -378,7 +378,7 @@ namespace Plugin.Movesense
             string jsonConfig = Newtonsoft.Json.JsonConvert.SerializeObject(config);
 
             var op = new ApiCallAsync(deviceName, MdsOp.PUT, DATALOGGER_CONFIG_PATH, jsonConfig);
-            await op.CallAsync();
+            await op.CallAsync().ConfigureAwait(false);
         }
         /// <summary>
         /// Set configuration for the Datalogger
@@ -395,7 +395,7 @@ namespace Plugin.Movesense
             string jsonConfig = Newtonsoft.Json.JsonConvert.SerializeObject(dataLoggerConfig);
 
             var op = new ApiCallAsync(deviceName, MdsOp.PUT, DATALOGGER_CONFIG_PATH, jsonConfig);
-            await op.CallAsync();
+            await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace Plugin.Movesense
         public async Task<TimeResult> GetTimeAsync(string deviceName)
         {
             var op = new ApiCallAsync<TimeResult>(deviceName, MdsOp.GET, TIME_PATH);
-            return await op.CallAsync();
+            return await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace Plugin.Movesense
             string time = $"{{\"value\":{timems * 1000}}}";
             Debug.WriteLine($"INFO SetTime TIME {time}");
             var op = new ApiCallAsync<TimeResult>(deviceName, MdsOp.PUT, TIME_PATH, time);
-            await op.CallAsync();
+            await op.CallAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(ACCELEROMETER_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<AccData>(deviceName, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(GYROMETER_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<GyroData>(deviceName, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -463,7 +463,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(IMU6_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<IMU6Data>(deviceName, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(IMU9_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<IMU9Data>(deviceName, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(MAGNETOMETER_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<MagnData>(deviceName, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -503,7 +503,7 @@ namespace Plugin.Movesense
         public async Task<IMdsSubscription> SubscribeTimeAsync(string deviceName, Action<TimeNotificationResult> notificationCallback)
         {
             var op = new ApiSubscription<TimeNotificationResult>(deviceName, TIME_SUBSCRIPTION_PATH);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         #endregion

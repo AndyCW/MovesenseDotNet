@@ -343,7 +343,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(ACCELEROMETER_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<AccData>(this, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(GYROMETER_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<GyroData>(this, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(IMU6_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<IMU6Data>(this, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(IMU9_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<IMU9Data>(this, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace Plugin.Movesense
         {
             string datapath = String.Format(MAGNETOMETER_SUBSCRIPTION_PATH, sampleRate);
             var op = new ApiSubscription<MagnData>(this, datapath);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace Plugin.Movesense
         public async Task<IMdsSubscription> SubscribeTimeAsync(Action<TimeNotificationResult> notificationCallback)
         {
             var op = new ApiSubscription<TimeNotificationResult>(this, TIME_SUBSCRIPTION_PATH);
-            return await op.SubscribeAsync(notificationCallback);
+            return await op.SubscribeAsync(notificationCallback).ConfigureAwait(false);
         }
 
         #endregion

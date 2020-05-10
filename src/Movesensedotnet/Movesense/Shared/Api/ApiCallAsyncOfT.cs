@@ -114,7 +114,7 @@ namespace MdsLibrary.Api
             {
                 try
                 {
-                    result = await perform();
+                    result = await perform().ConfigureAwait(false);
                     retryTcs.SetResult(result);
                     doRetry = false;
                 }
@@ -131,7 +131,7 @@ namespace MdsLibrary.Api
                     else
                     {
                         Debug.WriteLine($"RETRYING Mds Api Call after exception: {ex.ToString()}");
-                        await Task.Delay(RETRY_DELAY);
+                        await Task.Delay(RETRY_DELAY).ConfigureAwait(false);
                     }
                 }
             }
