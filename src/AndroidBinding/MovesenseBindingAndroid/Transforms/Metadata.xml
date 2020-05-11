@@ -1,0 +1,49 @@
+﻿<metadata>
+  <!--
+  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
+  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
+  
+  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
+  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
+  -->
+  
+
+  <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsRegisterOperation']" />
+  <remove-node path="/api/package[@name='com.movesense.mds.internal.operation']/class[@name='MdsUnregisterOperation']" />
+
+  <remove-node path="/api/package[@name='com.polidea.rxandroidble2.internal.cache']/class[@name='DeviceComponentCache']" />
+
+
+
+  <!-- Correct the return type of the SetShouldCheckLocationServicesState method so that we don't get erroneous 'Interface not implemented' error -->-->
+  <attr path="/api/package[@name='com.polidea.rxandroidble2.scan']/class[@name='ScanSettings.Builder']/method[@name='setShouldCheckLocationServicesState' and count(parameter)=1 and parameter[1][@type='boolean']]"
+        name="managedReturn">Java.Lang.Object</attr>
+
+
+
+  <!-- Correct clash in EventArgs caused by two Listeners having same named event-->
+  <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsNotificationListener']/method[@name='onError']"
+        name="argsType">NotificationListenerErrorEventArgs</attr>
+
+  <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onError']"
+        name="argsType">ResponseListenerErrorEventArgs</attr>
+
+
+  <!-- Setting the method to abstract so that it hopefully will bind native calls -->
+  <attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsResponseListener']/method[@name='onSuccess' and count(parameter)=2]"
+          name="abstract">true</attr>
+  <!-- Setting the MdsResponseHandler visability to public -->
+  <attr path="/api/package[@name='com.movesense.mds.internal.operation']/interface[@name='MdsResponseHandler']" name="visibility">public</attr>
+
+
+  <!--<attr path="/api/package[@name='com.movesense.mds']/interface[@name='MdsConnectionListener']/method[@name='onError']"
+      name="argsType">ConnectionListenerErrorEventArgs</attr>-->
+
+  <!-- Correct generated member name being the same as the enclosing type-->
+  <attr path="/api/package[@name='com.movesense.mds']/class[@name='BLEWrapper.ConnectedDevices']/field[@name='connectedDevices']"
+      name="managedName">Devices</attr>
+  <attr path="/api/package[@name='com.movesense.mds']/class[@name='BLEWrapper.WbAddress']/field[@name='wbAddress']"
+        name="managedName">Address</attr>
+  <attr path="/api/package[@name='com.polidea.rxandroidble2']/class[@name='Timeout']/field[@name='timeout']"
+        name="managedName">TimeoutValue</attr>
+</metadata>

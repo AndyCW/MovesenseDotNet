@@ -1,0 +1,108 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid80;Xamarin.iOS10</TargetFrameworks>
+    <AssemblyName>Plugin.Movesense</AssemblyName>
+    <RootNamespace>Plugin.Movesense</RootNamespace>
+    <PackageId>Plugin.Movesense</PackageId>
+    
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+    <Version>1.0.0</Version>
+    <PackageVersion>2.44.0.4</PackageVersion>
+    <PackOnBuild>true</PackOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>default</LangVersion>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
+    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/AndyCW/MovesenseDotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AndyCW/MovesenseDotNet</RepositoryUrl>
+    <PackageReleaseNotes>V2.44 wraps the v1.44.0 mdslib native libraries</PackageReleaseNotes>
+    <PackageIconUrl>https://github.com/AndyCW/MovesenseDotNet/raw/Nuget/src/Nuget/Movesense/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Movesense</PackageTags>
+    
+    <Title>Movesense Plugin for Xamarin</Title>
+    <Summary>Summary of nuget</Summary>
+    <Description>Movesense API for Xamarin</Description>
+
+    <Owners>Andy Wigley</Owners>
+    <Authors>Andy Wigley</Authors>
+    <Copyright>Copyright 2020</Copyright>
+    <Company>Microsoft Corp.</Company>
+    <TargetFramework>netstandard1.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <Compile Include="Shared\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <Compile Include="Platforms\Android\**\*.cs" />
+    <PackageReference Include="MovesenseBindingAndroid" Version="1.44.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <Compile Include="Platforms\iOS\**\*.cs" />
+    <PackageReference Include="MovesenseBindingiOS" Version="1.44.0.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Remove="Shared\Api\HttpEnum.cs" />
+    <None Remove="Shared\Api\IApiSubscription.cs" />
+    <None Remove="Shared\Api\IMdsSubscription.cs" />
+    <None Remove="Shared\Api\LedColorEnum.cs" />
+    <None Remove="Shared\Api\MdsSubscription.cs" />
+    <None Remove="Shared\Model\AppInfo.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="Platforms\Android\MdsConnectionListener.cs" />
+    <None Include="Platforms\Android\MdsConnectionService.cs" />
+    <None Include="Platforms\Android\MovesenseImplementation.cs" />
+    <None Include="Platforms\iOS\MdsConnectionListener.cs" />
+    <None Include="Platforms\iOS\MdsConnectionService.cs" />
+    <None Include="Platforms\iOS\MovesenseImplementation.cs" />
+  </ItemGroup>
+
+
+  <!--
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+    <Compile Include="Platforms\DotNet\**\*.cs" />
+  </ItemGroup>
+  -->
+
+
+  <!--
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Tizen40' ">
+    <Compile Include="Platforms\Tizen\**\*.cs" />
+    <PackageReference Include="Tizen.NET" Version="4.0.0" />
+  </ItemGroup>
+  -->
+  
+  <!--
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Compile Include="Platforms\DotNet\**\*.cs" />
+  </ItemGroup>
+  -->
+
+
+
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+</Project>

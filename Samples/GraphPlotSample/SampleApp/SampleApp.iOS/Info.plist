@@ -38,7 +38,11 @@
 	<array>
 		<string>bluetooth-central</string>
 	</array>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Movesense sensor</string>
+  <!--Description of the Bluetooth request message (required on iOS 10, deprecated)-->
+  <key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Access Movesense sensor</string>
+  <!--Description of the Bluetooth request message (required on iOS 13)-->
+  <key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Access Movesense sensor</string>
 </dict>
 </plist>

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using Plugin.CurrentActivity;
 
 namespace CustomServiceSample.Droid
 {
@@ -26,6 +21,7 @@ namespace CustomServiceSample.Droid
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
             //A great place to initialize Xamarin.Insights and Dependency Services!
+            CrossCurrentActivity.Current.Init(this);
         }
 
         public override void OnTerminate()
@@ -49,7 +45,7 @@ namespace CustomServiceSample.Droid
 
         public void OnActivityResumed(Activity activity)
         {
-            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = activity;
+            CrossCurrentActivity.Current.Activity = activity;
         }
 
         public void OnActivitySaveInstanceState(Activity activity, Bundle outState)
@@ -58,7 +54,7 @@ namespace CustomServiceSample.Droid
 
         public void OnActivityStarted(Activity activity)
         {
-            Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = activity;
+            CrossCurrentActivity.Current.Activity = activity;
         }
 
         public void OnActivityStopped(Activity activity)

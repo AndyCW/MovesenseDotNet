@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MovesenseBindingAndroid</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Andy Wigley</authors>
+    <owners>Andy Wigley</owners>
+    <licenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/AndyCW/MovesenseDotNet</projectUrl>
+    <iconUrl>http://www.movesense.com</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET binding for Movesense Android mdslib</description>
+    <releaseNotes>Movesense mdslib 1.39.0 binding for Xamarin Android.</releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>Xamarin Plugin Movesense</tags>
+  </metadata>
+</package>
