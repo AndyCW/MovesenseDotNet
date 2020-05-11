@@ -31,5 +31,5 @@ The output from this solution is packaged in a NuGet package **MovesenseBindingi
 1. The official version will get published to nuget.org at this point, but you can save the NuGet in a local folder for building your own custom version of Movesense.NET.
 
 1. **Next Steps:**
-   1. Build the [Android binding](../../Android/) project
-   1. Build the [Movesense.NET](../../NuGet) library.
+   1. Build the [Android binding](../../AndroidBinding/README.md) project
+   1. Build the [Movesense.NET](../../Movesensedotnet/README.md) library
