@@ -81,16 +81,17 @@ As you are using Bluetooth peripherals, you will need to add the following to yo
   ```xml
     <key>UIBackgroundModes</key>
     <array>
-        <!--for connecting to devices (client)-->
-        <string>bluetooth-central</string>
-
-        <!--for server configurations if needed-->
-        <string>bluetooth-peripheral</string>
+      <!--for connecting to devices (client)-->
+      <string>bluetooth-central</string>
     </array>
 
-    <!--To add a description to the Bluetooth request message (on iOS 10 this is required!)-->
+    <!--To add a description to the Bluetooth request message (on iOS 10+, deprecated)-->
     <key>NSBluetoothPeripheralUsageDescription</key>
-    <string>YOUR CUSTOM MESSAGE</string>
+    <string>Access Movesense sensor</string>
+
+    <!--Description of the Bluetooth request message (required on iOS 13)-->
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Access Movesense sensor</string>
   ```
 
 ### Programming the Movesense .NET API
@@ -195,9 +196,11 @@ The Movesense API implements methods for most of the commonly used function in t
 | GetIMUInfoAsync()        | [GET /Meas/IMU/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/imu.yaml#lines-14)  | Get supported sample rates and ranges |
 | GetLedsStateAsync()      | [GET /Component/Leds](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-29) | Get leds in the system and their state (on/off & possible color) |
 | GetLedStateAsync(int)  |  [GET /Component/Leds/{LedIndex}](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/component/led.yaml#lines-43)  | Get state of the specific led (on/off & possible color) |
-| GetLogbookDataAsync(int) | [GET /Mem/Logbook/byId/{LogId}/Data](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-186)  | Read SBEM data from a log entry and stream it |
+| GetLogbookDataAsync(int) | [GET /MDS/Logbook/{serial}>/ByID/{ID}/Data](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-186)  | Read SBEM data from a log entry and stream it |
+| GetLogbookDataJsonAsync(int) | [GET /Mem/Logbook/byId/{LogId}/Data](https://bitbucket.org/suunto/movesense-mobile-lib/src/03d327a69027cadfae7cc7bd8f1a8ed0ef53e947/IOS/Movesense/readme.txt#lines-251)  | Get data from a Logbook entry as JSON using the MDS Logbook proxy service which takes care of paging and raw data to JSON conversion |
 | GetLogbookDescriptorsAsync(int) | [GET /Mem/Logbook/byId/{LogId}/Descriptors](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-156)  | Read training log descriptors and stream the descriptor file |
 | GetLogEntriesAsync()     | [GET /Mem/Logbook/Entries](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/logbook.yaml#lines-111) | List Log contents |
+| GetLogEntriesJsonAsync() | [GET /MDS/Logbook/{serial}>/Entries](https://bitbucket.org/suunto/movesense-mobile-lib/src/03d327a69027cadfae7cc7bd8f1a8ed0ef53e947/IOS/Movesense/readme.txt#lines-251)  | List Log contents as JSON using the MDS Logbook proxy service which takes care of paging and raw data to JSON conversion |
 | GetLoggerStatusAsync()   | [GET /Mem/DataLogger/State](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/mem/datalogger.yaml#lines-41)  | Reads current DataLogger state |
 | GetMagInfoAsync()        | [GET /Meas/Magn/Info](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/meas/magn.yaml#lines-14) | Get info about the magnetometer |
 | GetTimeAsync()           | [GET /Time](https://bitbucket.org/suunto/movesense-device-lib/src/5bcf0b40644a17d48977cf011ebcf6191650c6f0/MovesenseCoreLib/resources/movesense-api/time.yaml#lines-13)      | Gets current time in number of microseconds since epoch 1.1.1970 (UTC) |
