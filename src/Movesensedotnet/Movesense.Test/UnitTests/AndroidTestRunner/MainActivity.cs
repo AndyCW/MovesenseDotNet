@@ -21,11 +21,9 @@ namespace AndroidTestRunner
           Manifest.Permission.AccessCoarseLocation
         };
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
-            CheckAndRequestLocationPermission();
 
             // tests can be inside the main assembly
             AddTestAssembly(Assembly.GetExecutingAssembly());
@@ -47,6 +45,8 @@ namespace AndroidTestRunner
 #endif
             // you cannot add more assemblies once calling base
             base.OnCreate(savedInstanceState);
+
+            await CheckAndRequestLocationPermission();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

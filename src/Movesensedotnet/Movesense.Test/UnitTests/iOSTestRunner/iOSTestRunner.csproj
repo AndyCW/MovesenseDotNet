@@ -163,4 +163,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadXFormsNugetUpgradeInfoBariOSTestRunnerHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
