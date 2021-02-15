@@ -14,5 +14,9 @@
     <releaseNotes>Movesense mdslib 1.39.0 binding for Xamarin Android.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>Xamarin Plugin Movesense</tags>
+	<dependencies>
+      <dependency id="Xamarin.Google.Dagger" version="2.15.0" />
+    </dependencies>
   </metadata>
+
 </package>
