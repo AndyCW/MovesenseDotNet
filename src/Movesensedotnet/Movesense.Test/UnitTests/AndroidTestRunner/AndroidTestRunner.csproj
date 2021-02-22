@@ -107,35 +107,38 @@
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Annotations">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.Annotation">
+      <Version>1.0.2-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Compat">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.Core">
+      <Version>1.0.1-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Core.UI">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.UI">
+      <Version>1.0.0-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
-    <PackageReference Include="Xamarin.Android.Support.Fragment">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>5.0.0.1931</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Media.Compat">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.0.0-preview01" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.Utils" Version="1.0.0-preview01" />
+    <PackageReference Include="Xamarin.AndroidX.Browser" Version="1.0.0-preview01" />
+    <PackageReference Include="Xamarin.AndroidX.Fragment">
+      <Version>1.0.0-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v4">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.Media">
+      <Version>1.0.1-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4">
+      <Version>1.0.0-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.AppCompat">
+      <Version>1.0.2-preview01</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v7.Palette">
-      <Version>28.0.0.3</Version>
+    <PackageReference Include="Xamarin.AndroidX.MediaRouter">
+      <Version>1.0.0-preview01</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.Palette">
+      <Version>1.0.0-preview01</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.1" />
     <PackageReference Include="xunit">
@@ -144,6 +147,7 @@
     <PackageReference Include="xunit.runner.devices">
       <Version>2.5.25</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.0-preview03" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MovesenseTestingAndroid\MovesenseTestingAndroid.csproj">

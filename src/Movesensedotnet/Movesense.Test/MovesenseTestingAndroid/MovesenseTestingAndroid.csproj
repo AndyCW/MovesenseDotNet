@@ -17,7 +17,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -100,12 +100,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MovesenseBindingAndroid">
-      <Version>1.44.0</Version>
+      <Version>1.44.0.2-Beta</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.0.2-preview01" />
+    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.0-preview03" />
+    <PackageReference Include="Xamarin.Google.Dagger">
+      <Version>2.27.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\strings.xml" />
