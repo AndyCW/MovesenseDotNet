@@ -43,7 +43,7 @@
   <ItemGroup>
     <None Include="Jars\AboutJars.txt" />
     <None Include="Additions\AboutAdditions.txt" />
-    <LibraryProjectZip Include="Jars\mdslib-1.44.0%281%29-release.aar" />
+    <LibraryProjectZip Include="Jars\mdslib-1.63.0%281%29-release.aar" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\Metadata.xml">

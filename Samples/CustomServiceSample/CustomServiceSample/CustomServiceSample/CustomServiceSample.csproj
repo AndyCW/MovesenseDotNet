@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Plugin.BluetoothLE" Version="6.3.0.19" />
-    <PackageReference Include="Plugin.Movesense" Version="2.44.0" />
+    <PackageReference Include="Plugin.Movesense" Version="2.63.0-beta" />
     <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
 </Project>

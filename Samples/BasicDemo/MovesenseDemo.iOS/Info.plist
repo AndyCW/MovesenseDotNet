@@ -21,7 +21,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>9.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>MovesenseDemo</string>
 	<key>CFBundleIdentifier</key>
@@ -38,11 +38,9 @@
 	<array>
 		<string>bluetooth-central</string>
 	</array>
-  <!--Description of the Bluetooth request message (required on iOS 10, deprecated)-->
-  <key>NSBluetoothPeripheralUsageDescription</key>
+	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Access Movesense sensor</string>
-  <!--Description of the Bluetooth request message (required on iOS 13)-->
-  <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>Access Movesense sensor</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Access Movesense sensor</string>
 </dict>
 </plist>
