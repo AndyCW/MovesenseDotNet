@@ -157,12 +157,12 @@
       <Version>6.3.0.19</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Movesense">
-      <Version>2.44.0</Version>
+      <Version>2.63.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>6.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
