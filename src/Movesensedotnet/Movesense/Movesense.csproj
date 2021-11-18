@@ -53,12 +53,12 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
-    <PackageReference Include="MovesenseBindingAndroid" Version="1.63.0.1" />
+    <PackageReference Include="MovesenseBindingAndroid" Version="1.63.0.2" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-    <PackageReference Include="MovesenseBindingiOS" Version="1.44.0.1" />
+    <PackageReference Include="MovesenseBindingiOS" Version="1.63.0-beta" />
   </ItemGroup>
 
 
@@ -79,6 +79,13 @@
     <None Include="Platforms\iOS\MdsConnectionListener.cs" />
     <None Include="Platforms\iOS\MdsConnectionService.cs" />
     <None Include="Platforms\iOS\MovesenseImplementation.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10.0'">
+    <PackageReference Include="Xamarin.Google.Dagger">
+      <Version>2.39.1</Version>
+    </PackageReference>
   </ItemGroup>
 
 

@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MovesenseBindingAndroid">
-      <Version>1.44.0.2-Beta</Version>
+      <Version>1.63.0.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
@@ -114,7 +114,7 @@
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.8" />
     <PackageReference Include="Xamarin.Google.Dagger">
-      <Version>2.27.0</Version>
+      <Version>2.39.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
