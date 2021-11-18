@@ -60,6 +60,8 @@
     <ProjectReference Include="..\..\MovesenseTestingiOS\MovesenseTestingiOS.csproj">
       <Project>{fdd2d6c3-599e-4549-8f11-2079946b7518}</Project>
       <Name>MovesenseTestingiOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

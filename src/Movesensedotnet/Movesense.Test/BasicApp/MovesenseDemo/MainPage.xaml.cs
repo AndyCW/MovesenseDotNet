@@ -84,7 +84,7 @@ namespace MovesenseDemo
                         "Success", 
                         $"Communicated with device {sensor.Name}, firmware version is: {info.DeviceInfo.Sw}, battery: {batt.ChargePercent}", 
                         "OK");
-
+                     
                     // Turn the LED off again
                     StatusLabel.Text = "Turning off LED";
                     await movesenseDevice.SetLedStateAsync(0, false);

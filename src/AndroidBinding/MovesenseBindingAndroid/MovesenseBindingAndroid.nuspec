@@ -11,8 +11,14 @@
     <iconUrl>http://www.movesense.com</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET binding for Movesense Android mdslib</description>
-    <releaseNotes>Movesense mdslib 1.39.0 binding for Xamarin Android.</releaseNotes>
+    <releaseNotes>Movesense mdslib 1.63.0 binding for Xamarin Android.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>Xamarin Plugin Movesense</tags>
+    <dependencies>
+      <dependency id="Xamarin.Google.Dagger" version="2.15.0" />
+      <dependency id="Xamarin.Android.ReactiveX.RxAndroid" version="2.1.1" />
+      <dependency id="Xamarin.Android.ReactiveX.RxJava" version="2.2.10.1" />
+      <dependency id="Xamarin.JavaX.Inject" version="1.0.0" />
+    </dependencies>
   </metadata>
 </package>
