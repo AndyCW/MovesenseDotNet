@@ -12,7 +12,7 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>MovesenseBindingiOS</PackageId>
-    <PackageVersion>1.63.0-beta</PackageVersion>
+    <PackageVersion>1.63.0.2-beta</PackageVersion>
     <PackageReleaseNotes>Movesense mdslib v1.63.0 binding for Xamarin iOS.</PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/AndyCW/MovesenseDotNet/blob/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>http://www.movesense.com</PackageIconUrl>

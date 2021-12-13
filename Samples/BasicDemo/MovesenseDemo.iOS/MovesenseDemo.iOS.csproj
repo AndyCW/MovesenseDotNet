@@ -161,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Plugin.Movesense">
-      <Version>2.63.0.1-beta</Version>
+      <Version>2.63.0.3-beta</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2244" />
     <PackageReference Include="Plugin.BluetoothLE">

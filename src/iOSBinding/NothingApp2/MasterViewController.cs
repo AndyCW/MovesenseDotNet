@@ -30,8 +30,6 @@ namespace NothingApp2
             addButton.AccessibilityLabel = "addButton";
             NavigationItem.RightBarButtonItem = addButton;
 
-            DetailViewController = (DetailViewController)((UINavigationController)SplitViewController.ViewControllers[1]).TopViewController;
-
             TableView.Source = dataSource = new DataSource(this);
         }
 
@@ -66,6 +64,8 @@ namespace NothingApp2
                 controller.SetDetailItem(item);
                 controller.NavigationItem.LeftBarButtonItem = SplitViewController.DisplayModeButtonItem;
                 controller.NavigationItem.LeftItemsSupplementBackButton = true;
+
+                DetailViewController = controller;
             }
         }
 

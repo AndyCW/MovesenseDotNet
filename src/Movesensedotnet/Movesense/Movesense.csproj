@@ -9,8 +9,8 @@
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>0.0.1.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <Version>2.63.0.1-beta</Version>
-    <PackageVersion>2.63.0.1</PackageVersion>
+    <Version>2.63.0.4-beta</Version>
+    <PackageVersion>2.63.0.4-beta</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -53,12 +53,12 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
-    <PackageReference Include="MovesenseBindingAndroid" Version="1.63.0.2" />
+    <PackageReference Include="MovesenseBindingAndroid" Version="1.63.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-    <PackageReference Include="MovesenseBindingiOS" Version="1.63.0-beta" />
+    <PackageReference Include="MovesenseBindingiOS" Version="1.63.0.4-beta" />
   </ItemGroup>
 
 

@@ -11,6 +11,7 @@ namespace NothingApp2
 {
     public partial class DetailViewController : UIViewController
     {
+        public readonly string UUID = "0000fdf3-0000-1000-8000-00805ff9b34fb";
         public object DetailItem { get; set; }
 
         protected DetailViewController(IntPtr handle) : base(handle)
